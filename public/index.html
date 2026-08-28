@@ -13,12 +13,84 @@
   <meta property="og:image" content="assets/img/og.jpg">
 
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;700&display=swap">
+
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
+  <header class="site-header">
+    <div class="container">
+      <a class="site-header__logo" href="./" aria-label="São Miguel — página inicial">
+        <img src="assets/img/logo_branca.svg" alt="São Miguel" width="78" height="78">
+      </a>
+    </div>
+  </header>
+
   <main id="conteudo">
-    <p>Deploy com sucesso.</p>
+    <section class="hero">
+      <div class="hero__grade" role="presentation"></div>
+      <img class="hero__retrato" src="assets/img/rodrigo.webp" alt="Rodrigo" width="728" height="684">
+
+      <div class="hero__numeros container">
+        <div class="card-numero">
+          <strong>+17</strong>
+          <span>anos de experiência</span>
+        </div>
+        <div class="card-numero">
+          <strong>+1k</strong>
+          <span>clientes atendidos</span>
+        </div>
+        <div class="card-numero" aria-hidden="true"></div>
+      </div>
+
+      <div class="hero__local container">
+        <p>Canela, Gramado e Rio Grande do Sul</p>
+      </div>
+
+      <div class="hero__conteudo container">
+        <!-- Os dois espaços rígidos dão o avanço estético da segunda linha. -->
+        <h1 class="hero__titulo">Engenharia<br><span class="hero__avanco">&nbsp;&nbsp;</span>&amp; Construção</h1>
+        <div class="hero__acao">
+          <h2 class="hero__descricao">
+            Projeto, planejamento e gerenciamento de obras, engenharia estrutural e
+            PPCI, da viabilidade técnica à entrega, com inovação, sustentabilidade,
+            transparência e total conformidade às normas.
+          </h2>
+
+          <a class="botao" href="#contato">
+            <span class="botao__mascara">
+              <span class="botao__trilho">
+                <span class="botao__texto">Entrar em contato</span>
+                <span class="botao__texto" aria-hidden="true">Entrar em contato</span>
+              </span>
+            </span>
+            <span class="botao__icone" aria-hidden="true">
+              <span class="botao__icone-caixa"></span>
+              <span class="botao__icone-mascara">
+                <span class="botao__icone-trilho">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square">
+                    <path d="M2.5 8h10.5"></path><path d="M7.8 3.3L13 8l-5.2 4.7"></path>
+                  </svg>
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square">
+                    <path d="M2.5 8h10.5"></path><path d="M7.8 3.3L13 8l-5.2 4.7"></path>
+                  </svg>
+                </span>
+              </span>
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero__assinatura container">
+        <img src="assets/img/assinatura-rodrigo-selestrim.svg" alt="Rodrigo Selestrim" width="133" height="85">
+      </div>
+    </section>
+
+    <section class="dobra-2"><!-- conteúdo a definir --></section>
   </main>
 
   <script src="assets/js/main.js" defer></script>

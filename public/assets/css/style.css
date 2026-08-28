@@ -4,11 +4,20 @@
 
 /* 1. Tokens -------------------------------------------------- */
 :root {
-  --cor-fundo: #ffffff;
-  --cor-texto: #1a1a1a;
+  --cor-fundo: #1554d5;
+  --cor-texto: #ffffff;
   --cor-destaque: #0057b8;
 
-  --fonte-base: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --cor-fundo-escuro: #0b2f8a;
+  --botao-preto: #000;
+  --curva: cubic-bezier(0.85, 0, 0.15, 1);
+  --duracao: 0.65s;
+
+  --quadrado: 230px;
+  --vao: 6px;
+  --passo: calc(var(--quadrado) + var(--vao));
+
+  --fonte-base: "Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --largura-max: 1200px;
   --espaco: 1rem;
 }
@@ -30,18 +39,490 @@ body {
 }
 
 /* 4. Layout -------------------------------------------------- */
+/* Coluna de conteúdo: exatamente 1200px a partir de 1232px de viewport;
+   abaixo disso encosta nas margens laterais. */
 .container {
-  width: 100%;
-  max-width: var(--largura-max);
+  width: min(100% - 2 * var(--espaco), var(--largura-max));
   margin-inline: auto;
-  padding-inline: var(--espaco);
 }
 
 /* 5. Componentes --------------------------------------------- */
-/* .site-header { } */
-/* .site-footer { } */
+/* Sobreposto à primeira dobra, sem ocupar espaço no fluxo. */
+.site-header {
+  position: absolute;
+  top: 70px;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
 
-/* 6. Utilitários --------------------------------------------- */
+.site-header__logo {
+  display: inline-block;
+  width: 78px;
+}
+
+.hero {
+  position: relative;
+  height: 848px;
+  background: var(--cor-fundo);
+}
+
+/* Placeholder: só dá comprimento à página enquanto o conteúdo não existe. */
+.dobra-2 {
+  height: 1080px;
+  background: #000;
+}
+
+/* Cards de números, encostados na direita da coluna.
+   O terceiro é vazio, só compõe o ritmo da grade. */
+.hero__numeros {
+  position: absolute;
+  z-index: 1;
+  top: 45px;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.card-numero {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  width: 96px;
+  height: 142px;
+  padding: 12px;
+  border: 1px solid rgb(255 255 255 / 0.35);
+  background: rgb(0 0 0 / 0.12);
+}
+
+.card-numero strong {
+  font-size: 46px;
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+
+.card-numero span {
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+/* Localidade, acima do título. A largura da caixa é que quebra a linha
+   depois de "e". */
+.hero__local {
+  position: absolute;
+  z-index: 1;
+  top: 330px;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+}
+
+.hero__local p {
+  width: 200px;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Título à esquerda e descrição à direita: a última linha de cada um
+   assenta na mesma linha de base. */
+.hero__conteudo {
+  position: absolute;
+  z-index: 1; /* o texto passa por cima do retrato */
+  bottom: 178px;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end; /* fallback */
+  align-items: last baseline;
+  gap: var(--espaco);
+}
+
+.hero__titulo {
+  font-size: 95px;
+  line-height: 106px;
+  font-weight: 400;
+  letter-spacing: -0.06em;
+}
+
+/* O botão fica fora do fluxo para não virar a última linha da coluna —
+   é a linha de base do h2 que precisa casar com a do h1. */
+.hero__acao {
+  position: relative;
+  width: 366px;
+  flex: none;
+}
+
+.hero__descricao {
+  font-size: 16px;
+  line-height: 1.35;
+  font-weight: 400;
+}
+
+.botao {
+  position: absolute;
+  top: calc(100% + 30px);
+  left: 0;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 12px 12px 22px;
+
+  background: var(--botao-preto);
+  color: #fff;
+  font-size: 16px;
+  text-decoration: none;
+  cursor: pointer;
+
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Preenchimento que sobe de baixo. */
+.botao::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--cor-fundo-escuro);
+  transform: translate3d(0, 100%, 0);
+  transition: transform var(--duracao) var(--curva);
+  will-change: transform;
+}
+
+.botao:focus-visible::before {
+  transform: translate3d(0, 0, 0);
+}
+
+/* Texto duplicado: o trilho sobe uma linha e a segunda cópia toma o lugar. */
+.botao__mascara {
+  display: inline-block;
+  height: 22px;
+  overflow: hidden;
+}
+
+.botao__trilho {
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--duracao) var(--curva);
+  will-change: transform;
+}
+
+.botao__texto {
+  display: block;
+  height: 22px;
+  line-height: 22px;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+}
+
+.botao:focus-visible .botao__trilho {
+  transform: translate3d(0, -22px, 0);
+}
+
+/* Seta: o trilho tem duas cópias e desliza na horizontal. */
+.botao__icone {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  width: 26px;
+  height: 26px;
+}
+
+/* O giro é imperceptível no início e no fim (quadrado), mas no meio do
+   percurso as pontas varrem para fora da caixa — é isso que se vê. */
+.botao__icone-caixa {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: #fff;
+  transition: transform var(--duracao) var(--curva);
+  will-change: transform;
+}
+
+.botao:focus-visible .botao__icone-caixa {
+  transform: rotate(90deg);
+}
+
+.botao__icone-mascara {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.botao__icone-trilho {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  width: 52px;
+  height: 26px;
+  color: var(--botao-preto);
+  transform: translate3d(-26px, 0, 0);
+  transition: transform var(--duracao) var(--curva);
+  will-change: transform;
+}
+
+.botao__icone-trilho svg {
+  flex: none;
+  box-sizing: border-box;
+  width: 26px;
+  height: 26px;
+  padding: 4px;
+}
+
+.botao:focus-visible .botao__icone-trilho {
+  transform: translate3d(0, 0, 0);
+}
+
+/* O :hover só vale onde existe mouse. No toque ele fica retido depois do tap:
+   o preenchimento subia e não voltava mais. */
+@media (hover: hover) and (pointer: fine) {
+  .botao:hover::before {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .botao:hover .botao__trilho {
+    transform: translate3d(0, -22px, 0);
+  }
+
+  .botao:hover .botao__icone-caixa {
+    transform: rotate(90deg);
+  }
+
+  .botao:hover .botao__icone-trilho {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* No toque, o preenchimento aparece só enquanto o dedo está pressionando. */
+@media (hover: none) {
+  .botao:active::before {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .botao,
+  .botao::before,
+  .botao__trilho,
+  .botao__icone-caixa,
+  .botao__icone-trilho {
+    transition-duration: 1ms;
+  }
+}
+
+/* Assinatura, recuada em relação à coluna e logo abaixo do título.
+   O container ocupa a coluna inteira; sem pointer-events: none ele cobriria
+   o botão, que fica logo atrás dele. */
+.hero__assinatura {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  bottom: 74px;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+}
+
+.hero__assinatura img {
+  width: 133px;
+  margin-inline-start: 220px;
+}
+
+/* Retrato colado no rodapé da dobra. O deslocamento compensa o vazio
+   à esquerda do recorte, centralizando a figura e não o arquivo. */
+.hero__retrato {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  translate: calc(-50% - 55px) 0;
+  width: 728px;
+}
+
+/* Grade de 4×2 quadrados que mascara a imagem de fundo.
+   Faltam, de propósito, o quadrado superior direito e o inferior esquerdo. */
+.hero__grade {
+  width: calc(4 * var(--quadrado) + 3 * var(--vao));
+  height: calc(2 * var(--quadrado) + var(--vao));
+  margin-inline: auto;
+
+  background-image: url("../img/imagem-quadrados.webp");
+  background-size: cover;
+  background-position: center;
+
+  --celula: linear-gradient(#000 0 0);
+  mask-image: var(--celula), var(--celula), var(--celula),
+              var(--celula), var(--celula), var(--celula);
+  mask-size: var(--quadrado) var(--quadrado);
+  mask-repeat: no-repeat;
+  mask-position:
+    0 0,
+    var(--passo) 0,
+    calc(2 * var(--passo)) 0,
+    var(--passo) var(--passo),
+    calc(2 * var(--passo)) var(--passo),
+    calc(3 * var(--passo)) var(--passo);
+}
+
+/* 6. Mobile --------------------------------------------------- */
+/* Não há layout próprio de tablet: tudo abaixo de 1200px usa o mobile.
+   A dobra passa a ser empilhada e centralizada, com a grade sob o texto. */
+@media (max-width: 1199px) {
+  :root {
+    --quadrado: 140px;
+    --vao: 8px;
+  }
+
+  .site-header {
+    position: static;
+    padding-top: 32px;
+  }
+
+  .site-header .container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .site-header__logo {
+    width: 56px;
+  }
+
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    padding-top: 36px;
+    padding-bottom: 52px; /* espaço para o retrato, que fica absoluto */
+    overflow: hidden;
+    text-align: center;
+  }
+
+  /* De volta ao fluxo, na ordem do layout mobile. */
+  .hero__local,
+  .hero__conteudo,
+  .hero__numeros {
+    position: static;
+    inset: auto;
+  }
+
+  .hero__local  { order: 1; }
+  .hero__conteudo { order: 2; }
+  .hero__numeros  { order: 3; }
+  .hero__grade    { order: 4; }
+
+  .hero__local p {
+    width: auto;
+    font-size: 12px;
+  }
+
+  .hero__conteudo {
+    display: block;
+    margin-top: 18px;
+  }
+
+  /* Dimensionado para a maior linha ("& Construção") medir 330px a 390px de
+     tela. Em telas menores acompanha a largura, para não transbordar. */
+  .hero__titulo {
+    font-size: min(15.1vw, 59px);
+    line-height: 1.09;
+  }
+
+  /* O avanço estético só faz sentido com o título alinhado à esquerda. */
+  .hero__avanco { display: none; }
+
+  .hero__acao {
+    position: static;
+    width: auto;
+  }
+
+  .hero__descricao {
+    width: min(100%, 275px);
+    margin: 22px auto 0;
+    font-size: 16px;
+  }
+
+  /* Centralizado pelo text-align da dobra, por ser inline-flex.
+     Precisa continuar posicionado: com `static` o ::before se ancorava no
+     .hero e o preenchimento virava um retângulo do tamanho da dobra. */
+  .botao {
+    position: relative;
+    top: auto;
+    left: auto;
+    margin-top: 26px;
+  }
+
+  .hero__numeros {
+    justify-content: center;
+    margin-top: 36px;
+    gap: 12px;
+  }
+
+  .card-numero {
+    width: 76px;
+    height: 118px;
+    padding: 10px;
+    /* Fundo sólido: mesmo tom que o preto a 12% produzia sobre o azul. */
+    background: #124abb;
+  }
+
+  .card-numero strong { font-size: 36px; }
+  .card-numero span   { font-size: 10px; }
+
+  /* O terceiro card é só ritmo visual; no mobile ele sai. */
+  .card-numero[aria-hidden="true"] { display: none; }
+
+  .hero__grade {
+    margin-top: 40px;
+    /* A grade é mais larga que a tela. Margem automática resolveria para 0
+       e anularia o align-items: center, jogando tudo para a esquerda. */
+    margin-inline: 0;
+    align-self: center;
+  }
+
+  .hero__retrato {
+    /* a grade cria contexto de empilhamento (mask) e, com `order`, pinta
+       depois; sem z-index o retrato ficaria atrás dela. */
+    z-index: 1;
+    width: 420px;
+    max-width: none; /* o retrato transborda a tela de propósito */
+    translate: -50% 0; /* sem o deslocamento de 55px: aqui a figura é centrada */
+  }
+
+  /* Centralizada e deslocada para a esquerda, igual ao retrato: assim ela
+     acompanha o ombro em qualquer largura de tela. */
+  .hero__assinatura {
+    z-index: 2;
+    bottom: 120px;
+    right: auto;
+    left: 50%;
+    translate: calc(-50% - 78px) 0;
+    margin-inline: 0;
+    width: auto;
+  }
+
+  .hero__assinatura img {
+    width: 110px;
+    margin-inline-start: 0;
+  }
+}
+
+/* 7. Utilitários --------------------------------------------- */
 .visually-hidden {
   position: absolute;
   width: 1px; height: 1px;
