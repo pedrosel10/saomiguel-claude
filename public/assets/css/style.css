@@ -1,0 +1,51 @@
+/* ===========================================================
+   São Miguel — folha de estilo principal
+   =========================================================== */
+
+/* 1. Tokens -------------------------------------------------- */
+:root {
+  --cor-fundo: #ffffff;
+  --cor-texto: #1a1a1a;
+  --cor-destaque: #0057b8;
+
+  --fonte-base: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --largura-max: 1200px;
+  --espaco: 1rem;
+}
+
+/* 2. Reset --------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+body, h1, h2, h3, p, figure, ul, ol { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+img, video { max-width: 100%; height: auto; display: block; }
+a { color: inherit; }
+
+/* 3. Base ---------------------------------------------------- */
+body {
+  font-family: var(--fonte-base);
+  color: var(--cor-texto);
+  background: var(--cor-fundo);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 4. Layout -------------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: var(--largura-max);
+  margin-inline: auto;
+  padding-inline: var(--espaco);
+}
+
+/* 5. Componentes --------------------------------------------- */
+/* .site-header { } */
+/* .site-footer { } */
+
+/* 6. Utilitários --------------------------------------------- */
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
