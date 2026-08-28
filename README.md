@@ -1,39 +1,34 @@
 # saomiguel-claude
 
-Site estático (HTML/CSS/JS puro) com deploy automático via cPanel Git™ Version Control.
+Site estático (HTML/CSS/JS puro) hospedado na Hostinger, com deploy via Git.
 
 ## Estrutura
 
 ```
 saomiguel-claude/
-├── .cpanel.yml          # receita de deploy do cPanel
 ├── .editorconfig
 ├── .gitignore
+├── .htaccess
 ├── README.md
-└── public/              # ← tudo aqui vai para o servidor
-    ├── index.html
-    ├── robots.txt
-    ├── .htaccess
-    └── assets/
-        ├── css/style.css
-        ├── js/main.js
-        ├── img/
-        └── fonts/
+├── index.html
+├── robots.txt
+└── assets/
+    ├── css/style.css
+    ├── js/main.js
+    ├── img/
+    └── fonts/
 ```
 
-Não há etapa de build: o que está em `public/` é exatamente o que fica no ar.
+Não há etapa de build: a raiz do repositório é exatamente o que fica no ar.
 
 ## Deploy
 
-`.cpanel.yml` copia o conteúdo de `public/` para `$HOME/public_html/sm-claude/`.
+A hospedagem é **Hostinger (hPanel)**, não cPanel. O hPanel faz apenas o
+checkout do repositório na pasta de destino — ele não executa receitas de
+deploy (`.cpanel.yml` não tem efeito ali). Por isso os arquivos ficam na raiz
+do repositório, e não numa subpasta `public/`.
 
-### Configuração inicial no cPanel (uma vez só)
-
-1. cPanel → **Git™ Version Control** → **Create**.
-2. Marque *Clone a Repository*.
-3. **Clone URL:** `https://github.com/pedrosel10/saomiguel-claude.git`
-4. **Repository Path:** `/home/USUARIO/repositories/saomiguel-claude`
-5. Criar → aba **Pull or Deploy** → **Update from Remote** → **Deploy HEAD Commit**.
+O site responde em `https://saomiguelengenharia.com.br/sm-claude/`.
 
 ### A cada alteração
 
@@ -43,17 +38,21 @@ git commit -m "descrição"
 git push
 ```
 
-Depois, no cPanel: **Pull or Deploy → Update from Remote → Deploy HEAD Commit**.
+Depois, no hPanel: **Site → GIT → Deploy** (ou aguarde o auto-deploy, se
+estiver ativado).
 
 ## Desenvolvimento local
 
 ```bash
-cd public
 python3 -m http.server 8000
 # abre http://localhost:8000
 ```
 
 ## Observações
 
-- Todos os caminhos no HTML são **relativos** (`assets/css/style.css`), porque o site roda em subpasta (`/sm-claude/`). Não use caminhos começando com `/`.
-- O deploy **copia por cima**; arquivos removidos do repo continuam no servidor até serem apagados manualmente.
+- Todos os caminhos no HTML são **relativos** (`assets/css/style.css`), porque
+  o site roda em subpasta (`/sm-claude/`). Não use caminhos começando com `/`.
+- O `.htaccess` bloqueia dotfiles, `.md` e `.yml`: como a raiz do repositório é
+  a raiz do site, sem isso o README e as configs ficariam públicos.
+- O deploy **copia por cima**; arquivos removidos do repo continuam no servidor
+  até serem apagados manualmente.

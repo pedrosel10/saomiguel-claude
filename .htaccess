@@ -1,3 +1,14 @@
+# Arquivos de projeto não devem ser servidos: a raiz do repositório é
+# também a raiz do site, então README, configs e dotfiles ficariam públicos.
+<IfModule mod_authz_core.c>
+  <FilesMatch "^\.|\.(md|yml|yaml)$">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+
+# Sem listagem de diretório
+Options -Indexes
+
 # Compressão
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml
