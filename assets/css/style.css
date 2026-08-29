@@ -1002,12 +1002,7 @@ body {
   }
 }
 
-/* Flex, e não grid: o navegador embrulha o conteúdo do <details> numa caixa
-   própria, que ignora grid-column mas se comporta como item flex. */
 .faq__item {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--e-5);
   border-top: 1px solid var(--cor-areia-2);
 }
 
@@ -1015,9 +1010,9 @@ body {
   border-bottom: 1px solid var(--cor-areia-2);
 }
 
+/* A pergunta ocupa a linha inteira; a resposta abre abaixo dela. */
 .faq__pergunta {
   position: relative;
-  flex: 0 0 calc(50% - var(--e-5) / 2);
   display: grid;
   grid-template-columns: 56px minmax(0, 1fr);
   column-gap: var(--e-5);
@@ -1071,10 +1066,10 @@ body {
   }
 }
 
+/* Recuo até alinhar com o texto da pergunta, saltando a coluna do número. */
 .faq__resposta {
-  flex: 1;
-  min-width: 0;
-  padding-block: var(--e-4);
+  padding: 0 var(--e-6) var(--e-4) calc(56px + var(--e-5));
+  max-width: 78ch;
   font-size: 15px;
   line-height: 1.65;
   color: var(--cor-tinta-suave);
@@ -1344,25 +1339,6 @@ body {
   .faq__topo {
     gap: var(--e-5);
     grid-template-columns: 1fr;
-  }
-
-  /* Sem largura para duas colunas, a resposta volta para baixo da pergunta,
-     recuada até alinhar com o texto dela. */
-  .faq__item {
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .faq__pergunta {
-    flex: none;
-    width: 100%;
-  }
-
-  .faq__resposta {
-    padding-top: 0;
-    padding-bottom: var(--e-4);
-    padding-left: calc(56px + var(--e-5));
-    max-width: 62ch;
   }
 
   .lead--fim {
