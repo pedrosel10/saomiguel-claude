@@ -629,9 +629,10 @@ body {
   color: var(--cor-tinta-suave);
 }
 
-/* A lista e o botão dividem a mesma coluna, encostados na base da figura. */
+/* A lista e o botão dividem a mesma coluna, encostados na base da figura.
+   Começa na coluna 8, igual à prosa acima, para as duas alinharem. */
 .sobre__lateral {
-  grid-column: 9 / span 4;
+  grid-column: 8 / span 5;
   align-self: end;
 }
 
