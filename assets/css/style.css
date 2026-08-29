@@ -44,7 +44,9 @@
 
 /* 2. Reset --------------------------------------------------- */
 *, *::before, *::after { box-sizing: border-box; }
-body, h1, h2, h3, p, figure, ul, ol { margin: 0; padding: 0; }
+/* blockquote precisa entrar aqui: o padrão do navegador é `margin: 1em 40px`
+   e o recuo desalinhava a citação das réguas da seção. */
+body, h1, h2, h3, p, figure, blockquote, ul, ol { margin: 0; padding: 0; }
 ul, ol { list-style: none; }
 img, video { max-width: 100%; height: auto; display: block; }
 a { color: inherit; }
@@ -792,29 +794,30 @@ body {
 }
 
 /* 6.6 Cases — grade assimétrica, com o nome revelado sobre a foto */
+/* A altura da linha é fixa e a figura preenche a célula inteira: com
+   aspect-ratio, os cards estreitos sobravam espaço embaixo e as bases da
+   linha ficavam desalinhadas. */
 .cases {
   display: grid;
   gap: var(--e-3);
   grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 400px;
 }
 
-/* O primeiro e o sexto ocupam duas colunas e ganham proporção deitada:
-   é o que tira a página do ritmo de grade uniforme. */
+/* Quatro dos oito cards ocupam duas colunas. São 12 células em 4 colunas,
+   fechando três linhas exatas — e o ritmo muda a cada linha. */
 .case:nth-child(1),
-.case:nth-child(6) {
+.case:nth-child(4),
+.case:nth-child(5),
+.case:nth-child(8) {
   grid-column: span 2;
-}
-
-.case:nth-child(1) .case__figura,
-.case:nth-child(6) .case__figura {
-  aspect-ratio: 16 / 11;
 }
 
 .case__figura {
   position: relative;
+  height: 100%;
   overflow: hidden;
   background: var(--cor-areia-2);
-  aspect-ratio: 4 / 5;
 }
 
 .case__foto {
@@ -892,21 +895,71 @@ body {
 
 /* 6.7 Citação — preta e mínima; as palavras acendem conforme entram na tela */
 .citacao {
-  padding-block: clamp(96px, 14vw, 200px);
+  position: relative;
+  padding-block: clamp(80px, 10vw, 140px);
   background: var(--botao-preto);
   color: #fff;
+  overflow: hidden;
+}
+
+/* Aspas gigantes em contorno, atrás do texto: dão profundidade sem ruído. */
+.citacao::before {
+  content: "\201C";
+  position: absolute;
+  top: 50%;
+  right: 5vw;
+  translate: 0 -58%;
+  font-size: clamp(260px, 27vw, 420px);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgb(255 255 255 / 0.11);
+  pointer-events: none;
+}
+
+.citacao__grade {
+  position: relative;
+  z-index: 1;
+}
+
+/* Régua entre a tag e o índice, ocupando a largura que sobra. */
+.citacao__topo {
+  display: flex;
+  align-items: center;
+  gap: var(--e-3);
+  margin-bottom: clamp(48px, 6vw, 88px);
+}
+
+.citacao__topo .tag {
+  margin-bottom: 0;
+  color: rgb(255 255 255 / 0.6);
+}
+
+.citacao__topo .tag::before {
+  background: #fff;
+}
+
+.citacao__risco {
+  flex: 1;
+  height: 1px;
+  background: rgb(255 255 255 / 0.18);
+}
+
+.citacao__indice {
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: rgb(255 255 255 / 0.4);
 }
 
 .citacao__texto {
-  max-width: 24ch;
-  font-size: clamp(26px, 3.4vw, 44px);
-  line-height: 1.28;
-  letter-spacing: -0.03em;
+  max-width: 19ch;
+  font-size: clamp(32px, 4.8vw, 72px);
+  line-height: 1.08;
+  letter-spacing: -0.045em;
   text-wrap: balance;
 }
 
 .citacao__palavra {
-  opacity: 0.16;
+  opacity: 0.14;
   transition: opacity 0.5s ease;
 }
 
@@ -914,15 +967,26 @@ body {
   opacity: 1;
 }
 
-.citacao__autor {
-  margin-top: var(--e-5);
+.citacao__creditos {
+  display: flex;
+  align-items: baseline;
+  gap: var(--e-3);
+  margin-top: clamp(48px, 6vw, 88px);
   padding-top: var(--e-3);
   border-top: 1px solid rgb(255 255 255 / 0.18);
-  max-width: 24ch;
+}
+
+.citacao__autor {
+  font-size: 15px;
+  letter-spacing: -0.01em;
+}
+
+.citacao__papel {
+  margin-left: auto;
   font-size: 12px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgb(255 255 255 / 0.5);
+  color: rgb(255 255 255 / 0.4);
 }
 
 /* 6.8 FAQ */
@@ -1271,13 +1335,11 @@ body {
     display: none;
   }
 
+  /* Com duas colunas os que ocupam dois lugares viram linha cheia, e a
+     sequência continua sem vãos. */
   .cases {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  .case:nth-child(1),
-  .case:nth-child(6) {
-    grid-column: span 2;
+    grid-auto-rows: 320px;
   }
 
   .contato {
@@ -1320,20 +1382,12 @@ body {
 
   .cases {
     gap: var(--e-2);
+    grid-auto-rows: 240px;
   }
 
-  .case:nth-child(1) .case__figura,
-  .case:nth-child(6) .case__figura {
-    aspect-ratio: 4 / 5;
-  }
-
-  .case:nth-child(1),
-  .case:nth-child(6) {
-    grid-column: span 2;
-  }
-
-  .case:nth-child(1) .case__figura {
-    aspect-ratio: 16 / 11;
+  /* Sem largura sobrando, as aspas cruzariam o texto e sujariam a leitura. */
+  .citacao::before {
+    display: none;
   }
 
   .faixa__lista {
