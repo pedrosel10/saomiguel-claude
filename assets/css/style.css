@@ -987,7 +987,47 @@ body {
   color: rgb(255 255 255 / 0.4);
 }
 
-/* 6.8 FAQ */
+/* 6.8 FAQ — título fixo à esquerda enquanto o acordeão rola */
+.faq__grade {
+  display: grid;
+  gap: var(--e-6) var(--e-7);
+  grid-template-columns: 5fr 7fr;
+  align-items: start;
+}
+
+.faq__intro {
+  position: sticky;
+  top: var(--e-6);
+}
+
+.faq__intro .lead {
+  max-width: 34ch;
+}
+
+.link-seta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: var(--e-4);
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--cor-tinta);
+  font-size: 15px;
+  text-decoration: none;
+}
+
+.link-seta__icone {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  transition: translate var(--duracao) var(--curva);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .link-seta:hover .link-seta__icone {
+    translate: 5px 0;
+  }
+}
+
 .faq__item {
   border-top: 1px solid var(--cor-areia-2);
 }
@@ -997,43 +1037,64 @@ body {
 }
 
 .faq__pergunta {
+  position: relative;
   display: flex;
   align-items: flex-start;
   gap: var(--e-3);
-  padding-block: var(--e-3);
-  font-size: 17px;
+  padding-block: var(--e-4);
+  padding-right: 42px;
+  font-size: 18px;
   line-height: 1.4;
+  letter-spacing: -0.01em;
   cursor: pointer;
   list-style: none;
+  transition: color var(--duracao) var(--curva);
 }
 
 .faq__pergunta::-webkit-details-marker {
   display: none;
 }
 
-/* Sinal de + que vira − quando aberto, desenhado com dois traços. */
+.faq__numero {
+  flex: none;
+  padding-top: 0.35em;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--cor-terra);
+}
+
+/* Sinal de + que vira −: dois traços sobrepostos, e o vertical gira até
+   deitar sobre o horizontal. */
+.faq__pergunta::before,
 .faq__pergunta::after {
   content: "";
-  flex: none;
-  width: 12px;
-  height: 12px;
-  margin-left: auto;
-  margin-top: 0.4em;
-  background:
-    linear-gradient(var(--cor-terra) 0 0) center / 12px 1px no-repeat,
-    linear-gradient(var(--cor-terra) 0 0) center / 1px 12px no-repeat;
+  position: absolute;
+  right: 0;
+  top: calc(var(--e-4) + 0.68em);
+  width: 15px;
+  height: 1px;
+  background: var(--cor-terra);
+}
+
+.faq__pergunta::after {
+  rotate: 90deg;
   transition: rotate var(--duracao) var(--curva);
 }
 
 .faq__item[open] .faq__pergunta::after {
-  rotate: 45deg;
-  background:
-    linear-gradient(var(--cor-terra) 0 0) center / 12px 1px no-repeat;
+  rotate: 0deg;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .faq__pergunta:hover {
+    color: var(--cor-terra);
+  }
 }
 
 .faq__resposta {
-  padding-bottom: var(--e-3);
-  padding-right: var(--e-5);
+  /* Alinha a resposta com o texto da pergunta, saltando a coluna do número. */
+  padding: 0 var(--e-6) var(--e-4) calc(11px + var(--e-3) + 1ch);
   font-size: 15px;
   line-height: 1.65;
   color: var(--cor-tinta-suave);
@@ -1300,9 +1361,15 @@ body {
 /* Tablet: as grades mais largas perdem colunas antes do empilhamento. */
 @media (max-width: 1100px) {
   .secao__duas-colunas,
-  .secao__cabecalho--duplo {
+  .secao__cabecalho--duplo,
+  .faq__grade {
     gap: var(--e-5);
     grid-template-columns: 1fr;
+  }
+
+  /* Sem coluna ao lado, não há o que acompanhar com a rolagem. */
+  .faq__intro {
+    position: static;
   }
 
   .lead--fim {
