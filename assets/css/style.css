@@ -17,9 +17,29 @@
   --vao: 6px;
   --passo: calc(var(--quadrado) + var(--vao));
 
+  /* Duas cores novas, para as seções fora da dobra azul. */
+  --cor-terra: #8a6a4f;   /* marrom/terroso */
+  --cor-verde: #48604f;   /* verde profundo */
+
+  /* Superfícies derivadas do marrom, para as seções claras. */
+  --cor-areia: #f3eee7;
+  --cor-areia-2: #e7dfd4;
+  --cor-tinta: #191512;   /* texto sobre fundo claro */
+  --cor-tinta-suave: #5b544c;
+
   --fonte-base: "Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --largura-max: 1200px;
   --espaco: 1rem;
+
+  /* Escala de espaçamento */
+  --e-1: 8px;
+  --e-2: 16px;
+  --e-3: 24px;
+  --e-4: 32px;
+  --e-5: 48px;
+  --e-6: 64px;
+  --e-7: 96px;
+  --e-secao: clamp(72px, 9vw, 128px);
 }
 
 /* 2. Reset --------------------------------------------------- */
@@ -67,11 +87,6 @@ body {
   background: var(--cor-fundo);
 }
 
-/* Placeholder: só dá comprimento à página enquanto o conteúdo não existe. */
-.dobra-2 {
-  height: 1080px;
-  background: #000;
-}
 
 /* Cards de números, encostados na direita da coluna.
    O terceiro é vazio, só compõe o ritmo da grade. */
@@ -155,12 +170,20 @@ body {
   letter-spacing: -0.06em;
 }
 
-/* O botão fica fora do fluxo para não virar a última linha da coluna —
-   é a linha de base do h2 que precisa casar com a do h1. */
 .hero__acao {
   position: relative;
   width: 366px;
   flex: none;
+}
+
+/* Só no hero o botão sai do fluxo: se ele fosse o último elemento da coluna,
+   viraria a última linha de base e desalinharia o h2 em relação ao h1. */
+@media (min-width: 1200px) {
+  .hero__acao .botao {
+    position: absolute;
+    top: calc(100% + 30px);
+    left: 0;
+  }
 }
 
 .hero__descricao {
@@ -170,9 +193,7 @@ body {
 }
 
 .botao {
-  position: absolute;
-  top: calc(100% + 30px);
-  left: 0;
+  position: relative; /* referência do ::before; não pode ser static */
 
   display: inline-flex;
   align-items: center;
@@ -326,6 +347,21 @@ body {
   }
 }
 
+/* Variante de contorno, para o segundo CTA. */
+.botao--contorno {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.45);
+}
+
+.botao--contorno .botao__icone-caixa {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.45);
+}
+
+.botao--contorno .botao__icone-trilho {
+  color: #fff;
+}
+
 /* Assinatura, recuada em relação à coluna e logo abaixo do título.
    O container ocupa a coluna inteira; sem pointer-events: none ele cobriria
    o botão, que fica logo atrás dele. */
@@ -379,7 +415,525 @@ body {
     calc(3 * var(--passo)) var(--passo);
 }
 
-/* 6. Mobile --------------------------------------------------- */
+/* 6. Seções ---------------------------------------------------- */
+.secao {
+  padding-block: var(--e-secao);
+}
+
+.secao--sem-topo {
+  padding-top: 0;
+}
+
+/* Fundos. As seções claras invertem a cor do texto. */
+.secao--areia {
+  background: var(--cor-areia);
+  color: var(--cor-tinta);
+}
+
+.secao--preta {
+  background: var(--botao-preto);
+  color: #fff;
+}
+
+.secao--azul {
+  background: var(--cor-fundo);
+  color: #fff;
+}
+
+/* 6.1 Tipografia de seção */
+.tag {
+  margin-bottom: var(--e-3);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cor-terra);
+}
+
+.secao--preta .tag,
+.secao--azul .tag {
+  color: rgb(255 255 255 / 0.55);
+}
+
+.titulo-secao {
+  font-size: clamp(30px, 3.6vw, 50px);
+  line-height: 1.1;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+/* O itálico marca o trecho-chave do título, como nas referências.
+   A margem compensa o espaço comido pelo letter-spacing negativo. */
+.titulo-secao em {
+  font-style: italic;
+  color: var(--cor-terra);
+  margin-right: 0.08em;
+}
+
+.secao--preta .titulo-secao em,
+.secao--azul .titulo-secao em,
+.citacao em {
+  color: inherit;
+  opacity: 0.75;
+}
+
+.lead {
+  max-width: 60ch;
+  margin-top: var(--e-3);
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--cor-tinta-suave);
+}
+
+.secao--preta .lead,
+.secao--azul .lead {
+  color: rgb(255 255 255 / 0.7);
+}
+
+.lead--fim {
+  margin-top: 0;
+  max-width: 42ch;
+}
+
+/* 6.2 Grades de seção */
+.secao__duas-colunas {
+  display: grid;
+  gap: var(--e-6) var(--e-7);
+  grid-template-columns: 1fr 1fr;
+  align-items: end;
+}
+
+.secao__duas-colunas--topo {
+  align-items: start;
+  margin-bottom: var(--e-6);
+}
+
+.secao__cabecalho--centro {
+  max-width: 46rem;
+  margin-inline: auto;
+  margin-bottom: var(--e-6);
+  text-align: center;
+}
+
+.secao__cabecalho--centro .lead {
+  margin-inline: auto;
+}
+
+/* 6.3 Sobre */
+.prosa p + p {
+  margin-top: var(--e-3);
+}
+
+.prosa p {
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--cor-tinta-suave);
+}
+
+.prosa__destaque {
+  margin-top: var(--e-4);
+  padding-top: var(--e-3);
+  border-top: 1px solid var(--cor-areia-2);
+  font-weight: 500;
+  color: var(--cor-tinta) !important;
+}
+
+/* 6.4 Serviços — abas */
+.abas__lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-1);
+  justify-content: center;
+  margin-bottom: var(--e-5);
+}
+
+.aba {
+  padding: 11px 20px;
+  border: 1px solid var(--cor-areia-2);
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  color: var(--cor-tinta-suave);
+  cursor: pointer;
+  transition: background var(--duracao) var(--curva),
+              color var(--duracao) var(--curva),
+              border-color var(--duracao) var(--curva);
+}
+
+.aba[aria-selected="true"] {
+  background: var(--cor-tinta);
+  border-color: var(--cor-tinta);
+  color: #fff;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .aba:not([aria-selected="true"]):hover {
+    border-color: var(--cor-terra);
+    color: var(--cor-tinta);
+  }
+}
+
+.servicos {
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(2, 1fr);
+  background: var(--cor-areia-2);
+  border: 1px solid var(--cor-areia-2);
+}
+
+.servicos--tres {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.servico {
+  display: flex;
+  flex-direction: column;
+  padding: var(--e-5) var(--e-4);
+  background: var(--cor-areia);
+}
+
+.servico__categoria {
+  margin-bottom: var(--e-2);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--cor-terra);
+}
+
+.servico__titulo {
+  font-size: 23px;
+  line-height: 1.25;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.servico__descricao {
+  margin-top: var(--e-2);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--cor-tinta-suave);
+}
+
+.servico__itens {
+  margin-top: auto;
+  padding-top: var(--e-4);
+}
+
+.servico__itens li {
+  position: relative;
+  padding-left: 22px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.servico__itens li + li {
+  margin-top: 10px;
+}
+
+/* Marcador desenhado em CSS, alinhado à altura da primeira linha. */
+.servico__itens li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  width: 8px;
+  height: 1px;
+  background: var(--cor-verde);
+}
+
+/* 6.5 Processo */
+.passos {
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(4, 1fr);
+  background: rgb(255 255 255 / 0.14);
+  border-block: 1px solid rgb(255 255 255 / 0.14);
+}
+
+.passo {
+  padding: var(--e-5) var(--e-3) var(--e-4);
+  background: var(--botao-preto);
+}
+
+.passo__numero {
+  display: block;
+  margin-bottom: var(--e-5);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--cor-verde);
+}
+
+.passo__titulo {
+  font-size: 20px;
+  line-height: 1.25;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.passo__texto {
+  margin-top: var(--e-2);
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgb(255 255 255 / 0.65);
+}
+
+/* 6.6 Cases */
+.cases {
+  display: grid;
+  gap: var(--e-4) var(--e-3);
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.case__figura {
+  overflow: hidden;
+  background: var(--cor-areia-2);
+  aspect-ratio: 4 / 5;
+}
+
+.case__figura img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: scale var(--duracao) var(--curva);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .case:hover .case__figura img {
+    scale: 1.04;
+  }
+}
+
+.case__rodape {
+  display: flex;
+  align-items: center;
+  gap: var(--e-2);
+  margin-top: var(--e-2);
+}
+
+/* As logos têm proporções muito diferentes entre si; a caixa fixa iguala o
+   peso visual de todas na linha. */
+.case__logo {
+  flex: none;
+  width: 74px;
+  height: 30px;
+  object-fit: contain;
+  object-position: left center;
+  opacity: 0.8;
+}
+
+.case__nome {
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--cor-tinta-suave);
+}
+
+/* 6.7 Citação */
+.citacao {
+  padding-block: var(--e-secao);
+  background: var(--cor-verde);
+  color: #fff;
+  text-align: center;
+}
+
+.citacao__texto {
+  max-width: 20ch;
+  margin-inline: auto;
+  font-size: clamp(30px, 4.2vw, 58px);
+  line-height: 1.12;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.citacao__texto em {
+  font-style: italic;
+}
+
+.citacao__autor {
+  margin-top: var(--e-4);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.65);
+}
+
+/* 6.8 FAQ */
+.faq__item {
+  border-top: 1px solid var(--cor-areia-2);
+}
+
+.faq__item:last-child {
+  border-bottom: 1px solid var(--cor-areia-2);
+}
+
+.faq__pergunta {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--e-3);
+  padding-block: var(--e-3);
+  font-size: 17px;
+  line-height: 1.4;
+  cursor: pointer;
+  list-style: none;
+}
+
+.faq__pergunta::-webkit-details-marker {
+  display: none;
+}
+
+/* Sinal de + que vira − quando aberto, desenhado com dois traços. */
+.faq__pergunta::after {
+  content: "";
+  flex: none;
+  width: 12px;
+  height: 12px;
+  margin-left: auto;
+  margin-top: 0.4em;
+  background:
+    linear-gradient(var(--cor-terra) 0 0) center / 12px 1px no-repeat,
+    linear-gradient(var(--cor-terra) 0 0) center / 1px 12px no-repeat;
+  transition: rotate var(--duracao) var(--curva);
+}
+
+.faq__item[open] .faq__pergunta::after {
+  rotate: 45deg;
+  background:
+    linear-gradient(var(--cor-terra) 0 0) center / 12px 1px no-repeat;
+}
+
+.faq__resposta {
+  padding-bottom: var(--e-3);
+  padding-right: var(--e-5);
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--cor-tinta-suave);
+  max-width: 62ch;
+}
+
+.faq__resposta a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--cor-terra);
+}
+
+/* 6.9 Contato */
+.contato {
+  display: grid;
+  gap: var(--e-5) var(--e-7);
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+}
+
+.contato__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-2);
+  grid-column: 1;
+}
+
+.contato__dados {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+}
+
+.contato__intro {
+  padding-bottom: var(--e-4);
+  border-bottom: 1px solid rgb(255 255 255 / 0.22);
+  font-size: 15px;
+  line-height: 1.65;
+  color: rgb(255 255 255 / 0.7);
+}
+
+.contato__lista li {
+  display: grid;
+  gap: 2px;
+  padding-block: var(--e-3);
+  border-bottom: 1px solid rgb(255 255 255 / 0.22);
+  font-size: 16px;
+}
+
+.contato__rotulo {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.55);
+}
+
+.contato__lista a {
+  text-decoration: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .contato__lista a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+/* 6.10 Rodapé */
+.rodape {
+  padding-block: var(--e-6);
+  background: var(--botao-preto);
+  color: #fff;
+}
+
+.rodape__grade {
+  display: grid;
+  gap: var(--e-4);
+  grid-template-columns: auto 1fr;
+  align-items: center;
+}
+
+.rodape__logo {
+  opacity: 0.9;
+}
+
+.rodape__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--e-3) var(--e-4);
+  justify-content: flex-end;
+  font-size: 15px;
+}
+
+.rodape__nav a {
+  text-decoration: none;
+  color: rgb(255 255 255 / 0.75);
+  transition: color var(--duracao) var(--curva);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .rodape__nav a:hover {
+    color: #fff;
+  }
+}
+
+.rodape__endereco,
+.rodape__direitos {
+  grid-column: 1 / -1;
+  padding-top: var(--e-4);
+  border-top: 1px solid rgb(255 255 255 / 0.14);
+  font-size: 13px;
+  line-height: 1.6;
+  font-style: normal;
+  color: rgb(255 255 255 / 0.55);
+}
+
+.rodape__direitos {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.rodape__endereco a {
+  text-decoration: none;
+}
+
+/* 7. Mobile --------------------------------------------------- */
 /* Não há layout próprio de tablet: tudo abaixo de 1200px usa o mobile.
    A dobra passa a ser empilhada e centralizada, com a grade sob o texto. */
 @media (max-width: 1199px) {
@@ -457,13 +1011,8 @@ body {
     font-size: 16px;
   }
 
-  /* Centralizado pelo text-align da dobra, por ser inline-flex.
-     Precisa continuar posicionado: com `static` o ::before se ancorava no
-     .hero e o preenchimento virava um retângulo do tamanho da dobra. */
-  .botao {
-    position: relative;
-    top: auto;
-    left: auto;
+  /* Centralizado pelo text-align da dobra, por ser inline-flex. */
+  .hero__acao .botao {
     margin-top: 26px;
   }
 
@@ -522,7 +1071,100 @@ body {
   }
 }
 
-/* 7. Utilitários --------------------------------------------- */
+/* Tablet: as grades mais largas perdem colunas antes do empilhamento. */
+@media (max-width: 1100px) {
+  .secao__duas-colunas {
+    gap: var(--e-5);
+    grid-template-columns: 1fr;
+  }
+
+  .lead--fim {
+    max-width: 60ch;
+  }
+
+  .servicos--tres,
+  .passos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .cases {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .contato {
+    grid-template-columns: 1fr;
+  }
+
+  .contato__acoes,
+  .contato__dados {
+    grid-column: 1;
+  }
+
+  .contato__dados {
+    grid-row: auto;
+  }
+}
+
+@media (max-width: 720px) {
+  .servicos,
+  .servicos--tres,
+  .passos {
+    grid-template-columns: 1fr;
+  }
+
+  .servico {
+    padding: var(--e-4) var(--e-3);
+  }
+
+  .passo {
+    padding: var(--e-4) 0;
+  }
+
+  .passo__numero {
+    margin-bottom: var(--e-3);
+  }
+
+  .cases {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .abas__lista {
+    /* Rolagem horizontal para as abas não quebrarem em três linhas. */
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    margin-inline: calc(var(--espaco) * -1);
+    padding-inline: var(--espaco);
+    scrollbar-width: none;
+  }
+
+  .abas__lista::-webkit-scrollbar {
+    display: none;
+  }
+
+  .aba {
+    flex: none;
+  }
+
+  .faq__resposta {
+    padding-right: 0;
+  }
+
+  .rodape__grade {
+    grid-template-columns: 1fr;
+  }
+
+  .rodape__nav {
+    justify-content: flex-start;
+  }
+
+  .botao {
+    font-size: 15px;
+    padding: 11px 11px 11px 18px;
+  }
+}
+
+/* 8. Utilitários --------------------------------------------- */
 .visually-hidden {
   position: absolute;
   width: 1px; height: 1px;
