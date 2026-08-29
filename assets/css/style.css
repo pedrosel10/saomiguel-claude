@@ -543,6 +543,16 @@ body {
   max-width: 42ch;
 }
 
+.secao__acao {
+  margin-top: clamp(48px, 5vw, 72px);
+}
+
+/* Dentro da coluna de texto o botão não precisa de tanto respiro. */
+.sobre__cabecalho .botao,
+.faq__apoio .botao {
+  margin-top: var(--e-4);
+}
+
 /* 6.2 Grades de seção */
 .secao__duas-colunas {
   display: grid;
@@ -976,38 +986,6 @@ body {
 .faq__apoio .lead {
   margin-top: 0;
   max-width: 40ch;
-}
-
-.link-seta {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: var(--e-4);
-  padding-bottom: 6px;
-  border-bottom: 1px solid var(--cor-tinta);
-  font-size: 15px;
-  text-decoration: none;
-}
-
-.link-seta__icone {
-  display: inline-flex;
-  width: 16px;
-  height: 16px;
-  transition: translate var(--duracao) var(--curva);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .link-seta:hover .link-seta__icone {
-    translate: 5px 0;
-  }
-}
-
-.faq__item {
-  border-top: 1px solid var(--cor-areia-2);
-}
-
-.faq__item:last-child {
-  border-bottom: 1px solid var(--cor-areia-2);
 }
 
 /* A pergunta ocupa a linha inteira; a resposta abre abaixo dela. */
