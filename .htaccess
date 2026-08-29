@@ -17,8 +17,11 @@ Options -Indexes
 # Cache de estáticos
 <IfModule mod_expires.c>
   ExpiresActive On
-  ExpiresByType text/css            "access plus 7 days"
-  ExpiresByType application/javascript "access plus 7 days"
+  # CSS e JS com cache curto enquanto o site está em construção: o CDN da
+  # Hostinger reteve uma cópia antiga por dias com o TTL de 7 dias.
+  # Ao estabilizar, subir de volta e versionar a URL (style.css?v=N).
+  ExpiresByType text/css            "access plus 10 minutes"
+  ExpiresByType application/javascript "access plus 10 minutes"
   ExpiresByType image/jpeg          "access plus 30 days"
   ExpiresByType image/png           "access plus 30 days"
   ExpiresByType image/svg+xml       "access plus 30 days"
