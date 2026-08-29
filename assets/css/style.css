@@ -629,11 +629,11 @@ body {
   color: var(--cor-tinta-suave);
 }
 
-/* A lista e o botão dividem a mesma coluna, encostados na base da figura.
-   Começa na coluna 8, igual à prosa acima, para as duas alinharem. */
+/* A lista e o botão dividem a mesma coluna, com o meio do bloco na mesma
+   altura do meio da figura. */
 .sobre__lateral {
-  grid-column: 8 / span 5;
-  align-self: end;
+  grid-column: 9 / span 4;
+  align-self: center;
 }
 
 .sobre__marcos li {
