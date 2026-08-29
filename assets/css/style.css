@@ -666,21 +666,6 @@ body {
   transition: background var(--duracao) var(--curva);
 }
 
-/* PPCI é a especialidade de origem: ganha fundo próprio em vez de ocupar
-   duas colunas, o que abriria um vão na grade de nove células. */
-.servico--destaque {
-  background: var(--cor-areia-2);
-}
-
-.servico--destaque .servico__indice,
-.servico--destaque .servico__categoria {
-  color: var(--cor-verde);
-}
-
-.servico--destaque .servico__itens li::before {
-  background: var(--cor-fundo);
-}
-
 .servico-imagem {
   overflow: hidden;
   background: var(--cor-areia-2);
@@ -1421,14 +1406,9 @@ body {
     grid-template-columns: 1fr;
   }
 
-  .servico,
-  .servico--destaque {
+  .servico {
     grid-column: 1;
     padding: var(--e-4) var(--e-3);
-  }
-
-  .servico--destaque .servico__titulo {
-    font-size: 23px;
   }
 
   /* A imagem intercalada não se sustenta numa coluna só. */
