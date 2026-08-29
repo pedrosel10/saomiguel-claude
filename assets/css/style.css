@@ -548,7 +548,7 @@ body {
 }
 
 /* Dentro da coluna de texto o botão não precisa de tanto respiro. */
-.sobre__cabecalho .botao,
+.sobre__lateral .botao,
 .faq__apoio .botao {
   margin-top: var(--e-4);
 }
@@ -629,7 +629,8 @@ body {
   color: var(--cor-tinta-suave);
 }
 
-.sobre__marcos {
+/* A lista e o botão dividem a mesma coluna, encostados na base da figura. */
+.sobre__lateral {
   grid-column: 9 / span 4;
   align-self: end;
 }
@@ -1332,7 +1333,7 @@ body {
   .sobre__cabecalho,
   .prosa,
   .sobre__figura,
-  .sobre__marcos {
+  .sobre__lateral {
     grid-column: 1 / -1;
     grid-row: auto;
   }
