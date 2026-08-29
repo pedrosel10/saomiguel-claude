@@ -426,6 +426,13 @@ body {
   padding-top: 0;
 }
 
+/* Onde duas seções claras se encontram não há troca de cor para marcar o
+   corte: entra uma linha de ponta a ponta. Nas outras bordas o próprio
+   contraste de fundo já divide. */
+.secao--areia + .secao--areia {
+  border-top: 1px solid var(--cor-areia-2);
+}
+
 /* Fundos. As seções claras invertem a cor do texto. */
 .secao--areia {
   background: var(--cor-areia);
@@ -467,6 +474,42 @@ body {
 
 .secao--azul .tag::before {
   background: #fff;
+}
+
+/* Régua de seção: separa visualmente cada dobra e numera a leitura. */
+.regua {
+  display: flex;
+  align-items: center;
+  gap: var(--e-3);
+  margin-bottom: clamp(40px, 5vw, 72px);
+}
+
+.regua .tag {
+  margin-bottom: 0;
+}
+
+.regua__linha {
+  flex: 1;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.18;
+}
+
+.regua__indice {
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  opacity: 0.45;
+}
+
+/* Nas seções escuras a tag é branca, e o ponto acompanha. */
+.secao--preta .regua .tag::before,
+.secao--azul .regua .tag::before,
+.citacao .regua .tag::before {
+  background: currentColor;
+}
+
+.citacao .regua .tag {
+  color: rgb(255 255 255 / 0.6);
 }
 
 .secao__cabecalho--duplo {
@@ -547,6 +590,11 @@ body {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: var(--e-6) var(--e-3);
+}
+
+.sobre > .regua {
+  grid-column: 1 / -1;
+  margin-bottom: 0;
 }
 
 .sobre__cabecalho {
@@ -917,35 +965,6 @@ body {
 .citacao__grade {
   position: relative;
   z-index: 1;
-}
-
-/* Régua entre a tag e o índice, ocupando a largura que sobra. */
-.citacao__topo {
-  display: flex;
-  align-items: center;
-  gap: var(--e-3);
-  margin-bottom: clamp(48px, 6vw, 88px);
-}
-
-.citacao__topo .tag {
-  margin-bottom: 0;
-  color: rgb(255 255 255 / 0.6);
-}
-
-.citacao__topo .tag::before {
-  background: #fff;
-}
-
-.citacao__risco {
-  flex: 1;
-  height: 1px;
-  background: rgb(255 255 255 / 0.18);
-}
-
-.citacao__indice {
-  font-size: 12px;
-  letter-spacing: 0.14em;
-  color: rgb(255 255 255 / 0.4);
 }
 
 .citacao__texto {
