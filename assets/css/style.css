@@ -963,21 +963,19 @@ body {
   color: rgb(255 255 255 / 0.4);
 }
 
-/* 6.8 FAQ — título fixo à esquerda enquanto o acordeão rola */
-.faq__grade {
+/* 6.8 FAQ — lista de largura total; a resposta abre ao lado da pergunta,
+   e não embaixo, o que aproveita a coluna inteira */
+.faq__topo {
   display: grid;
-  gap: var(--e-6) var(--e-7);
-  grid-template-columns: 5fr 7fr;
-  align-items: start;
+  gap: var(--e-4) var(--e-7);
+  grid-template-columns: 1fr 1fr;
+  align-items: end;
+  margin-bottom: clamp(48px, 6vw, 80px);
 }
 
-.faq__intro {
-  position: sticky;
-  top: var(--e-6);
-}
-
-.faq__intro .lead {
-  max-width: 34ch;
+.faq__apoio .lead {
+  margin-top: 0;
+  max-width: 40ch;
 }
 
 .link-seta {
@@ -1004,7 +1002,12 @@ body {
   }
 }
 
+/* Flex, e não grid: o navegador embrulha o conteúdo do <details> numa caixa
+   própria, que ignora grid-column mas se comporta como item flex. */
 .faq__item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--e-5);
   border-top: 1px solid var(--cor-areia-2);
 }
 
@@ -1014,14 +1017,15 @@ body {
 
 .faq__pergunta {
   position: relative;
-  display: flex;
-  align-items: flex-start;
-  gap: var(--e-3);
+  flex: 0 0 calc(50% - var(--e-5) / 2);
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  column-gap: var(--e-5);
   padding-block: var(--e-4);
   padding-right: 42px;
-  font-size: 18px;
-  line-height: 1.4;
-  letter-spacing: -0.01em;
+  font-size: clamp(17px, 1.5vw, 21px);
+  line-height: 1.35;
+  letter-spacing: -0.015em;
   cursor: pointer;
   list-style: none;
   transition: color var(--duracao) var(--curva);
@@ -1032,7 +1036,6 @@ body {
 }
 
 .faq__numero {
-  flex: none;
   padding-top: 0.35em;
   font-size: 11px;
   font-weight: 700;
@@ -1047,7 +1050,7 @@ body {
   content: "";
   position: absolute;
   right: 0;
-  top: calc(var(--e-4) + 0.68em);
+  top: calc(var(--e-4) + 0.6em);
   width: 15px;
   height: 1px;
   background: var(--cor-fundo);
@@ -1069,12 +1072,12 @@ body {
 }
 
 .faq__resposta {
-  /* Alinha a resposta com o texto da pergunta, saltando a coluna do número. */
-  padding: 0 var(--e-6) var(--e-4) calc(11px + var(--e-3) + 1ch);
+  flex: 1;
+  min-width: 0;
+  padding-block: var(--e-4);
   font-size: 15px;
   line-height: 1.65;
   color: var(--cor-tinta-suave);
-  max-width: 62ch;
 }
 
 .faq__resposta a {
@@ -1338,14 +1341,28 @@ body {
 @media (max-width: 1100px) {
   .secao__duas-colunas,
   .secao__cabecalho--duplo,
-  .faq__grade {
+  .faq__topo {
     gap: var(--e-5);
     grid-template-columns: 1fr;
   }
 
-  /* Sem coluna ao lado, não há o que acompanhar com a rolagem. */
-  .faq__intro {
-    position: static;
+  /* Sem largura para duas colunas, a resposta volta para baixo da pergunta,
+     recuada até alinhar com o texto dela. */
+  .faq__item {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .faq__pergunta {
+    flex: none;
+    width: 100%;
+  }
+
+  .faq__resposta {
+    padding-top: 0;
+    padding-bottom: var(--e-4);
+    padding-left: calc(56px + var(--e-5));
+    max-width: 62ch;
   }
 
   .lead--fim {
