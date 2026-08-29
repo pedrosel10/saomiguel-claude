@@ -660,7 +660,41 @@ body {
   line-height: 1.45;
 }
 
-/* 6.4 Serviços — grade de 3 colunas com uma imagem intercalada */
+/* 6.4 Serviços — grade de 3 colunas com uma imagem intercalada.
+   A seção toma emprestada a linguagem de prancha técnica: malha modular
+   ao fundo e cruzetas nos encontros da grade. */
+#servicos {
+  --malha: rgb(21 84 213 / 0.045);
+  --malha-mestra: rgb(21 84 213 / 0.09);
+  /* Dois módulos, como nas grades estruturais: o fino de 40px e o mestre
+     de 200px, que marca os eixos. */
+  background-image:
+    repeating-linear-gradient(to right, var(--malha-mestra) 0 1px, transparent 1px 200px),
+    repeating-linear-gradient(to bottom, var(--malha-mestra) 0 1px, transparent 1px 200px),
+    repeating-linear-gradient(to right, var(--malha) 0 1px, transparent 1px 40px),
+    repeating-linear-gradient(to bottom, var(--malha) 0 1px, transparent 1px 40px);
+}
+
+/* Cruzeta sobre o vértice superior esquerdo de cada célula: nos encontros
+   internos elas formam a marcação cheia; nas bordas, meias-marcas. */
+.servico::after,
+.servico-imagem::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 13px;
+  height: 13px;
+  translate: -50% -50%;
+  background:
+    linear-gradient(var(--cor-fundo) 0 0) center / 13px 1px no-repeat,
+    linear-gradient(var(--cor-fundo) 0 0) center / 1px 13px no-repeat;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+
 .servicos {
   display: grid;
   gap: 1px;
@@ -679,7 +713,7 @@ body {
 }
 
 .servico-imagem {
-  overflow: hidden;
+  position: relative;
   background: var(--cor-areia-2);
 }
 
@@ -690,6 +724,7 @@ body {
 }
 
 .servico__indice {
+  font-variant-numeric: tabular-nums;
   position: absolute;
   top: var(--e-4);
   right: var(--e-4);
