@@ -2,51 +2,63 @@
 (function () {
   'use strict';
 
-  /* Abas de serviços. Segue o padrão ARIA: só a aba ativa fica na ordem de
-     tabulação, e as setas navegam entre elas. */
-  function iniciarAbas(raiz) {
-    var abas = Array.prototype.slice.call(raiz.querySelectorAll('[role="tab"]'));
-    if (!abas.length) return;
+  var semMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    function ativar(indice, moverFoco) {
-      abas.forEach(function (aba, i) {
-        var selecionada = i === indice;
-        var painel = document.getElementById(aba.getAttribute('aria-controls'));
+  /* Quebra a citação em palavras, para elas acenderem em sequência. */
+  function prepararCitacao(bloco) {
+    var texto = bloco.textContent.trim().replace(/\s+/g, ' ');
 
-        aba.setAttribute('aria-selected', String(selecionada));
-        if (selecionada) {
-          aba.removeAttribute('tabindex');
-        } else {
-          aba.setAttribute('tabindex', '-1');
-        }
-        if (painel) painel.hidden = !selecionada;
-      });
+    bloco.textContent = '';
+    texto.split(' ').forEach(function (palavra, i) {
+      var span = document.createElement('span');
+      span.className = 'citacao__palavra';
+      span.textContent = palavra;
+      span.style.transitionDelay = (i * 0.045).toFixed(3) + 's';
+      bloco.appendChild(span);
+      bloco.appendChild(document.createTextNode(' '));
+    });
+  }
 
-      if (moverFoco) abas[indice].focus();
+  function observar(alvos, aoEntrar, margem) {
+    if (!('IntersectionObserver' in window)) {
+      alvos.forEach(aoEntrar);
+      return;
     }
 
-    abas.forEach(function (aba, i) {
-      aba.addEventListener('click', function () {
-        ativar(i, false);
+    var observador = new IntersectionObserver(function (entradas) {
+      entradas.forEach(function (entrada) {
+        if (!entrada.isIntersecting) return;
+        aoEntrar(entrada.target);
+        observador.unobserve(entrada.target);
       });
+    }, { rootMargin: margem || '0px 0px -12% 0px' });
 
-      aba.addEventListener('keydown', function (evento) {
-        var destino = null;
-
-        if (evento.key === 'ArrowRight') destino = (i + 1) % abas.length;
-        else if (evento.key === 'ArrowLeft') destino = (i - 1 + abas.length) % abas.length;
-        else if (evento.key === 'Home') destino = 0;
-        else if (evento.key === 'End') destino = abas.length - 1;
-
-        if (destino !== null) {
-          evento.preventDefault();
-          ativar(destino, true);
-        }
-      });
+    alvos.forEach(function (alvo) {
+      observador.observe(alvo);
     });
   }
 
   document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('[data-abas]').forEach(iniciarAbas);
+    var citacao = document.querySelector('[data-revelar-palavras]');
+    if (citacao) prepararCitacao(citacao);
+
+    if (semMovimento) return;
+
+    /* Só agora os elementos podem começar invisíveis: se o script falhar
+       antes daqui, a página continua legível. */
+    document.documentElement.classList.add('pronto-para-revelar');
+
+    observar(
+      Array.prototype.slice.call(document.querySelectorAll('[data-revelar]')),
+      function (elemento) {
+        elemento.classList.add('esta-visivel');
+      }
+    );
+
+    if (citacao) {
+      observar([citacao.closest('.citacao')], function (secao) {
+        secao.classList.add('esta-visivel');
+      }, '0px 0px -25% 0px');
+    }
   });
 })();

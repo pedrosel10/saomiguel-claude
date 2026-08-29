@@ -90,34 +90,84 @@
       </div>
     </section>
 
+    <!-- Faixa de logos ------------------------------------------- -->
+    <section class="faixa" aria-label="Clientes atendidos">
+      <div class="faixa__trilho">
+        <ul class="faixa__lista">
+          <li><img src="assets/img/logos_clientes/01_1_5x.webp" alt="Colline de France" loading="lazy"></li>
+          <li><img src="assets/img/logos_clientes/04_1_5x.webp" alt="Hotel Valle D'Incanto" loading="lazy"></li>
+          <li><img src="assets/img/logos_clientes/07_1_5x.webp" alt="Hilton Hotels &amp; Resorts" loading="lazy"></li>
+          <li><img src="assets/img/logos_clientes/06_1_5x.webp" alt="Dauper" loading="lazy"></li>
+          <li><img src="assets/img/logos_clientes/03_1_5x.webp" alt="A Roda Canela" loading="lazy"></li>
+          <li><img src="assets/img/logos_clientes/08_1_5x.webp" alt="Marini Indústria" loading="lazy"></li>
+          <li><img src="assets/img/logos_clientes/02_1_5x.webp" alt="Salão Super Carros" loading="lazy"></li>
+          <li><img src="assets/img/logos_clientes/05_1_5x.webp" alt="Pizzaria Cara de Mau" loading="lazy"></li>
+        </ul>
+        <ul class="faixa__lista" aria-hidden="true">
+          <li><img src="assets/img/logos_clientes/01_1_5x.webp" alt="" loading="lazy"></li>
+          <li><img src="assets/img/logos_clientes/04_1_5x.webp" alt="" loading="lazy"></li>
+          <li><img src="assets/img/logos_clientes/07_1_5x.webp" alt="" loading="lazy"></li>
+          <li><img src="assets/img/logos_clientes/06_1_5x.webp" alt="" loading="lazy"></li>
+          <li><img src="assets/img/logos_clientes/03_1_5x.webp" alt="" loading="lazy"></li>
+          <li><img src="assets/img/logos_clientes/08_1_5x.webp" alt="" loading="lazy"></li>
+          <li><img src="assets/img/logos_clientes/02_1_5x.webp" alt="" loading="lazy"></li>
+          <li><img src="assets/img/logos_clientes/05_1_5x.webp" alt="" loading="lazy"></li>
+        </ul>
+      </div>
+    </section>
+
     <!-- 02. SOBRE ------------------------------------------------ -->
     <section class="secao secao--areia" id="sobre">
-      <div class="container secao__duas-colunas">
-        <div class="secao__cabecalho">
-          <p class="tag">Sobre a equipe</p>
-          <h2 class="titulo-secao">
-            Do projeto à obra pronta: <em>18 anos</em> entregando arquitetura e
-            engenharia com segurança e conformidade.
-          </h2>
-        </div>
+      <div class="container">
+        <div class="sobre">
+          <div class="sobre__cabecalho" data-revelar>
+            <p class="tag">Sobre a equipe</p>
+            <h2 class="titulo-secao">
+              Do projeto à obra pronta: <em>18 anos</em> entregando arquitetura e
+              engenharia com segurança e conformidade.
+            </h2>
+          </div>
 
-        <div class="prosa">
-          <p>
-            Mais de uma década atuando com PPCI nos mostrou que um projeto eficiente
-            vai além de cumprir normas e aprovar documentos — a qualidade está em
-            funcionar na prática, com clareza, viabilidade de execução e alinhamento
-            com a realidade do empreendimento.
-          </p>
-          <p>
-            Com essa mentalidade, ampliamos nossa atuação para projetos arquitetônicos
-            completos, engenharia estrutural e gerenciamento de obras. Do primeiro
-            esboço à última vistoria, cuidamos de cada etapa com o mesmo padrão de
-            responsabilidade e controle, antecipando conflitos e organizando o
-            processo com método.
-          </p>
-          <p class="prosa__destaque">
-            Atendemos Canela, Gramado e todo o Rio Grande do Sul.
-          </p>
+          <div class="prosa" data-revelar>
+            <p>
+              Mais de uma década atuando com PPCI nos mostrou que um projeto eficiente
+              vai além de cumprir normas e aprovar documentos — a qualidade está em
+              funcionar na prática, com clareza, viabilidade de execução e alinhamento
+              com a realidade do empreendimento.
+            </p>
+            <p>
+              Com essa mentalidade, ampliamos nossa atuação para projetos arquitetônicos
+              completos, engenharia estrutural e gerenciamento de obras. Do primeiro
+              esboço à última vistoria, cuidamos de cada etapa com o mesmo padrão de
+              responsabilidade e controle, antecipando conflitos e organizando o
+              processo com método.
+            </p>
+          </div>
+
+          <!-- Imagem provisória, do acervo de clientes. -->
+          <figure class="sobre__figura" data-revelar>
+            <img src="assets/img/fotos_clientes/07_1x.webp" loading="lazy" width="904" height="1024"
+                 alt="Empreendimento hoteleiro em Canela e Gramado com projeto e engenharia São Miguel">
+            <figcaption class="sobre__legenda">
+              <span class="marcador"></span>
+              Projeto, engenharia e obra sob uma só responsabilidade técnica
+            </figcaption>
+          </figure>
+
+          <ul class="sobre__marcos" data-revelar>
+            <li>
+              <span class="sobre__marco-rotulo">Atuação</span>
+              <span class="sobre__marco-valor">Canela, Gramado e todo o Rio Grande do Sul</span>
+            </li>
+            <li>
+              <span class="sobre__marco-rotulo">Especialidade de origem</span>
+              <span class="sobre__marco-valor">Mais de uma década dedicada a PPCI</span>
+            </li>
+            <li>
+              <span class="sobre__marco-rotulo">Escopo hoje</span>
+              <span class="sobre__marco-valor">Arquitetura, estrutura, obra e regularização</span>
+            </li>
+          </ul>
         </div>
       </div>
     </section>
@@ -125,10 +175,12 @@
     <!-- 03. SERVIÇOS ---------------------------------------------- -->
     <section class="secao secao--areia secao--sem-topo" id="servicos">
       <div class="container">
-        <div class="secao__cabecalho secao__cabecalho--centro">
-          <p class="tag">Serviços</p>
-          <h2 class="titulo-secao">Arquitetura, engenharia e obra — em um processo só</h2>
-          <p class="lead">
+        <div class="secao__cabecalho secao__cabecalho--duplo" data-revelar>
+          <div>
+            <p class="tag">Serviços</p>
+            <h2 class="titulo-secao">Arquitetura, engenharia e obra — <em>em um processo só</em></h2>
+          </div>
+          <p class="lead lead--fim">
             Do projeto arquitetônico à entrega da obra, unimos criação, engenharia
             precisa e conformidade normativa. Por trás, planejamento e
             compatibilização técnica; na entrega, uma solução pronta para sair do
@@ -136,190 +188,135 @@
           </p>
         </div>
 
-        <div class="abas" data-abas>
-          <div class="abas__lista" role="tablist" aria-label="Grupos de serviços">
-            <button class="aba" type="button" role="tab" id="aba-projeto"
-                    aria-controls="painel-projeto" aria-selected="true">
-              Arquitetura &amp; Projetos
-            </button>
-            <button class="aba" type="button" role="tab" id="aba-obra"
-                    aria-controls="painel-obra" aria-selected="false" tabindex="-1">
-              Engenharia &amp; Construção
-            </button>
-            <button class="aba" type="button" role="tab" id="aba-conformidade"
-                    aria-controls="painel-conformidade" aria-selected="false" tabindex="-1">
-              PPCI &amp; Regularização
-            </button>
-          </div>
-
-          <div class="abas__painel" id="painel-projeto" role="tabpanel" aria-labelledby="aba-projeto" tabindex="0">
-            <ul class="servicos">
-              <li class="servico">
-                <p class="servico__categoria">Projetos arquitetônicos</p>
-                <h3 class="servico__titulo">Do Conceito ao Projeto Executivo</h3>
-                <p class="servico__descricao">
-                  Criação e desenvolvimento de projetos arquitetônicos residenciais e
-                  comerciais, com identidade, funcionalidade e viabilidade técnica
-                  desde o primeiro estudo.
-                </p>
-                <ul class="servico__itens">
-                  <li>Estudo preliminar e projeto legal</li>
-                  <li>Projeto executivo e detalhamento</li>
-                  <li>Compatibilização com estrutura e instalações</li>
-                </ul>
-              </li>
-              <li class="servico">
-                <p class="servico__categoria">Planejamento e projeto de infraestrutura</p>
-                <h3 class="servico__titulo">Planejamento e Execução</h3>
-                <p class="servico__descricao">
-                  Projetos completos para obras e reformas, da fundação ao acabamento,
-                  com foco em segurança, funcionalidade e sustentabilidade.
-                </p>
-                <ul class="servico__itens">
-                  <li>Projetos completos para obras e reformas</li>
-                  <li>Da fundação ao acabamento</li>
-                  <li>Segurança, funcionalidade e sustentabilidade</li>
-                </ul>
-              </li>
+        <ul class="servicos">
+          <li class="servico" data-revelar>
+            <span class="servico__indice">01</span>
+            <p class="servico__categoria">Projetos arquitetônicos</p>
+            <h3 class="servico__titulo">Do Conceito ao Projeto Executivo</h3>
+            <p class="servico__descricao">
+              Criação e desenvolvimento de projetos arquitetônicos residenciais e
+              comerciais, com identidade, funcionalidade e viabilidade técnica desde
+              o primeiro estudo.
+            </p>
+            <ul class="servico__itens">
+              <li>Estudo preliminar e projeto legal</li>
+              <li>Projeto executivo e detalhamento</li>
+              <li>Compatibilização com estrutura e instalações</li>
             </ul>
-          </div>
+          </li>
 
-          <div class="abas__painel" id="painel-obra" role="tabpanel" aria-labelledby="aba-obra" tabindex="0" hidden>
-            <ul class="servicos">
-              <li class="servico">
-                <p class="servico__categoria">Projeto e gerenciamento de obras</p>
-                <h3 class="servico__titulo">Gestão de Obras Completa</h3>
-                <p class="servico__descricao">
-                  Acompanhamento técnico integral da obra, do projeto ao pós-obra, com
-                  controle de prazo, custo e qualidade.
-                </p>
-                <ul class="servico__itens">
-                  <li>Do projeto ao pós-obra</li>
-                  <li>Cronograma, custos e qualidade</li>
-                  <li>Acompanhamento e relatórios</li>
-                </ul>
-              </li>
-              <li class="servico">
-                <p class="servico__categoria">Engenharia estrutural</p>
-                <h3 class="servico__titulo">Projeto Estrutural Preciso</h3>
-                <p class="servico__descricao">
-                  Cálculo estrutural e detalhamento executivo compatibilizados com o
-                  projeto arquitetônico, garantindo segurança sem abrir mão do design.
-                </p>
-                <ul class="servico__itens">
-                  <li>Cálculo e detalhamento executivo</li>
-                  <li>Compatibilização com arquitetura</li>
-                  <li>Vistorias e suporte técnico</li>
-                </ul>
-              </li>
+          <li class="servico" data-revelar>
+            <span class="servico__indice">02</span>
+            <p class="servico__categoria">Planejamento e infraestrutura</p>
+            <h3 class="servico__titulo">Planejamento e Execução</h3>
+            <p class="servico__descricao">
+              Projetos completos para obras e reformas, da fundação ao acabamento,
+              com foco em segurança, funcionalidade e sustentabilidade.
+            </p>
+            <ul class="servico__itens">
+              <li>Projetos completos para obras e reformas</li>
+              <li>Da fundação ao acabamento</li>
+              <li>Segurança, funcionalidade e sustentabilidade</li>
             </ul>
-          </div>
+          </li>
 
-          <div class="abas__painel" id="painel-conformidade" role="tabpanel" aria-labelledby="aba-conformidade" tabindex="0" hidden>
-            <ul class="servicos servicos--tres">
-              <li class="servico">
-                <p class="servico__categoria">Gestão de PPCI</p>
-                <h3 class="servico__titulo">PPCI do Projeto à Aprovação</h3>
-                <p class="servico__descricao">
-                  Elaboração e acompanhamento completo do Plano de Prevenção e Proteção
-                  Contra Incêndio, da análise do imóvel à aprovação junto aos órgãos
-                  competentes.
-                </p>
-                <ul class="servico__itens">
-                  <li>Análise do imóvel e necessidades</li>
-                  <li>Projeto, documentação e protocolos</li>
-                  <li>Renovação e adequação de PPCI existente</li>
-                  <li>Suporte técnico em toda a etapa</li>
-                </ul>
-              </li>
-              <li class="servico">
-                <p class="servico__categoria">Regularização de imóvel</p>
-                <h3 class="servico__titulo">Seu Imóvel Regular e Sem Pendências</h3>
-                <p class="servico__descricao">
-                  Levantamento, documentação e regularização de imóveis junto aos órgãos
-                  públicos — para construções existentes sem projeto aprovado, ampliações
-                  não averbadas ou pendências que travam financiamento, venda ou habite-se.
-                </p>
-                <ul class="servico__itens">
-                  <li>Levantamento e diagnóstico do imóvel</li>
-                  <li>Projeto de regularização e documentação</li>
-                  <li>Acompanhamento junto à prefeitura e cartório</li>
-                </ul>
-              </li>
-              <li class="servico">
-                <p class="servico__categoria">Consultoria técnica</p>
-                <h3 class="servico__titulo">Decisões com Segurança Técnica</h3>
-                <p class="servico__descricao">
-                  Análise e diagnóstico da obra, com orientação para soluções, melhorias
-                  e parecer técnico.
-                </p>
-                <ul class="servico__itens">
-                  <li>Análise e diagnóstico da obra</li>
-                  <li>Orientação para soluções e melhorias</li>
-                  <li>Parecer técnico e recomendações</li>
-                </ul>
-              </li>
+          <!-- Imagem provisória, do acervo de clientes. -->
+          <li class="servico-imagem servico-imagem--a" data-revelar>
+            <img src="assets/img/fotos_clientes/01_1x.webp" loading="lazy" width="904" height="1024"
+                 alt="Projeto arquitetônico e engenharia estrutural em Gramado, Serra Gaúcha">
+          </li>
+
+          <li class="servico" data-revelar>
+            <span class="servico__indice">03</span>
+            <p class="servico__categoria">Gerenciamento de obras</p>
+            <h3 class="servico__titulo">Gestão de Obras Completa</h3>
+            <p class="servico__descricao">
+              Acompanhamento técnico integral da obra, do projeto ao pós-obra, com
+              controle de prazo, custo e qualidade.
+            </p>
+            <ul class="servico__itens">
+              <li>Do projeto ao pós-obra</li>
+              <li>Cronograma, custos e qualidade</li>
+              <li>Acompanhamento e relatórios</li>
             </ul>
-          </div>
-        </div>
-      </div>
-    </section>
+          </li>
 
-    <!-- 04. COMO TRABALHAMOS -------------------------------------- -->
-    <section class="secao secao--preta" id="processo">
-      <div class="container">
-        <div class="secao__cabecalho secao__duas-colunas secao__duas-colunas--topo">
-          <div>
-            <p class="tag">Como trabalhamos</p>
-            <h2 class="titulo-secao">Do primeiro contato à obra entregue</h2>
-          </div>
-          <p class="lead lead--fim">
-            Um método em quatro etapas, com responsabilidade técnica em cada uma
-            delas — do diagnóstico do terreno ao suporte depois da entrega das chaves.
-          </p>
-        </div>
+          <!-- Imagem provisória, do acervo de clientes. -->
+          <li class="servico-imagem servico-imagem--b" data-revelar>
+            <img src="assets/img/fotos_clientes/04_1x.webp" loading="lazy" width="904" height="1024"
+                 alt="Hotelaria em Gramado com gerenciamento de obra e PPCI da São Miguel">
+          </li>
 
-        <ol class="passos">
-          <li class="passo">
-            <span class="passo__numero">01</span>
-            <h3 class="passo__titulo">Diagnóstico e briefing</h3>
-            <p class="passo__texto">
-              Entendemos o terreno, o uso pretendido e as restrições legais do imóvel
-              antes de desenhar qualquer linha.
+          <li class="servico" data-revelar>
+            <span class="servico__indice">04</span>
+            <p class="servico__categoria">Engenharia estrutural</p>
+            <h3 class="servico__titulo">Projeto Estrutural Preciso</h3>
+            <p class="servico__descricao">
+              Cálculo estrutural e detalhamento executivo compatibilizados com o
+              projeto arquitetônico, garantindo segurança sem abrir mão do design.
             </p>
+            <ul class="servico__itens">
+              <li>Cálculo e detalhamento executivo</li>
+              <li>Compatibilização com arquitetura</li>
+              <li>Vistorias e suporte técnico</li>
+            </ul>
           </li>
-          <li class="passo">
-            <span class="passo__numero">02</span>
-            <h3 class="passo__titulo">Projeto e aprovações</h3>
-            <p class="passo__texto">
-              Desenvolvemos o projeto arquitetônico e estrutural já compatibilizados,
-              e conduzimos as aprovações e o PPCI junto aos órgãos competentes.
+
+          <li class="servico servico--destaque" data-revelar>
+            <span class="servico__indice">05</span>
+            <p class="servico__categoria">Gestão de PPCI</p>
+            <h3 class="servico__titulo">PPCI do Projeto à Aprovação</h3>
+            <p class="servico__descricao">
+              Elaboração e acompanhamento completo do Plano de Prevenção e Proteção
+              Contra Incêndio, da análise do imóvel à aprovação junto aos órgãos
+              competentes.
             </p>
+            <ul class="servico__itens">
+              <li>Análise do imóvel e necessidades</li>
+              <li>Projeto, documentação e protocolos</li>
+              <li>Renovação e adequação de PPCI existente</li>
+              <li>Suporte técnico em toda a etapa</li>
+            </ul>
           </li>
-          <li class="passo">
-            <span class="passo__numero">03</span>
-            <h3 class="passo__titulo">Execução e gerenciamento</h3>
-            <p class="passo__texto">
-              Acompanhamos a obra de perto — cronograma, custo e qualidade — com
-              relatórios periódicos e presença técnica no canteiro.
+
+          <li class="servico" data-revelar>
+            <span class="servico__indice">06</span>
+            <p class="servico__categoria">Regularização de imóvel</p>
+            <h3 class="servico__titulo">Seu Imóvel Regular e Sem Pendências</h3>
+            <p class="servico__descricao">
+              Levantamento, documentação e regularização de imóveis junto aos órgãos
+              públicos — para construções sem projeto aprovado, ampliações não
+              averbadas ou pendências que travam financiamento, venda ou habite-se.
             </p>
+            <ul class="servico__itens">
+              <li>Levantamento e diagnóstico do imóvel</li>
+              <li>Projeto de regularização e documentação</li>
+              <li>Acompanhamento junto à prefeitura e cartório</li>
+            </ul>
           </li>
-          <li class="passo">
-            <span class="passo__numero">04</span>
-            <h3 class="passo__titulo">Entrega e suporte pós-obra</h3>
-            <p class="passo__texto">
-              Vistoria final, documentação regularizada e suporte técnico mesmo depois
-              da entrega das chaves.
+
+          <li class="servico" data-revelar>
+            <span class="servico__indice">07</span>
+            <p class="servico__categoria">Consultoria técnica</p>
+            <h3 class="servico__titulo">Decisões com Segurança Técnica</h3>
+            <p class="servico__descricao">
+              Análise e diagnóstico da obra, com orientação para soluções, melhorias
+              e parecer técnico.
             </p>
+            <ul class="servico__itens">
+              <li>Análise e diagnóstico da obra</li>
+              <li>Orientação para soluções e melhorias</li>
+              <li>Parecer técnico e recomendações</li>
+            </ul>
           </li>
-        </ol>
+        </ul>
       </div>
     </section>
 
     <!-- 05. CASES -------------------------------------------------- -->
     <section class="secao secao--areia" id="cases">
       <div class="container">
-        <div class="secao__cabecalho secao__duas-colunas secao__duas-colunas--topo">
+        <div class="secao__cabecalho secao__duas-colunas secao__duas-colunas--topo" data-revelar>
           <div>
             <p class="tag">Clientes</p>
             <h2 class="titulo-secao">Cases de clientes em Canela e Gramado</h2>
@@ -331,85 +328,93 @@
         </div>
 
         <ul class="cases">
-          <li class="case">
+          <li class="case" data-revelar>
             <figure class="case__figura">
-              <img src="assets/img/fotos_clientes/01_1x.webp" loading="lazy" width="904" height="1024"
+              <img class="case__foto" src="assets/img/fotos_clientes/01_1x.webp" loading="lazy" width="904" height="1024"
                    alt="Colline de France, hotel em Gramado atendido pela São Miguel Engenharia">
-            </figure>
-            <div class="case__rodape">
               <img class="case__logo" src="assets/img/logos_clientes/01_1_5x.webp" loading="lazy" alt="Logotipo Colline de France">
-              <p class="case__nome">Colline de France</p>
-            </div>
+              <figcaption class="case__rodape">
+                <span class="case__nome">Colline de France</span>
+                <span class="case__seta" aria-hidden="true">&#8599;</span>
+              </figcaption>
+            </figure>
           </li>
-          <li class="case">
+          <li class="case" data-revelar>
             <figure class="case__figura">
-              <img src="assets/img/fotos_clientes/02_1x.webp" loading="lazy" width="904" height="1024"
+              <img class="case__foto" src="assets/img/fotos_clientes/02_1x.webp" loading="lazy" width="904" height="1024"
                    alt="Salão Super Carros, projeto comercial em Canela e Gramado">
-            </figure>
-            <div class="case__rodape">
               <img class="case__logo" src="assets/img/logos_clientes/02_1_5x.webp" loading="lazy" alt="Logotipo Salão Super Carros">
-              <p class="case__nome">Salão Super Carros</p>
-            </div>
+              <figcaption class="case__rodape">
+                <span class="case__nome">Salão Super Carros</span>
+                <span class="case__seta" aria-hidden="true">&#8599;</span>
+              </figcaption>
+            </figure>
           </li>
-          <li class="case">
+          <li class="case" data-revelar>
             <figure class="case__figura">
-              <img src="assets/img/fotos_clientes/03_1x.webp" loading="lazy" width="904" height="1024"
+              <img class="case__foto" src="assets/img/fotos_clientes/03_1x.webp" loading="lazy" width="904" height="1024"
                    alt="A Roda Canela, projeto estrutural e engenharia em Canela, Serra Gaúcha">
-            </figure>
-            <div class="case__rodape">
               <img class="case__logo" src="assets/img/logos_clientes/03_1_5x.webp" loading="lazy" alt="Logotipo A Roda Canela">
-              <p class="case__nome">A Roda Canela</p>
-            </div>
+              <figcaption class="case__rodape">
+                <span class="case__nome">A Roda Canela</span>
+                <span class="case__seta" aria-hidden="true">&#8599;</span>
+              </figcaption>
+            </figure>
           </li>
-          <li class="case">
+          <li class="case" data-revelar>
             <figure class="case__figura">
-              <img src="assets/img/fotos_clientes/04_1x.webp" loading="lazy" width="904" height="1024"
+              <img class="case__foto" src="assets/img/fotos_clientes/04_1x.webp" loading="lazy" width="904" height="1024"
                    alt="Hotel Valle D'Incanto, hotelaria em Gramado com PPCI e engenharia São Miguel">
-            </figure>
-            <div class="case__rodape">
               <img class="case__logo" src="assets/img/logos_clientes/04_1_5x.webp" loading="lazy" alt="Logotipo Hotel Valle D'Incanto">
-              <p class="case__nome">Hotel Valle D'Incanto</p>
-            </div>
+              <figcaption class="case__rodape">
+                <span class="case__nome">Hotel Valle D'Incanto</span>
+                <span class="case__seta" aria-hidden="true">&#8599;</span>
+              </figcaption>
+            </figure>
           </li>
-          <li class="case">
+          <li class="case" data-revelar>
             <figure class="case__figura">
-              <img src="assets/img/fotos_clientes/05_1x.webp" loading="lazy" width="904" height="1024"
+              <img class="case__foto" src="assets/img/fotos_clientes/05_1x.webp" loading="lazy" width="904" height="1024"
                    alt="Pizzaria Cara de Mau, projeto comercial e PPCI em Gramado">
-            </figure>
-            <div class="case__rodape">
               <img class="case__logo" src="assets/img/logos_clientes/05_1_5x.webp" loading="lazy" alt="Logotipo Pizzaria Cara de Mau">
-              <p class="case__nome">Pizzaria Cara de Mau</p>
-            </div>
+              <figcaption class="case__rodape">
+                <span class="case__nome">Pizzaria Cara de Mau</span>
+                <span class="case__seta" aria-hidden="true">&#8599;</span>
+              </figcaption>
+            </figure>
           </li>
-          <li class="case">
+          <li class="case" data-revelar>
             <figure class="case__figura">
-              <img src="assets/img/fotos_clientes/06_1x.webp" loading="lazy" width="904" height="1024"
+              <img class="case__foto" src="assets/img/fotos_clientes/06_1x.webp" loading="lazy" width="904" height="1024"
                    alt="Dauper Indústria e Comércio, projeto industrial na Serra Gaúcha">
-            </figure>
-            <div class="case__rodape">
               <img class="case__logo" src="assets/img/logos_clientes/06_1_5x.webp" loading="lazy" alt="Logotipo Dauper">
-              <p class="case__nome">Dauper Indústria e Comércio</p>
-            </div>
+              <figcaption class="case__rodape">
+                <span class="case__nome">Dauper Indústria e Comércio</span>
+                <span class="case__seta" aria-hidden="true">&#8599;</span>
+              </figcaption>
+            </figure>
           </li>
-          <li class="case">
+          <li class="case" data-revelar>
             <figure class="case__figura">
-              <img src="assets/img/fotos_clientes/07_1x.webp" loading="lazy" width="904" height="1024"
+              <img class="case__foto" src="assets/img/fotos_clientes/07_1x.webp" loading="lazy" width="904" height="1024"
                    alt="Hilton Hotels &amp; Resorts, empreendimento hoteleiro em Canela e Gramado">
-            </figure>
-            <div class="case__rodape">
               <img class="case__logo" src="assets/img/logos_clientes/07_1_5x.webp" loading="lazy" alt="Logotipo Hilton Hotels &amp; Resorts">
-              <p class="case__nome">Hilton Hotels &amp; Resorts</p>
-            </div>
-          </li>
-          <li class="case">
-            <figure class="case__figura">
-              <img src="assets/img/fotos_clientes/08_1x.webp" loading="lazy" width="904" height="1024"
-                   alt="Marini Indústria, parque industrial com engenharia estrutural no Rio Grande do Sul">
+              <figcaption class="case__rodape">
+                <span class="case__nome">Hilton Hotels &amp; Resorts</span>
+                <span class="case__seta" aria-hidden="true">&#8599;</span>
+              </figcaption>
             </figure>
-            <div class="case__rodape">
+          </li>
+          <li class="case" data-revelar>
+            <figure class="case__figura">
+              <img class="case__foto" src="assets/img/fotos_clientes/08_1x.webp" loading="lazy" width="904" height="1024"
+                   alt="Marini Indústria, parque industrial com engenharia estrutural no Rio Grande do Sul">
               <img class="case__logo" src="assets/img/logos_clientes/08_1_5x.webp" loading="lazy" alt="Logotipo Marini Indústria">
-              <p class="case__nome">Marini Indústria</p>
-            </div>
+              <figcaption class="case__rodape">
+                <span class="case__nome">Marini Indústria</span>
+                <span class="case__seta" aria-hidden="true">&#8599;</span>
+              </figcaption>
+            </figure>
           </li>
         </ul>
       </div>
@@ -418,23 +423,23 @@
     <!-- 07. CITAÇÃO ------------------------------------------------ -->
     <section class="citacao">
       <div class="container">
-        <blockquote class="citacao__texto">
+        <blockquote class="citacao__texto" data-revelar-palavras>
           A engenharia civil é uma ciência de sonhos e cálculos, onde os sonhos se
-          tornam realidade através de <em>cálculos precisos</em>.
+          tornam realidade através de cálculos precisos.
         </blockquote>
-        <p class="citacao__autor">— Antoine Predock</p>
+        <p class="citacao__autor">Antoine Predock</p>
       </div>
     </section>
 
     <!-- 08. FAQ ---------------------------------------------------- -->
     <section class="secao secao--areia" id="faq">
       <div class="container secao__duas-colunas secao__duas-colunas--topo">
-        <div class="secao__cabecalho">
+        <div class="secao__cabecalho" data-revelar>
           <p class="tag">Dúvidas frequentes</p>
           <h2 class="titulo-secao">Perguntas que ouvimos antes de cada projeto</h2>
         </div>
 
-        <div class="faq">
+        <div class="faq" data-revelar>
           <details class="faq__item">
             <summary class="faq__pergunta">A São Miguel faz só o projeto ou também acompanha a obra?</summary>
             <div class="faq__resposta">
@@ -478,7 +483,7 @@
     <!-- 09. CONTATO ------------------------------------------------ -->
     <section class="secao secao--azul" id="contato">
       <div class="container contato">
-        <div class="secao__cabecalho">
+        <div class="secao__cabecalho" data-revelar>
           <p class="tag">Contato</p>
           <h2 class="titulo-secao">Vamos tirar seu projeto do papel?</h2>
           <p class="lead">
@@ -488,7 +493,7 @@
           </p>
         </div>
 
-        <div class="contato__acoes">
+        <div class="contato__acoes" data-revelar>
           <a class="botao" href="https://wa.me/5554991400929" target="_blank" rel="noopener">
             <span class="botao__mascara">
               <span class="botao__trilho">
@@ -534,7 +539,7 @@
           </a>
         </div>
 
-        <div class="contato__dados">
+        <div class="contato__dados" data-revelar>
           <p class="contato__intro">
             Entre em contato com a São Miguel Engenharia &amp; Arquitetura. Receba
             atendimento especializado e solicite informações sobre projetos, obras,
@@ -567,7 +572,6 @@
       <nav class="rodape__nav" aria-label="Rodapé">
         <a href="#sobre">Sobre</a>
         <a href="#servicos">Serviços</a>
-        <a href="#processo">Como Trabalhamos</a>
         <a href="#contato">Contato</a>
       </nav>
 
