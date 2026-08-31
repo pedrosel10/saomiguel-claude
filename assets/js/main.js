@@ -94,6 +94,36 @@
     });
   }
 
+  /* Paralaxe da arte de fundo: ela desliza para baixo conforme a página
+     rola, numa fração do percurso, para o fundo não parecer colado à tela.
+     O curso é proporcional à altura da janela e cabe na sobra que a camada
+     tem em cima e embaixo. */
+  function acompanharParalaxe() {
+    var raiz = document.documentElement;
+    var agendado = false;
+
+    function atualizar() {
+      agendado = false;
+
+      var percurso = raiz.scrollHeight - window.innerHeight;
+      if (percurso <= 0) return;
+
+      var avanco = Math.min(Math.max(window.scrollY / percurso, 0), 1);
+      var curso = window.innerHeight * 0.22;
+
+      raiz.style.setProperty('--deslize-fundo', (avanco * curso).toFixed(1) + 'px');
+    }
+
+    window.addEventListener('scroll', function () {
+      if (agendado) return;
+      agendado = true;
+      requestAnimationFrame(atualizar);
+    }, { passive: true });
+
+    window.addEventListener('resize', atualizar);
+    atualizar();
+  }
+
   function observar(alvos, aoEntrar, margem) {
     if (!('IntersectionObserver' in window)) {
       alvos.forEach(aoEntrar);
@@ -124,6 +154,8 @@
     if (semMovimento) return;
 
     document.querySelectorAll('.faq__item').forEach(prepararGaveta);
+
+    acompanharParalaxe();
 
     /* Só agora os elementos podem começar invisíveis: se o script falhar
        antes daqui, a página continua legível. */

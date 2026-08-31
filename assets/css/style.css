@@ -138,14 +138,18 @@ body {
 body::before {
   content: "";
   position: fixed;
-  inset: 0;
+  /* Sobra em cima e embaixo: é ela que dá curso para o paralaxe sem
+     descobrir as bordas. */
+  inset: -25% 0;
   z-index: -1;
   pointer-events: none;
   background-image: url("../img/fundo_branco.webp");
   background-size: cover;
   background-position: center;
   opacity: var(--tema-arte);
+  translate: 0 var(--deslize-fundo, 0px);
   transition: opacity 0.8s var(--curva-cor);
+  will-change: translate;
 }
 
 /* 4. Layout -------------------------------------------------- */
