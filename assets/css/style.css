@@ -1047,19 +1047,22 @@ body::before {
   overflow: hidden;
 }
 
-/* Aspas gigantes em contorno, atrás do texto: dão profundidade sem ruído. */
-.citacao::before {
-  content: "\201C";
+/* A engrenagem da marca sangra pela direita, atrás do texto. É preta com
+   brilho azul nas arestas, então só se sustenta em dobra escura. */
+.citacao__engrenagem {
   position: absolute;
+  z-index: 0;
   top: 50%;
-  right: 5vw;
-  translate: 0 -58%;
-  font-size: clamp(260px, 27vw, 420px);
-  line-height: 1;
-  color: transparent;
-  -webkit-text-stroke: 1px currentColor;
-  opacity: 0.11;
+  right: -18vw;
+  width: clamp(380px, 44vw, 720px);
+  translate: 0 -50%;
+  opacity: 0.32;
   pointer-events: none;
+  animation: girar 90s linear infinite;
+}
+
+@keyframes girar {
+  to { rotate: 360deg; }
 }
 
 .citacao__grade {
@@ -1557,9 +1560,12 @@ body::before {
     grid-auto-rows: 240px;
   }
 
-  /* Sem largura sobrando, as aspas cruzariam o texto e sujariam a leitura. */
-  .citacao::before {
-    display: none;
+  /* Sem largura sobrando ela cruzaria as linhas: sai mais para fora e
+     perde intensidade, para o texto seguir legível por cima. */
+  .citacao__engrenagem {
+    right: -38vw;
+    width: 116vw;
+    opacity: 0.14;
   }
 
   .faixa__lista {
@@ -1622,7 +1628,8 @@ body::before {
     transition: none;
   }
 
-  .faixa__trilho {
+  .faixa__trilho,
+  .citacao__engrenagem {
     animation: none;
   }
 
