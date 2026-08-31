@@ -13,3 +13,6 @@
 *.log
 node_modules/
 .tmp/
+
+# Arte-fonte pesada: no site vai a versão otimizada em WebP
+assets/img/*.png
