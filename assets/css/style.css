@@ -758,26 +758,47 @@ body {
 }
 
 .servico__itens li {
+  --atraso: 0s;
   position: relative;
-  padding-left: 22px;
+  padding-left: 32px;
   font-size: 14px;
   line-height: 1.5;
 }
+
+/* Cada item entra um pouco depois do anterior, em cascata. */
+.servico__itens li:nth-child(2) { --atraso: 0.06s; }
+.servico__itens li:nth-child(3) { --atraso: 0.12s; }
+.servico__itens li:nth-child(4) { --atraso: 0.18s; }
 
 .servico__itens li + li {
   margin-top: 10px;
 }
 
-/* Marcador desenhado em CSS, alinhado à altura da primeira linha. */
-.servico__itens li::before {
+/* Marcador em forma de linha de cota: o traço e o tique da extremidade,
+   como nas marcações de medida de um desenho técnico. */
+.servico__itens li::before,
+.servico__itens li::after {
   content: "";
   position: absolute;
   left: 0;
-  top: 0.5em;
-  width: 8px;
-  height: 1px;
   background: var(--cor-verde);
-  transition: width var(--duracao) var(--curva);
+  transition-duration: var(--duracao);
+  transition-timing-function: var(--curva);
+  transition-delay: var(--atraso);
+}
+
+.servico__itens li::before {
+  top: 0.72em;
+  width: 13px;
+  height: 1px;
+  transition-property: width;
+}
+
+.servico__itens li::after {
+  top: calc(0.72em - 3px);
+  width: 1px;
+  height: 7px;
+  transition-property: translate;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -785,8 +806,13 @@ body {
     background: #fff;
   }
 
+  /* No hover a cota se estende e o tique corre até a outra ponta. */
   .servico:hover .servico__itens li::before {
-    width: 14px;
+    width: 22px;
+  }
+
+  .servico:hover .servico__itens li::after {
+    translate: 21px 0;
   }
 }
 
