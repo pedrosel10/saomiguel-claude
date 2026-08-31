@@ -261,10 +261,10 @@ body::before {
   gap: 14px;
   padding: 12px 12px 12px 22px;
 
-  background: var(--botao-preto);
+  background: var(--cor-fundo);
   color: #fff;
-  /* Fio que preserva a silhueta quando o fundo da página fica preto. */
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.14);
+  /* Fio que preserva a silhueta quando o fundo tem a mesma cor do botão. */
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.28);
   font-size: 16px;
   text-decoration: none;
   cursor: pointer;
@@ -355,7 +355,7 @@ body::before {
   align-items: center;
   width: 52px;
   height: 26px;
-  color: var(--botao-preto);
+  color: var(--cor-fundo);
   transform: translate3d(-26px, 0, 0);
   transition: transform var(--duracao) var(--curva);
   will-change: transform;
