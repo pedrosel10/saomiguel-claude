@@ -136,10 +136,17 @@
       }
     );
 
-    if (citacao) {
-      observar([citacao.closest('.citacao')], function (secao) {
-        secao.classList.add('esta-visivel');
-      }, '0px 0px -25% 0px');
+    /* A citação é a única que não é de uma vez só: a faixa de observação
+       fica no miolo da tela, para as palavras acenderem já perto do centro,
+       e o estado é retirado na saída para o efeito rodar de novo na volta. */
+    if (citacao && 'IntersectionObserver' in window) {
+      var secaoCitacao = citacao.closest('.citacao');
+
+      new IntersectionObserver(function (entradas) {
+        entradas.forEach(function (entrada) {
+          secaoCitacao.classList.toggle('esta-visivel', entrada.isIntersecting);
+        });
+      }, { rootMargin: '-15% 0px -45% 0px' }).observe(citacao);
     }
   });
 })();
