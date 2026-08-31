@@ -912,15 +912,15 @@ body::before {
 .faixa__lista {
   display: flex;
   align-items: center;
-  gap: var(--e-7);
-  padding-right: var(--e-7);
+  gap: var(--e-6);
+  padding-right: var(--e-6);
 }
 
 .faixa__lista img {
-  width: 108px;
-  height: 34px;
+  width: 132px;
+  height: 42px;
   object-fit: contain;
-  opacity: 0.45;
+  opacity: 0.7;
   transition: opacity var(--duracao) var(--curva);
 }
 
@@ -1569,13 +1569,13 @@ body::before {
   }
 
   .faixa__lista {
-    gap: var(--e-5);
-    padding-right: var(--e-5);
+    gap: var(--e-4);
+    padding-right: var(--e-4);
   }
 
   .faixa__lista img {
-    width: 82px;
-    height: 28px;
+    width: 100px;
+    height: 34px;
   }
 
   .faq__resposta {
