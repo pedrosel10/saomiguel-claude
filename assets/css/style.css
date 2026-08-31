@@ -434,8 +434,19 @@ body {
 }
 
 /* Fundos. As seções claras invertem a cor do texto. */
+/* Malha de fundo das seções claras: um módulo só, de 100px — a mesma
+   medida das 12 colunas de 1200px da coluna de conteúdo. */
+.secao--areia,
+.faixa {
+  --malha: rgb(21 84 213 / 0.05);
+  background-color: var(--cor-areia);
+  background-image:
+    repeating-linear-gradient(to right, var(--malha) 0 1px, transparent 1px 100px),
+    repeating-linear-gradient(to bottom, var(--malha) 0 1px, transparent 1px 100px);
+  background-position: center top;
+}
+
 .secao--areia {
-  background: var(--cor-areia);
   color: var(--cor-tinta);
 }
 
@@ -663,18 +674,6 @@ body {
 /* 6.4 Serviços — grade de 3 colunas com uma imagem intercalada.
    A seção toma emprestada a linguagem de prancha técnica: malha modular
    ao fundo e cruzetas nos encontros da grade. */
-#servicos {
-  --malha: rgb(21 84 213 / 0.045);
-  --malha-mestra: rgb(21 84 213 / 0.09);
-  /* Dois módulos, como nas grades estruturais: o fino de 40px e o mestre
-     de 200px, que marca os eixos. */
-  background-image:
-    repeating-linear-gradient(to right, var(--malha-mestra) 0 1px, transparent 1px 200px),
-    repeating-linear-gradient(to bottom, var(--malha-mestra) 0 1px, transparent 1px 200px),
-    repeating-linear-gradient(to right, var(--malha) 0 1px, transparent 1px 40px),
-    repeating-linear-gradient(to bottom, var(--malha) 0 1px, transparent 1px 40px);
-}
-
 /* Cruzeta sobre o vértice superior esquerdo de cada célula: nos encontros
    internos elas formam a marcação cheia; nas bordas, meias-marcas. */
 .servico::after,
@@ -801,7 +800,6 @@ body {
 /* 6.5 Faixa de logos — rolagem infinita */
 .faixa {
   padding-block: var(--e-4);
-  background: var(--cor-areia);
   border-bottom: 1px solid var(--cor-areia-2);
   overflow: hidden;
 }
