@@ -53,7 +53,7 @@
   --tema-tinta-suave: rgb(255 255 255 / 0.7);
   --tema-realce: rgb(255 255 255 / 0.55);
   --tema-linha: rgb(255 255 255 / 0.22);
-  --tema-malha: 0;
+  --tema-arte: 0;
   /* Preto sobre fundo claro ou azul; azul sobre fundo preto. */
   --tema-botao: var(--botao-preto);
 
@@ -79,7 +79,7 @@
   --tema-tinta-suave: var(--cor-tinta-suave);
   --tema-realce: var(--cor-fundo);
   --tema-linha: var(--cor-areia-2);
-  --tema-malha: 1;
+  --tema-arte: 1;
 
   --card-fundo: #ffffff;
   --card-tinta: var(--cor-tinta);
@@ -101,7 +101,7 @@
   --tema-tinta-suave: rgb(255 255 255 / 0.65);
   --tema-realce: rgb(255 255 255 / 0.6);
   --tema-linha: rgb(255 255 255 / 0.18);
-  --tema-malha: 0;
+  --tema-arte: 0;
   --tema-botao: var(--cor-fundo);
 }
 
@@ -133,18 +133,18 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Malha numa camada própria, para poder aparecer e sumir por opacidade —
-   cores dentro de gradiente não transicionam. */
+/* Arte de fundo das dobras claras, numa camada fixa própria: ela aparece e
+   some por opacidade, acompanhando a troca de tema. */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background-image:
-    repeating-linear-gradient(to right, rgb(21 84 213 / 0.05) 0 1px, transparent 1px 100px),
-    repeating-linear-gradient(to bottom, rgb(21 84 213 / 0.05) 0 1px, transparent 1px 100px);
-  opacity: var(--tema-malha);
+  background-image: url("../img/fundo_branco.webp");
+  background-size: cover;
+  background-position: center;
+  opacity: var(--tema-arte);
   transition: opacity 0.8s var(--curva-cor);
 }
 
