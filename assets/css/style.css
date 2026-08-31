@@ -426,13 +426,6 @@ body {
   padding-top: 0;
 }
 
-/* Onde duas seções claras se encontram não há troca de cor para marcar o
-   corte: entra uma linha de ponta a ponta. Nas outras bordas o próprio
-   contraste de fundo já divide. */
-.secao--areia + .secao--areia {
-  border-top: 1px solid var(--cor-areia-2);
-}
-
 /* Fundos. As seções claras invertem a cor do texto. */
 /* Malha de fundo das seções claras: um módulo só, de 100px — a mesma
    medida das 12 colunas de 1200px da coluna de conteúdo. */
@@ -800,7 +793,6 @@ body {
 /* 6.5 Faixa de logos — rolagem infinita */
 .faixa {
   padding-block: var(--e-4);
-  border-bottom: 1px solid var(--cor-areia-2);
   overflow: hidden;
 }
 
