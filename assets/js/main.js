@@ -19,6 +19,53 @@
     });
   }
 
+  /* Gaveta do FAQ. O <details> abre e fecha secamente por natureza: o clique
+     é interceptado para a altura poder correr, e no fechamento o atributo
+     `open` só sai quando a animação termina — senão o conteúdo sumiria antes
+     de encolher. */
+  function prepararGaveta(item) {
+    var resumo = item.querySelector('.faq__pergunta');
+    var conteudo = item.querySelector('.faq__resposta');
+    if (!resumo || !conteudo || !conteudo.animate) return;
+
+    var recuoFinal = getComputedStyle(conteudo).paddingBottom;
+    var animacao = null;
+
+    function animar(abrindo) {
+      if (animacao) animacao.cancel();
+      conteudo.style.overflow = 'hidden';
+
+      var altura = conteudo.getBoundingClientRect().height;
+      var quadros = [
+        { height: '0px', paddingBottom: '0px', opacity: 0, transform: 'translateY(-8px)' },
+        { height: altura + 'px', paddingBottom: recuoFinal, opacity: 1, transform: 'translateY(0)' }
+      ];
+      if (!abrindo) quadros.reverse();
+
+      animacao = conteudo.animate(quadros, {
+        duration: 460,
+        easing: 'cubic-bezier(0.85, 0, 0.15, 1)'
+      });
+
+      animacao.onfinish = function () {
+        animacao = null;
+        conteudo.style.overflow = '';
+        if (!abrindo) item.open = false;
+      };
+    }
+
+    resumo.addEventListener('click', function (evento) {
+      evento.preventDefault();
+
+      if (item.open) {
+        animar(false);
+      } else {
+        item.open = true; /* precisa estar aberto para o conteúdo ter altura */
+        animar(true);
+      }
+    });
+  }
+
   function observar(alvos, aoEntrar, margem) {
     if (!('IntersectionObserver' in window)) {
       alvos.forEach(aoEntrar);
@@ -43,6 +90,8 @@
     if (citacao) prepararCitacao(citacao);
 
     if (semMovimento) return;
+
+    document.querySelectorAll('.faq__item').forEach(prepararGaveta);
 
     /* Só agora os elementos podem começar invisíveis: se o script falhar
        antes daqui, a página continua legível. */
