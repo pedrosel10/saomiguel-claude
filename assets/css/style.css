@@ -54,6 +54,8 @@
   --tema-realce: rgb(255 255 255 / 0.55);
   --tema-linha: rgb(255 255 255 / 0.22);
   --tema-malha: 0;
+  /* Preto sobre fundo claro ou azul; azul sobre fundo preto. */
+  --tema-botao: var(--botao-preto);
 }
 
 :root[data-tema="claro"] {
@@ -72,6 +74,7 @@
   --tema-realce: rgb(255 255 255 / 0.6);
   --tema-linha: rgb(255 255 255 / 0.18);
   --tema-malha: 0;
+  --tema-botao: var(--cor-fundo);
 }
 
 :root[data-tema="azul"] {
@@ -261,16 +264,16 @@ body::before {
   gap: 14px;
   padding: 12px 12px 12px 22px;
 
-  background: var(--cor-fundo);
+  background: var(--tema-botao);
   color: #fff;
-  /* Fio que preserva a silhueta quando o fundo tem a mesma cor do botão. */
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.28);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12);
   font-size: 16px;
   text-decoration: none;
   cursor: pointer;
 
   overflow: hidden;
   isolation: isolate;
+  transition: background-color var(--duracao-cor) var(--curva-cor);
 }
 
 /* Preenchimento que sobe de baixo. */
@@ -355,9 +358,10 @@ body::before {
   align-items: center;
   width: 52px;
   height: 26px;
-  color: var(--cor-fundo);
+  color: var(--tema-botao);
   transform: translate3d(-26px, 0, 0);
-  transition: transform var(--duracao) var(--curva);
+  transition: transform var(--duracao) var(--curva),
+              color var(--duracao-cor) var(--curva-cor);
   will-change: transform;
 }
 
