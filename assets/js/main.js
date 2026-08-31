@@ -66,6 +66,34 @@
     });
   }
 
+  /* Tema do fundo. A faixa de observação é uma linha no meio da tela: a
+     seção que a cruza define a cor da camada fixa, e a transição do CSS
+     faz a passagem parecer contínua. */
+  function acompanharTema() {
+    var secoes = Array.prototype.slice.call(document.querySelectorAll('[data-tema]'));
+    if (!secoes.length) return;
+
+    function aplicar(tema) {
+      if (document.documentElement.dataset.tema !== tema) {
+        document.documentElement.dataset.tema = tema;
+      }
+    }
+
+    aplicar(secoes[0].dataset.tema);
+
+    if (!('IntersectionObserver' in window)) return;
+
+    var observador = new IntersectionObserver(function (entradas) {
+      entradas.forEach(function (entrada) {
+        if (entrada.isIntersecting) aplicar(entrada.target.dataset.tema);
+      });
+    }, { rootMargin: '-50% 0px -50% 0px' });
+
+    secoes.forEach(function (secao) {
+      observador.observe(secao);
+    });
+  }
+
   function observar(alvos, aoEntrar, margem) {
     if (!('IntersectionObserver' in window)) {
       alvos.forEach(aoEntrar);
@@ -86,6 +114,10 @@
   }
 
   document.addEventListener('DOMContentLoaded', function () {
+    /* Fora do bloco de movimento: a cor do fundo precisa acompanhar a
+       seção mesmo para quem pediu menos animação. */
+    acompanharTema();
+
     var citacao = document.querySelector('[data-revelar-palavras]');
     if (citacao) prepararCitacao(citacao);
 

@@ -44,6 +44,38 @@
   --e-6: 64px;
   --e-7: 96px;
   --e-secao: clamp(72px, 9vw, 128px);
+
+  /* Tema corrente. A cor não pertence mais a cada seção: ela vive numa
+     camada fixa atrás da página e é trocada conforme a seção que cruza o
+     meio da tela, de modo que o fundo pareça uma dobra contínua. */
+  --tema-fundo: #1554d5;
+  --tema-tinta: #ffffff;
+  --tema-tinta-suave: rgb(255 255 255 / 0.7);
+  --tema-realce: rgb(255 255 255 / 0.55);
+  --tema-linha: rgb(255 255 255 / 0.22);
+  --tema-malha: 0;
+}
+
+:root[data-tema="claro"] {
+  --tema-fundo: var(--cor-areia);
+  --tema-tinta: var(--cor-tinta);
+  --tema-tinta-suave: var(--cor-tinta-suave);
+  --tema-realce: var(--cor-fundo);
+  --tema-linha: var(--cor-areia-2);
+  --tema-malha: 1;
+}
+
+:root[data-tema="preto"] {
+  --tema-fundo: var(--botao-preto);
+  --tema-tinta: #ffffff;
+  --tema-tinta-suave: rgb(255 255 255 / 0.65);
+  --tema-realce: rgb(255 255 255 / 0.6);
+  --tema-linha: rgb(255 255 255 / 0.18);
+  --tema-malha: 0;
+}
+
+:root[data-tema="azul"] {
+  --tema-fundo: var(--cor-fundo);
 }
 
 /* 2. Reset --------------------------------------------------- */
@@ -56,12 +88,33 @@ img, video { max-width: 100%; height: auto; display: block; }
 a { color: inherit; }
 
 /* 3. Base ---------------------------------------------------- */
+/* A cor de fundo fica na raiz, e não nas seções: é ela que transiciona. */
+:root {
+  background-color: var(--tema-fundo);
+  transition: background-color 0.8s var(--curva-cor);
+}
+
 body {
   font-family: var(--fonte-base);
   color: var(--cor-texto);
-  background: var(--cor-fundo);
+  background: transparent;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Malha numa camada própria, para poder aparecer e sumir por opacidade —
+   cores dentro de gradiente não transicionam. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(to right, rgb(21 84 213 / 0.05) 0 1px, transparent 1px 100px),
+    repeating-linear-gradient(to bottom, rgb(21 84 213 / 0.05) 0 1px, transparent 1px 100px);
+  opacity: var(--tema-malha);
+  transition: opacity 0.8s var(--curva-cor);
 }
 
 /* 4. Layout -------------------------------------------------- */
@@ -87,6 +140,8 @@ body {
   width: 78px;
 }
 
+/* Única seção com fundo próprio: o título branco e o recorte do retrato
+   foram compostos sobre o azul e não sobrevivem à troca de tema. */
 .hero {
   position: relative;
   height: 848px;
@@ -356,16 +411,17 @@ body {
 /* Variante de contorno, para o segundo CTA. */
 .botao--contorno {
   background: transparent;
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.45);
+  color: var(--tema-tinta);
+  box-shadow: inset 0 0 0 1px currentColor;
 }
 
 .botao--contorno .botao__icone-caixa {
   background: transparent;
-  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.45);
+  box-shadow: inset 0 0 0 1px currentColor;
 }
 
 .botao--contorno .botao__icone-trilho {
-  color: #fff;
+  color: currentColor;
 }
 
 /* Assinatura, recuada em relação à coluna e logo abaixo do título.
@@ -431,30 +487,13 @@ body {
 }
 
 /* Fundos. As seções claras invertem a cor do texto. */
-/* Malha de fundo das seções claras: um módulo só, de 100px — a mesma
-   medida das 12 colunas de 1200px da coluna de conteúdo. */
-.secao--areia,
-.faixa {
-  --malha: rgb(21 84 213 / 0.05);
-  background-color: var(--cor-areia);
-  background-image:
-    repeating-linear-gradient(to right, var(--malha) 0 1px, transparent 1px 100px),
-    repeating-linear-gradient(to bottom, var(--malha) 0 1px, transparent 1px 100px);
-  background-position: center top;
-}
-
-.secao--areia {
-  color: var(--cor-tinta);
-}
-
-.secao--preta {
-  background: var(--botao-preto);
-  color: #fff;
-}
-
-.secao--azul {
-  background: var(--cor-fundo);
-  color: #fff;
+/* Nenhuma seção pinta o próprio fundo: todas herdam a camada fixa. */
+.secao,
+.citacao,
+.faixa,
+.rodape {
+  background: transparent;
+  color: var(--tema-tinta);
 }
 
 /* 6.1 Tipografia de seção */
@@ -465,12 +504,7 @@ body {
   line-height: 1;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--cor-fundo);
-}
-
-.secao--preta .tag,
-.secao--azul .tag {
-  color: rgb(255 255 255 / 0.55);
+  color: var(--tema-realce);
 }
 
 /* Régua de seção: separa visualmente cada dobra e numera a leitura. */
@@ -488,8 +522,7 @@ body {
 .regua__linha {
   flex: 1;
   height: 1px;
-  background: currentColor;
-  opacity: 0.18;
+  background: var(--tema-linha);
 }
 
 .regua__indice {
@@ -498,9 +531,7 @@ body {
   opacity: 0.45;
 }
 
-.citacao .regua .tag {
-  color: rgb(255 255 255 / 0.6);
-}
+
 
 .secao__cabecalho--duplo {
   display: grid;
@@ -522,15 +553,8 @@ body {
    A margem compensa o espaço comido pelo letter-spacing negativo. */
 .titulo-secao em {
   font-style: italic;
-  color: var(--cor-fundo);
+  color: var(--tema-realce);
   margin-right: 0.08em;
-}
-
-.secao--preta .titulo-secao em,
-.secao--azul .titulo-secao em,
-.citacao em {
-  color: inherit;
-  opacity: 0.75;
 }
 
 .lead {
@@ -538,12 +562,7 @@ body {
   margin-top: var(--e-3);
   font-size: 17px;
   line-height: 1.6;
-  color: var(--cor-tinta-suave);
-}
-
-.secao--preta .lead,
-.secao--azul .lead {
-  color: rgb(255 255 255 / 0.7);
+  color: var(--tema-tinta-suave);
 }
 
 .lead--fim {
@@ -609,7 +628,7 @@ body {
 .prosa p {
   font-size: 17px;
   line-height: 1.65;
-  color: var(--cor-tinta-suave);
+  color: var(--tema-tinta-suave);
 }
 
 .prosa p + p {
@@ -634,7 +653,7 @@ body {
   gap: 10px;
   margin-top: var(--e-2);
   font-size: 13px;
-  color: var(--cor-tinta-suave);
+  color: var(--tema-tinta-suave);
 }
 
 /* A lista e o botão dividem a mesma coluna, com o meio do bloco na mesma
@@ -648,11 +667,11 @@ body {
   display: grid;
   gap: 4px;
   padding-block: var(--e-3);
-  border-top: 1px solid var(--cor-areia-2);
+  border-top: 1px solid var(--tema-linha);
 }
 
 .sobre__marcos li:last-child {
-  border-bottom: 1px solid var(--cor-areia-2);
+  border-bottom: 1px solid var(--tema-linha);
 }
 
 .sobre__marco-rotulo {
@@ -660,7 +679,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--cor-fundo);
+  color: var(--tema-realce);
 }
 
 .sobre__marco-valor {
@@ -1004,7 +1023,8 @@ body {
   font-size: clamp(260px, 27vw, 420px);
   line-height: 1;
   color: transparent;
-  -webkit-text-stroke: 1px rgb(255 255 255 / 0.11);
+  -webkit-text-stroke: 1px currentColor;
+  opacity: 0.11;
   pointer-events: none;
 }
 
@@ -1036,7 +1056,7 @@ body {
   gap: var(--e-3);
   margin-top: clamp(48px, 6vw, 88px);
   padding-top: var(--e-3);
-  border-top: 1px solid rgb(255 255 255 / 0.18);
+  border-top: 1px solid var(--tema-linha);
 }
 
 .citacao__autor {
@@ -1049,7 +1069,7 @@ body {
   font-size: 12px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgb(255 255 255 / 0.4);
+  color: var(--tema-realce);
 }
 
 /* 6.8 FAQ — lista de largura total; a resposta abre ao lado da pergunta,
@@ -1080,7 +1100,7 @@ body {
   letter-spacing: -0.015em;
   cursor: pointer;
   list-style: none;
-  transition: color var(--duracao) var(--curva);
+  transition: color var(--duracao-cor) var(--curva-cor);
 }
 
 .faq__pergunta::-webkit-details-marker {
@@ -1092,7 +1112,7 @@ body {
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.12em;
-  color: var(--cor-fundo);
+  color: var(--tema-realce);
 }
 
 /* Sinal de + que vira −: dois traços sobrepostos, e o vertical gira até
@@ -1105,7 +1125,7 @@ body {
   top: calc(var(--e-4) + 0.6em);
   width: 15px;
   height: 1px;
-  background: var(--cor-fundo);
+  background: var(--tema-realce);
 }
 
 .faq__pergunta::after {
@@ -1119,7 +1139,7 @@ body {
 
 @media (hover: hover) and (pointer: fine) {
   .faq__pergunta:hover {
-    color: var(--cor-fundo);
+    color: var(--tema-realce);
   }
 }
 
@@ -1129,13 +1149,13 @@ body {
   max-width: 78ch;
   font-size: 15px;
   line-height: 1.65;
-  color: var(--cor-tinta-suave);
+  color: var(--tema-tinta-suave);
 }
 
 .faq__resposta a {
   text-decoration: underline;
   text-underline-offset: 3px;
-  text-decoration-color: var(--cor-fundo);
+  text-decoration-color: var(--tema-realce);
 }
 
 /* 6.9 Contato */
@@ -1160,17 +1180,17 @@ body {
 
 .contato__intro {
   padding-bottom: var(--e-4);
-  border-bottom: 1px solid rgb(255 255 255 / 0.22);
+  border-bottom: 1px solid var(--tema-linha);
   font-size: 15px;
   line-height: 1.65;
-  color: rgb(255 255 255 / 0.7);
+  color: var(--tema-tinta-suave);
 }
 
 .contato__lista li {
   display: grid;
   gap: 2px;
   padding-block: var(--e-3);
-  border-bottom: 1px solid rgb(255 255 255 / 0.22);
+  border-bottom: 1px solid var(--tema-linha);
   font-size: 16px;
 }
 
@@ -1179,7 +1199,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgb(255 255 255 / 0.55);
+  color: var(--tema-realce);
 }
 
 .contato__lista a {
@@ -1196,8 +1216,6 @@ body {
 /* 6.10 Rodapé */
 .rodape {
   padding-block: var(--e-6);
-  background: var(--botao-preto);
-  color: #fff;
 }
 
 .rodape__grade {
@@ -1221,13 +1239,13 @@ body {
 
 .rodape__nav a {
   text-decoration: none;
-  color: rgb(255 255 255 / 0.75);
-  transition: color var(--duracao) var(--curva);
+  color: var(--tema-tinta-suave);
+  transition: color var(--duracao-cor) var(--curva-cor);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .rodape__nav a:hover {
-    color: #fff;
+    color: var(--tema-tinta);
   }
 }
 
@@ -1235,11 +1253,11 @@ body {
 .rodape__direitos {
   grid-column: 1 / -1;
   padding-top: var(--e-4);
-  border-top: 1px solid rgb(255 255 255 / 0.14);
+  border-top: 1px solid var(--tema-linha);
   font-size: 13px;
   line-height: 1.6;
   font-style: normal;
-  color: rgb(255 255 255 / 0.55);
+  color: var(--tema-tinta-suave);
 }
 
 .rodape__direitos {

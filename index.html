@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;700&display=swap">
 
-  <link rel="stylesheet" href="assets/css/style.css?v=3">
+  <link rel="stylesheet" href="assets/css/style.css?v=6">
 </head>
 <body>
 
@@ -31,7 +31,7 @@
   </header>
 
   <main id="conteudo">
-    <section class="hero">
+    <section class="hero" data-tema="azul">
       <div class="hero__grade" role="presentation"></div>
       <img class="hero__retrato" src="assets/img/rodrigo.webp" alt="Rodrigo" width="728" height="684">
 
@@ -91,7 +91,7 @@
     </section>
 
     <!-- Faixa de logos ------------------------------------------- -->
-    <section class="faixa" aria-label="Clientes atendidos">
+    <section class="faixa" data-tema="claro" aria-label="Clientes atendidos">
       <div class="faixa__trilho">
         <ul class="faixa__lista">
           <li><img src="assets/img/logos_clientes/01_1_5x.webp" alt="Colline de France" loading="lazy"></li>
@@ -117,7 +117,7 @@
     </section>
 
     <!-- 02. SOBRE ------------------------------------------------ -->
-    <section class="secao secao--areia" id="sobre">
+    <section class="secao" data-tema="claro" id="sobre">
       <div class="container">
         <div class="sobre">
           <div class="regua" data-revelar>
@@ -201,7 +201,7 @@
     </section>
 
     <!-- 03. SERVIÇOS ---------------------------------------------- -->
-    <section class="secao secao--areia" id="servicos">
+    <section class="secao" data-tema="claro" id="servicos">
       <div class="container">
         <div class="regua" data-revelar>
           <p class="tag">Serviços</p>
@@ -371,7 +371,7 @@
     </section>
 
     <!-- 05. CASES -------------------------------------------------- -->
-    <section class="secao secao--areia" id="cases">
+    <section class="secao" data-tema="claro" id="cases">
       <div class="container">
         <div class="regua" data-revelar>
           <p class="tag">Clientes</p>
@@ -507,7 +507,7 @@
     </section>
 
     <!-- 07. CITAÇÃO ------------------------------------------------ -->
-    <section class="citacao">
+    <section class="citacao" data-tema="preto">
       <div class="container citacao__grade">
         <div class="regua">
           <p class="tag">Manifesto</p>
@@ -552,7 +552,7 @@
     </section>
 
     <!-- 08. FAQ ---------------------------------------------------- -->
-    <section class="secao secao--areia" id="faq">
+    <section class="secao" data-tema="claro" id="faq">
       <div class="container">
         <div class="regua" data-revelar>
           <p class="tag">Dúvidas frequentes</p>
@@ -650,7 +650,7 @@
     </section>
 
     <!-- 09. CONTATO ------------------------------------------------ -->
-    <section class="secao secao--azul" id="contato">
+    <section class="secao" data-tema="azul" id="contato">
       <div class="container">
         <div class="regua" data-revelar>
           <p class="tag">Contato</p>
@@ -741,7 +741,7 @@
   </main>
 
   <!-- 10. RODAPÉ --------------------------------------------------- -->
-  <footer class="rodape">
+  <footer class="rodape" data-tema="preto">
     <div class="container rodape__grade">
       <img class="rodape__logo" src="assets/img/logo_branca.svg" alt="São Miguel Engenharia &amp; Arquitetura" width="56" height="56" loading="lazy">
 
@@ -786,6 +786,6 @@
   }
   </script>
 
-  <script src="assets/js/main.js?v=3" defer></script>
+  <script src="assets/js/main.js?v=6" defer></script>
 </body>
 </html>
