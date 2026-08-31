@@ -136,6 +136,17 @@
       }
     );
 
+    /* Cortina do rodapé: alterna com a rolagem, para descer de volta quando
+       o visitante sobe a página. */
+    var rodape = document.querySelector('.rodape');
+    if (rodape && 'IntersectionObserver' in window) {
+      new IntersectionObserver(function (entradas) {
+        entradas.forEach(function (entrada) {
+          rodape.classList.toggle('esta-no-fim', entrada.isIntersecting);
+        });
+      }, { threshold: 0.45 }).observe(rodape);
+    }
+
     /* A citação é a única que não é de uma vez só: a faixa de observação
        fica no miolo da tela, para as palavras acenderem já perto do centro,
        e o estado é retirado na saída para o efeito rodar de novo na volta. */

@@ -1229,8 +1229,34 @@ body::before {
 }
 
 /* 6.10 Rodapé */
+/* Cortina preta que sobe ao chegar no fim da página e desce ao subir de
+   volta, para o rodapé ganhar peso quando é ele o assunto. */
 .rodape {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   padding-block: var(--e-6);
+}
+
+.rodape::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--botao-preto);
+  translate: 0 100%;
+  transition: translate 0.8s var(--curva);
+}
+
+.rodape.esta-no-fim::before {
+  translate: 0 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rodape::before {
+    translate: 0 0;
+    transition: none;
+  }
 }
 
 .rodape__grade {
