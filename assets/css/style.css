@@ -56,6 +56,21 @@
   --tema-malha: 0;
   /* Preto sobre fundo claro ou azul; azul sobre fundo preto. */
   --tema-botao: var(--botao-preto);
+
+  /* Card de serviço. Sobre fundo escuro ele é preto com texto claro, e o
+     hover inverte para branco. No tema claro os papéis se trocam. */
+  --card-fundo: var(--botao-preto);
+  --card-tinta: #ffffff;
+  --card-suave: rgb(255 255 255 / 0.7);
+  --card-linha: rgb(255 255 255 / 0.18);
+  --card-realce: rgb(255 255 255 / 0.7);
+  --card-marca: rgb(255 255 255 / 0.5);
+
+  --card-hover: #ffffff;
+  --card-hover-tinta: var(--cor-tinta);
+  --card-hover-suave: var(--cor-tinta-suave);
+  --card-hover-realce: var(--cor-fundo);
+  --card-hover-marca: var(--cor-verde);
 }
 
 :root[data-tema="claro"] {
@@ -65,6 +80,19 @@
   --tema-realce: var(--cor-fundo);
   --tema-linha: var(--cor-areia-2);
   --tema-malha: 1;
+
+  --card-fundo: #ffffff;
+  --card-tinta: var(--cor-tinta);
+  --card-suave: var(--cor-tinta-suave);
+  --card-linha: var(--cor-areia-2);
+  --card-realce: var(--cor-fundo);
+  --card-marca: var(--cor-verde);
+
+  --card-hover: var(--cor-fundo);
+  --card-hover-tinta: #ffffff;
+  --card-hover-suave: rgb(255 255 255 / 0.75);
+  --card-hover-realce: rgb(255 255 255 / 0.65);
+  --card-hover-marca: #ffffff;
 }
 
 :root[data-tema="preto"] {
@@ -710,8 +738,9 @@ body::before {
   display: flex;
   flex-direction: column;
   padding: var(--e-4) var(--e-4) var(--e-5);
-  background: #fff;
-  border: 1px solid var(--cor-areia-2);
+  background: var(--card-fundo);
+  color: var(--card-tinta);
+  border: 1px solid var(--card-linha);
   /* opacity e translate pertencem à revelação; a elevação do hover usa top
      para não disputar o translate com ela. */
   transition: opacity 0.7s var(--curva) var(--atraso-revelar, 0s),
@@ -743,8 +772,7 @@ body::before {
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.1em;
-  color: var(--cor-fundo);
-  opacity: 0.55;
+  color: var(--card-realce);
 }
 
 /* Carimbo do card: categoria à esquerda, índice à direita, fechados por um
@@ -756,13 +784,13 @@ body::before {
   margin-bottom: var(--e-3);
   padding-right: var(--e-4);
   padding-bottom: var(--e-2);
-  border-bottom: 1px solid var(--cor-areia-2);
+  border-bottom: 1px solid var(--card-linha);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.12em;
   line-height: 1.4;
   text-transform: uppercase;
-  color: var(--cor-fundo);
+  color: var(--card-realce);
 }
 
 .servico__titulo {
@@ -778,7 +806,7 @@ body::before {
   margin-top: var(--e-2);
   font-size: 15px;
   line-height: 1.6;
-  color: var(--cor-tinta-suave);
+  color: var(--card-suave);
 }
 
 .servico__itens {
@@ -810,7 +838,7 @@ body::before {
   content: "";
   position: absolute;
   left: 0;
-  background: var(--cor-verde);
+  background: var(--card-marca);
   transition:
     background-color var(--duracao-cor) var(--curva-cor),
     width var(--duracao) var(--curva) var(--atraso),
@@ -832,29 +860,28 @@ body::before {
 @media (hover: hover) and (pointer: fine) {
   /* O card inteiro se inverte para o azul da marca. */
   .servico:hover {
-    background: var(--cor-fundo);
-    border-color: var(--cor-fundo);
-    color: #fff;
+    background: var(--card-hover);
+    border-color: var(--card-hover);
+    color: var(--card-hover-tinta);
     top: -4px;
   }
 
   .servico:hover .servico__categoria {
-    color: rgb(255 255 255 / 0.65);
-    border-bottom-color: rgb(255 255 255 / 0.25);
+    color: var(--card-hover-realce);
+    border-bottom-color: var(--card-hover-realce);
   }
 
   .servico:hover .servico__indice {
-    color: #fff;
-    opacity: 0.5;
+    color: var(--card-hover-realce);
   }
 
   .servico:hover .servico__descricao {
-    color: rgb(255 255 255 / 0.75);
+    color: var(--card-hover-suave);
   }
 
   .servico:hover .servico__itens li::before,
   .servico:hover .servico__itens li::after {
-    background: #fff;
+    background: var(--card-hover-marca);
   }
 
   /* No hover a cota se estende e o tique corre até a outra ponta. */
