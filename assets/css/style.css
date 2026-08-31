@@ -667,46 +667,44 @@ body {
 /* 6.4 Serviços — grade de 3 colunas com uma imagem intercalada.
    A seção toma emprestada a linguagem de prancha técnica: malha modular
    ao fundo e cruzetas nos encontros da grade. */
-/* Cruzeta sobre o vértice superior esquerdo de cada célula: nos encontros
-   internos elas formam a marcação cheia; nas bordas, meias-marcas. */
-.servico::after,
-.servico-imagem::after {
-  content: "";
-  position: absolute;
-  z-index: 2;
-  top: 0;
-  left: 0;
-  width: 13px;
-  height: 13px;
-  translate: -50% -50%;
-  background:
-    linear-gradient(var(--cor-fundo) 0 0) center / 13px 1px no-repeat,
-    linear-gradient(var(--cor-fundo) 0 0) center / 1px 13px no-repeat;
-  opacity: 0.4;
-  pointer-events: none;
-}
-
-
+/* Cards soltos sobre a malha, e não células de uma tabela: o vão deixa a
+   retícula aparecer entre eles. */
 .servicos {
   display: grid;
-  gap: 1px;
+  gap: var(--e-3);
   grid-template-columns: repeat(3, 1fr);
-  background: var(--cor-areia-2);
-  border: 1px solid var(--cor-areia-2);
 }
 
 .servico {
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: var(--e-5) var(--e-4);
-  background: var(--cor-areia);
-  transition: background var(--duracao) var(--curva);
+  padding: var(--e-4);
+  background: #fff;
+  border: 1px solid var(--cor-areia-2);
+  transition: border-color var(--duracao) var(--curva),
+              translate var(--duracao) var(--curva);
+}
+
+/* Régua que se desenha da esquerda para a direita no topo do card. */
+.servico::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  height: 2px;
+  background: var(--cor-fundo);
+  scale: 0 1;
+  transform-origin: left;
+  transition: scale var(--duracao) var(--curva);
 }
 
 .servico-imagem {
   position: relative;
+  overflow: hidden;
   background: var(--cor-areia-2);
+  border: 1px solid var(--cor-areia-2);
 }
 
 .servico-imagem img {
@@ -724,12 +722,17 @@ body {
   font-weight: 700;
   letter-spacing: 0.1em;
   color: var(--cor-fundo);
-  opacity: 0.5;
+  opacity: 0.55;
 }
 
+/* Carimbo do card: categoria à esquerda, índice à direita, fechados por um
+   fio — a faixa de identificação de uma prancha. */
 .servico__categoria {
-  margin-bottom: var(--e-2);
+  min-height: 2.4em;
+  margin-bottom: var(--e-3);
   padding-right: var(--e-4);
+  padding-bottom: var(--e-2);
+  border-bottom: 1px solid var(--cor-areia-2);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -803,7 +806,12 @@ body {
 
 @media (hover: hover) and (pointer: fine) {
   .servico:hover {
-    background: #fff;
+    border-color: var(--cor-fundo);
+    translate: 0 -4px;
+  }
+
+  .servico:hover::before {
+    scale: 1 1;
   }
 
   /* No hover a cota se estende e o tique corre até a outra ponta. */
