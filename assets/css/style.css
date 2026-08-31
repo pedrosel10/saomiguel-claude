@@ -864,8 +864,11 @@ body::before {
 }
 
 /* 6.5 Faixa de logos — rolagem infinita */
+/* Faixa opaca: uma tira branca entre o azul do hero e o areia do Sobre. */
 .faixa {
   padding-block: var(--e-4);
+  background: #fff;
+  color: var(--cor-tinta);
   overflow: hidden;
 }
 
