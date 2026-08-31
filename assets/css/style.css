@@ -1040,12 +1040,20 @@ body::before {
   z-index: 1;
 }
 
+/* Dois trechos na curva: no mobile a frase cresce com a largura da tela
+   (8.6vw), e a partir do desktop volta a acompanhar a coluna (4.8vw). */
 .citacao__texto {
   max-width: 19ch;
-  font-size: clamp(32px, 4.8vw, 72px);
+  font-size: clamp(38px, 8.6vw, 72px);
   line-height: 1.08;
   letter-spacing: -0.045em;
   text-wrap: balance;
+}
+
+@media (min-width: 900px) {
+  .citacao__texto {
+    font-size: clamp(48px, 4.8vw, 72px);
+  }
 }
 
 .citacao__palavra {
