@@ -12,6 +12,10 @@
   --botao-preto: #000;
   --curva: cubic-bezier(0.85, 0, 0.15, 1);
   --duracao: 0.65s;
+  /* Trocas de cor precisam ser curtas: numa transição longa o fundo chega
+     ao azul antes do texto clarear, e o meio do caminho fica ilegível. */
+  --curva-cor: cubic-bezier(0.2, 0, 0, 1);
+  --duracao-cor: 0.18s;
 
   --quadrado: 230px;
   --vao: 6px;
@@ -677,15 +681,20 @@ body {
 
 .servico {
   position: relative;
+  top: 0;
   display: flex;
   flex-direction: column;
   padding: var(--e-4) var(--e-4) var(--e-5);
   background: #fff;
   border: 1px solid var(--cor-areia-2);
-  transition: background var(--duracao) var(--curva),
-              border-color var(--duracao) var(--curva),
-              color var(--duracao) var(--curva),
-              translate var(--duracao) var(--curva);
+  /* opacity e translate pertencem à revelação; a elevação do hover usa top
+     para não disputar o translate com ela. */
+  transition: opacity 0.7s var(--curva) var(--atraso-revelar, 0s),
+              translate 0.7s var(--curva) var(--atraso-revelar, 0s),
+              background var(--duracao-cor) var(--curva-cor),
+              border-color var(--duracao-cor) var(--curva-cor),
+              color var(--duracao-cor) var(--curva-cor),
+              top 0.24s var(--curva-cor);
 }
 
 .servico-imagem {
@@ -716,8 +725,8 @@ body {
 /* Carimbo do card: categoria à esquerda, índice à direita, fechados por um
    fio — a faixa de identificação de uma prancha. */
 .servico__categoria {
-  transition: color var(--duracao) var(--curva),
-              border-color var(--duracao) var(--curva);
+  transition: color var(--duracao-cor) var(--curva-cor),
+              border-color var(--duracao-cor) var(--curva-cor);
   min-height: 2.4em;
   margin-bottom: var(--e-3);
   padding-right: var(--e-4);
@@ -740,7 +749,7 @@ body {
 }
 
 .servico__descricao {
-  transition: color var(--duracao) var(--curva);
+  transition: color var(--duracao-cor) var(--curva-cor);
   margin-top: var(--e-2);
   font-size: 15px;
   line-height: 1.6;
@@ -777,23 +786,22 @@ body {
   position: absolute;
   left: 0;
   background: var(--cor-verde);
-  transition-duration: var(--duracao);
-  transition-timing-function: var(--curva);
-  transition-delay: var(--atraso);
+  transition:
+    background-color var(--duracao-cor) var(--curva-cor),
+    width var(--duracao) var(--curva) var(--atraso),
+    translate var(--duracao) var(--curva) var(--atraso);
 }
 
 .servico__itens li::before {
   top: 0.72em;
   width: 13px;
   height: 1px;
-  transition-property: width, background-color;
 }
 
 .servico__itens li::after {
   top: calc(0.72em - 3px);
   width: 1px;
   height: 7px;
-  transition-property: translate, background-color;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -802,7 +810,7 @@ body {
     background: var(--cor-fundo);
     border-color: var(--cor-fundo);
     color: #fff;
-    translate: 0 -4px;
+    top: -4px;
   }
 
   .servico:hover .servico__categoria {
@@ -1499,24 +1507,27 @@ body {
 /* 8. Utilitários --------------------------------------------- */
 /* Revelação na entrada. Começa neutro para que, sem JS, nada fique oculto:
    a classe só é adicionada depois que o observador assume o controle. */
-.pronto-para-revelar [data-revelar] {
+/* :where() zera a especificidade: assim um componente pode declarar o
+   próprio transition sem que esta regra o sobrescreva. */
+:where(.pronto-para-revelar [data-revelar]) {
   opacity: 0;
   translate: 0 22px;
-  transition: opacity 0.7s var(--curva), translate 0.7s var(--curva);
+  transition: opacity 0.7s var(--curva) var(--atraso-revelar, 0s),
+              translate 0.7s var(--curva) var(--atraso-revelar, 0s);
 }
 
-.pronto-para-revelar [data-revelar].esta-visivel {
+:where(.pronto-para-revelar [data-revelar].esta-visivel) {
   opacity: 1;
   translate: 0 0;
 }
 
 /* Escalona os itens de uma mesma grade, para não subirem em bloco. */
 .servico:nth-child(2),
-.case:nth-child(2) { transition-delay: 0.08s; }
+.case:nth-child(2) { --atraso-revelar: 0.08s; }
 .servico:nth-child(3),
-.case:nth-child(3) { transition-delay: 0.16s; }
+.case:nth-child(3) { --atraso-revelar: 0.16s; }
 .servico:nth-child(4),
-.case:nth-child(4) { transition-delay: 0.24s; }
+.case:nth-child(4) { --atraso-revelar: 0.24s; }
 
 @media (prefers-reduced-motion: reduce) {
   .pronto-para-revelar [data-revelar] {
