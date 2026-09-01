@@ -597,31 +597,35 @@ body::before {
 }
 
 .hero__cobre {
-  animation: heroQuadrado 0.70s var(--curva-entrada) both;
+  animation: heroQuadrado 1.00s var(--curva-entrada) both;
 }
 
 /* Varredura na diagonal: a ordem segue linha + coluna, não a do HTML. */
-.hero__cobre:nth-child(1) { animation-delay: 0.40s; }
-.hero__cobre:nth-child(2) { animation-delay: 0.47s; }
-.hero__cobre:nth-child(3) { animation-delay: 0.54s; }
-.hero__cobre:nth-child(4) { animation-delay: 0.54s; }
-.hero__cobre:nth-child(5) { animation-delay: 0.61s; }
-.hero__cobre:nth-child(6) { animation-delay: 0.68s; }
+.hero__cobre:nth-child(1) { animation-delay: 1.60s; }
+.hero__cobre:nth-child(2) { animation-delay: 1.69s; }
+.hero__cobre:nth-child(3) { animation-delay: 1.78s; }
+.hero__cobre:nth-child(4) { animation-delay: 1.78s; }
+.hero__cobre:nth-child(5) { animation-delay: 1.87s; }
+.hero__cobre:nth-child(6) { animation-delay: 1.96s; }
 
 /* A ordem da entrada: primeiro o retrato, depois os quadrados se montando,
-   o título, a descrição, os detalhes em volta e o botão por último. */
-.hero__retrato     { animation: heroRetrato 1.40s var(--curva-entrada) 0.15s both; }
-.hero__linha:nth-child(1) > span { animation: heroLinhaDesce 1.3s var(--curva-entrada) 0.80s both; }
-.hero__linha:nth-child(2) > span { animation: heroLinhaDesce 1.3s var(--curva-entrada) 0.92s both; }
-.hero__descricao   { animation: heroSobe 1.2s var(--curva-entrada) 1.05s both; }
-.site-header__logo { animation: heroSobe 1.1s var(--curva-entrada) 1.15s both; }
-.hero__local       { animation: heroSobe 1.1s var(--curva-entrada) 1.20s both; }
-.hero__assinatura  { animation: heroSobe 1.2s var(--curva-entrada) 1.46s both; }
-.hero__acao .botao { animation: heroSobe 1.1s var(--curva-entrada) 1.56s both; }
+   o título, a descrição, os detalhes em volta e o botão por último.
 
-.hero__numeros .card-numero:nth-child(1) { animation: heroSobe 1.1s var(--curva-entrada) 1.26s both; }
-.hero__numeros .card-numero:nth-child(2) { animation: heroSobe 1.1s var(--curva-entrada) 1.33s both; }
-.hero__numeros .card-numero:nth-child(3) { animation: heroSobe 1.1s var(--curva-entrada) 1.40s both; }
+   Os quadrados só arrancam depois que o retrato assenta (0,15s + 1,4s = 1,55s),
+   e o título espera a varredura ir bem adiantada. Se mexer na duração do
+   retrato, os atrasos abaixo precisam acompanhar. */
+.hero__retrato     { animation: heroRetrato 1.40s var(--curva-entrada) 0.15s both; }
+.hero__linha:nth-child(1) > span { animation: heroLinhaDesce 1.3s var(--curva-entrada) 2.20s both; }
+.hero__linha:nth-child(2) > span { animation: heroLinhaDesce 1.3s var(--curva-entrada) 2.32s both; }
+.hero__descricao   { animation: heroSobe 1.2s var(--curva-entrada) 2.50s both; }
+.site-header__logo { animation: heroSobe 1.1s var(--curva-entrada) 2.60s both; }
+.hero__local       { animation: heroSobe 1.1s var(--curva-entrada) 2.65s both; }
+.hero__assinatura  { animation: heroSobe 1.2s var(--curva-entrada) 2.94s both; }
+.hero__acao .botao { animation: heroSobe 1.1s var(--curva-entrada) 3.04s both; }
+
+.hero__numeros .card-numero:nth-child(1) { animation: heroSobe 1.1s var(--curva-entrada) 2.72s both; }
+.hero__numeros .card-numero:nth-child(2) { animation: heroSobe 1.1s var(--curva-entrada) 2.79s both; }
+.hero__numeros .card-numero:nth-child(3) { animation: heroSobe 1.1s var(--curva-entrada) 2.86s both; }
 
 @media (prefers-reduced-motion: reduce) {
   .hero__cobre,
