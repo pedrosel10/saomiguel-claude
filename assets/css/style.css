@@ -32,6 +32,7 @@
   --cor-tinta-suave: #5b544c;
 
   --fonte-base: "Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --fonte-cursiva: "Great Vibes", "Apple Chancery", "Segoe Script", cursive;
   --largura-max: 1200px;
   --espaco: 1rem;
 
@@ -994,29 +995,38 @@ body::before {
   will-change: scale, translate;
 }
 
-/* Véu leve. Sem texto para proteger, ele existe só para a foto assentar no
-   preto da dobra em vez de recortar contra ele. */
+/* Véu. O escurecimento uniforme é fraco de propósito: serve à cursiva no
+   meio da foto, onde os galhos deixam o fundo picotado, sem lavar a imagem.
+   O vinhete fecha as bordas para a foto assentar no preto da dobra. */
 .marco__veu {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to top, rgb(0 0 0 / 0.5) 0%, rgb(0 0 0 / 0) 42%),
-    radial-gradient(120% 90% at 50% 45%, rgb(0 0 0 / 0) 55%, rgb(0 0 0 / 0.34) 100%);
+    linear-gradient(rgb(0 0 0 / 0.2), rgb(0 0 0 / 0.2)),
+    radial-gradient(120% 90% at 50% 45%, rgb(0 0 0 / 0) 52%, rgb(0 0 0 / 0.42) 100%);
 }
 
-/* Legenda de foto, não copy: situa o lugar e sai do caminho. */
-.marco__legenda {
+/* Único texto da dobra: o nome das duas cidades, no centro. */
+.marco__assinatura {
   position: absolute;
   z-index: 2;
   left: 50%;
-  bottom: clamp(20px, 3.5vh, 34px);
-  translate: -50% 0;
-  width: min(var(--largura-max), 100% - 2 * var(--espaco));
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgb(255 255 255 / 0.62);
+  top: 50%;
+  translate: -50% -50%;
+  /* Sem isto o elemento absoluto herda como espaço só a metade da dobra que
+     sobra à direita do left: 50%, e o nome quebra sozinho. */
+  width: max-content;
+  max-width: calc(100% - 2 * var(--espaco));
+  font-family: var(--fonte-cursiva);
+  font-size: clamp(46px, 8.4vw, 128px);
+  font-weight: 400;
+  /* A cursiva tem hastes altas e caudas longas: entrelinha apertada as
+     empilharia se quebrasse. */
+  line-height: 1.24;
+  text-align: center;
+  color: #fff;
+  /* Os galhos passam por trás do texto; a sombra sustenta o traço fino. */
+  text-shadow: 0 2px 30px rgb(0 0 0 / 0.55);
 }
 
 @media (max-width: 720px) {
@@ -1026,10 +1036,6 @@ body::before {
 
   .marco__moldura {
     height: calc(62% + 38% * var(--abertura));
-  }
-
-  .marco__legenda {
-    font-size: 10px;
   }
 }
 
