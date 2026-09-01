@@ -94,34 +94,145 @@
     });
   }
 
+  /* Um único laço de rolagem para todos os efeitos contínuos: cada um se
+     inscreve aqui em vez de pendurar o próprio listener, e o quadro é
+     agendado uma vez só.
+
+     Os efeitos não leem a rolagem do navegador: leem `rolagemSuave`, que
+     persegue a rolagem real quadro a quadro. Sem isso, quem rola com a
+     rodinha do mouse (e no Safari é sempre assim, que não interpola o giro
+     como o trackpad) vê a imagem saltar de 100 em 100 pixels, um degrau por
+     entalhe. Perseguindo, cada salto vira um deslize curto — e, de quebra,
+     a rolagem contínua ganha uma inércia leve. */
+  var efeitosDeRolagem = [];
+  var rolagemSuave = 0;
+  var rodando = false;
+  var instanteAnterior = 0;
+
+  /* Fração do caminho percorrida a cada quadro de 60 Hz: dá uma constante de
+     tempo de ~130 ms, curta o bastante para não parecer que a página arrasta. */
+  var PERSEGUICAO = 0.12;
+
+  function aoRolar(efeito) {
+    efeitosDeRolagem.push(efeito);
+  }
+
+  function rodarEfeitos() {
+    /* A diferença entre a rolagem real e a suave é o quanto o efeito está
+       atrasado; quem mede posições na tela corrige por ela. */
+    var atraso = window.scrollY - rolagemSuave;
+    for (var i = 0; i < efeitosDeRolagem.length; i++) efeitosDeRolagem[i](rolagemSuave, atraso);
+  }
+
+  function quadro(agora) {
+    var dt = instanteAnterior ? Math.min(agora - instanteAnterior, 64) : 16.7;
+    instanteAnterior = agora;
+
+    var alvo = window.scrollY;
+    var resto = alvo - rolagemSuave;
+
+    /* Salto grande não é rolagem: é âncora, recarga ou volta no histórico.
+       Perseguir isso faria a página inteira deslizar sozinha. */
+    if (Math.abs(resto) > window.innerHeight * 1.5 || Math.abs(resto) < 0.3) {
+      rolagemSuave = alvo;
+    } else {
+      /* Elevado a dt: a mesma constante de tempo em 60, 120 ou 144 Hz. */
+      rolagemSuave += resto * (1 - Math.pow(1 - PERSEGUICAO, dt / 16.7));
+    }
+
+    rodarEfeitos();
+
+    if (rolagemSuave !== window.scrollY) {
+      requestAnimationFrame(quadro);
+    } else {
+      rodando = false;
+    }
+  }
+
+  function agendarQuadro() {
+    if (rodando) return;
+    rodando = true;
+    instanteAnterior = 0;
+    requestAnimationFrame(quadro);
+  }
+
+  /* Põe os efeitos na posição atual sem animar. */
+  function sincronizar() {
+    rolagemSuave = window.scrollY;
+    rodarEfeitos();
+  }
+
+  function ligarLacoDeRolagem() {
+    if (!efeitosDeRolagem.length) return;
+
+    window.addEventListener('scroll', agendarQuadro, { passive: true });
+    window.addEventListener('resize', sincronizar);
+
+    /* Aba oculta não roda requestAnimationFrame: a rolagem que acontece
+       enquanto ela está escondida deixa os efeitos parados num estado antigo,
+       e o quadro pedido lá atrás nunca chega para destravar o laço. Ao voltar
+       à tela, reposiciona de uma vez — animar o acúmulo seria um salto. */
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible') {
+        rodando = false;
+        sincronizar();
+      }
+    });
+
+    /* Volta pelo histórico: a página é restaurada com a rolagem de antes,
+       sem disparar scroll. */
+    window.addEventListener('pageshow', sincronizar);
+
+    sincronizar();
+  }
+
+  function limitar(n, minimo, maximo) {
+    return Math.min(Math.max(n, minimo), maximo);
+  }
+
   /* Paralaxe da arte de fundo: ela desliza para baixo conforme a página
      rola, numa fração do percurso, para o fundo não parecer colado à tela.
      O curso é proporcional à altura da janela e cabe na sobra que a camada
      tem em cima e embaixo. */
   function acompanharParalaxe() {
     var raiz = document.documentElement;
-    var agendado = false;
 
-    function atualizar() {
-      agendado = false;
-
+    aoRolar(function (rolagem) {
       var percurso = raiz.scrollHeight - window.innerHeight;
       if (percurso <= 0) return;
 
-      var avanco = Math.min(Math.max(window.scrollY / percurso, 0), 1);
+      var avanco = limitar(rolagem / percurso, 0, 1);
       var curso = window.innerHeight * 0.22;
 
       raiz.style.setProperty('--deslize-fundo', (avanco * curso).toFixed(1) + 'px');
-    }
+    });
+  }
 
-    window.addEventListener('scroll', function () {
-      if (agendado) return;
-      agendado = true;
-      requestAnimationFrame(atualizar);
-    }, { passive: true });
+  /* Marco: a moldura abre conforme a seção atravessa a tela, e a foto deriva
+     dentro dela. `avanco` vai de 0 (a seção encosta na base da tela) a 1 (ela
+     acabou de sair por cima), e as duas animações são fatias desse mesmo
+     percurso — uma conta só, um valor só lido do layout por quadro. */
+  function acompanharMarco() {
+    var marco = document.querySelector('.marco');
+    if (!marco) return;
 
-    window.addEventListener('resize', atualizar);
-    atualizar();
+    aoRolar(function (rolagem, atraso) {
+      var caixa = marco.getBoundingClientRect();
+      var altura = window.innerHeight;
+      var percurso = altura + caixa.height;
+      if (percurso <= 0) return;
+
+      /* O rect vem da rolagem real; somar o atraso devolve onde a seção
+         estaria na rolagem suave, sem precisar cachear a posição no documento
+         (que muda quando as imagens carregam). */
+      var topo = caixa.top + atraso;
+      var avanco = limitar((altura - topo) / percurso, 0, 1);
+
+      /* A abertura se completa no primeiro terço da entrada e fica aberta:
+         fechar de novo na saída daria a impressão de erro, não de efeito. */
+      marco.style.setProperty('--abertura', limitar(avanco / 0.34, 0, 1).toFixed(3));
+      marco.style.setProperty('--passo', (avanco * 2 - 1).toFixed(3));
+    });
   }
 
   function observar(alvos, aoEntrar, margem) {
@@ -156,6 +267,8 @@
     document.querySelectorAll('.faq__item').forEach(prepararGaveta);
 
     acompanharParalaxe();
+    acompanharMarco();
+    ligarLacoDeRolagem();
 
     /* Só agora os elementos podem começar invisíveis: se o script falhar
        antes daqui, a página continua legível. */
