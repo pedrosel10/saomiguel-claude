@@ -16,3 +16,5 @@ node_modules/
 
 # Arte-fonte pesada: no site vai a versão otimizada em WebP
 assets/img/*.png
+# ...menos o favicon, que precisa ser PNG e precisa ir para o servidor.
+!assets/img/favicon.png
