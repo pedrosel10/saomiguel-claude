@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inria+Serif:wght@700&family=Instrument+Sans:wght@400;500;700&display=swap">
 
-  <link rel="stylesheet" href="assets/css/style.css?v=48">
+  <link rel="stylesheet" href="assets/css/style.css?v=55">
 </head>
 <body>
 
@@ -32,7 +32,16 @@
 
   <main id="conteudo">
     <section class="hero" data-tema="azul">
-      <div class="hero__grade" role="presentation"></div>
+      <!-- Um cobridor por quadrado, na cor da dobra: eles somem em sequência e
+           a imagem parece se montar. A máscara do pai já os recorta. -->
+      <div class="hero__grade" role="presentation">
+        <span class="hero__cobre"></span>
+        <span class="hero__cobre"></span>
+        <span class="hero__cobre"></span>
+        <span class="hero__cobre"></span>
+        <span class="hero__cobre"></span>
+        <span class="hero__cobre"></span>
+      </div>
       <img class="hero__retrato" src="assets/img/rodrigo.webp" alt="Rodrigo" width="728" height="684">
 
       <div class="hero__numeros container">
@@ -52,8 +61,9 @@
       </div>
 
       <div class="hero__conteudo container">
-        <!-- Os dois espaços rígidos dão o avanço estético da segunda linha. -->
-        <h1 class="hero__titulo">Engenharia<br><span class="hero__avanco">&nbsp;&nbsp;</span>&amp; Construção</h1>
+        <!-- Cada linha tem a própria máscara: o texto desce por dentro dela na
+             entrada. Os dois espaços rígidos dão o avanço estético da segunda. -->
+        <h1 class="hero__titulo"><span class="hero__linha"><span>Engenharia</span></span><span class="hero__linha"><span><span class="hero__avanco">&nbsp;&nbsp;</span>&amp; Construção</span></span></h1>
         <div class="hero__acao">
           <h2 class="hero__descricao">
             Projeto arquitetônico, execução de obras, engenharia estrutural e
@@ -807,6 +817,6 @@
   }
   </script>
 
-  <script src="assets/js/main.js?v=48" defer></script>
+  <script src="assets/js/main.js?v=55" defer></script>
 </body>
 </html>

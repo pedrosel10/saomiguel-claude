@@ -11,6 +11,9 @@
   --cor-fundo-escuro: #0b2f8a;
   --botao-preto: #000;
   --curva: cubic-bezier(0.85, 0, 0.15, 1);
+  /* Entrada: sai rápido e assenta devagar. A --curva é ease-in-out forte e
+     segura o começo, o que faz um fade parecer travado. */
+  --curva-entrada: cubic-bezier(0.22, 1, 0.36, 1);
   --duracao: 0.65s;
   /* Trocas de cor precisam ser curtas: numa transição longa o fundo chega
      ao azul antes do texto clarear, e o meio do caminho fica ilegível. */
@@ -270,6 +273,21 @@ body::before {
   letter-spacing: -0.06em;
 }
 
+/* Máscara por linha. O recorte é justo em cima, que é a borda por onde o
+   texto entra; embaixo ele ganha folga, senão a cedilha de "Construção"
+   seria cortada. A margem negativa devolve a folga ao layout, para o título
+   ocupar exatamente a mesma altura de antes. */
+.hero__linha {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
+.hero__linha > span {
+  display: block;
+}
+
 .hero__acao {
   position: relative;
   width: 366px;
@@ -501,6 +519,13 @@ body::before {
   height: calc(2 * var(--quadrado) + var(--vao));
   margin-inline: auto;
 
+  /* A grade de verdade só existe para posicionar os cobridores; quem desenha
+     os quadrados continua sendo a máscara. */
+  display: grid;
+  grid-template-columns: repeat(4, var(--quadrado));
+  grid-template-rows: repeat(2, var(--quadrado));
+  gap: var(--vao);
+
   background-image: url("../img/imagem-quadrados.webp");
   background-size: cover;
   background-position: center;
@@ -517,6 +542,100 @@ body::before {
     var(--passo) var(--passo),
     calc(2 * var(--passo)) var(--passo),
     calc(3 * var(--passo)) var(--passo);
+}
+
+/* Cobridores: um por quadrado, nas mesmas seis posições da máscara. Eles
+   nascem opacos na cor da dobra e somem em diagonal, de modo que a imagem
+   parece se montar quadrado a quadrado. */
+.hero__cobre {
+  background: var(--cor-fundo);
+}
+
+.hero__cobre:nth-child(1) { grid-area: 1 / 1; }
+.hero__cobre:nth-child(2) { grid-area: 1 / 2; }
+.hero__cobre:nth-child(3) { grid-area: 1 / 3; }
+.hero__cobre:nth-child(4) { grid-area: 2 / 2; }
+.hero__cobre:nth-child(5) { grid-area: 2 / 3; }
+.hero__cobre:nth-child(6) { grid-area: 2 / 4; }
+
+/* 5.9 Entrada da primeira dobra ------------------------------------
+   Tudo em animação de CSS, e não em transição disparada por script: com
+   `both` o quadro inicial já vale durante o atraso, então nada pisca antes de
+   entrar, e se o script falhar a dobra aparece do mesmo jeito. */
+@keyframes heroSobe {
+  from { opacity: 0; translate: 0 24px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+
+/* O retrato carrega um deslocamento horizontal próprio, que a animação
+   precisa repetir — senão ele salta para o centro ao animar. */
+@keyframes heroRetrato {
+  from { opacity: 0; translate: calc(-50% - 55px) 52px; }
+  to   { opacity: 1; translate: calc(-50% - 55px) 0; }
+}
+
+@keyframes heroRetratoMovel {
+  from { opacity: 0; translate: -50% 52px; }
+  to   { opacity: 1; translate: -50% 0; }
+}
+
+@keyframes heroQuadrado {
+  to { opacity: 0; }
+}
+
+/* Sem opacidade: a linha aparece porque sai de trás da borda da máscara,
+   não porque acende.
+
+   O percurso é 100% mais uma folga: 100% é a altura da caixa de linha, mas a
+   caixa da fonte é maior que ela (116px de ascent+descent contra 106px de
+   entrelinha), então a tinta escapa por baixo e uma fatia da palavra ficava
+   à mostra com a máscara supostamente fechada. A folga em em acompanha o
+   corpo do texto, e vale também para o tamanho do mobile. */
+@keyframes heroLinhaDesce {
+  from { translate: 0 calc(-100% - 0.12em); }
+  to   { translate: 0 0; }
+}
+
+.hero__cobre {
+  animation: heroQuadrado 0.38s var(--curva-entrada) both;
+}
+
+/* Varredura na diagonal: a ordem segue linha + coluna, não a do HTML. */
+.hero__cobre:nth-child(1) { animation-delay: 0.30s; }
+.hero__cobre:nth-child(2) { animation-delay: 0.35s; }
+.hero__cobre:nth-child(3) { animation-delay: 0.40s; }
+.hero__cobre:nth-child(4) { animation-delay: 0.40s; }
+.hero__cobre:nth-child(5) { animation-delay: 0.45s; }
+.hero__cobre:nth-child(6) { animation-delay: 0.50s; }
+
+/* A ordem da entrada: primeiro o retrato, depois os quadrados se montando,
+   o título, a descrição, os detalhes em volta e o botão por último. */
+.hero__retrato     { animation: heroRetrato 0.90s var(--curva-entrada) 0.10s both; }
+.hero__linha:nth-child(1) > span { animation: heroLinhaDesce 0.9s var(--curva-entrada) 0.70s both; }
+.hero__linha:nth-child(2) > span { animation: heroLinhaDesce 0.9s var(--curva-entrada) 0.80s both; }
+.hero__descricao   { animation: heroSobe 0.9s var(--curva-entrada) 0.84s both; }
+.site-header__logo { animation: heroSobe 0.8s var(--curva-entrada) 0.94s both; }
+.hero__local       { animation: heroSobe 0.8s var(--curva-entrada) 0.98s both; }
+.hero__assinatura  { animation: heroSobe 0.9s var(--curva-entrada) 1.22s both; }
+.hero__acao .botao { animation: heroSobe 0.8s var(--curva-entrada) 1.34s both; }
+
+.hero__numeros .card-numero:nth-child(1) { animation: heroSobe 0.8s var(--curva-entrada) 1.04s both; }
+.hero__numeros .card-numero:nth-child(2) { animation: heroSobe 0.8s var(--curva-entrada) 1.10s both; }
+.hero__numeros .card-numero:nth-child(3) { animation: heroSobe 0.8s var(--curva-entrada) 1.16s both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__cobre,
+  .hero__linha > span,
+  .hero__retrato,
+  .site-header__logo,
+  .hero__local,
+  .hero__titulo,
+  .hero__descricao,
+  .hero__acao .botao,
+  .hero__assinatura,
+  .hero__numeros .card-numero {
+    animation: none;
+  }
 }
 
 /* 6. Seções ---------------------------------------------------- */
@@ -918,6 +1037,12 @@ body::before {
 /* 6.5 Faixa de logos — rolagem infinita */
 /* Faixa opaca: uma tira branca entre o azul do hero e o areia do Sobre. */
 .faixa {
+  /* Empilhada acima da dobra: o retrato é absoluto e, na entrada, começa 52px
+     mais baixo — sem isto ele passa por cima das logos, porque elemento
+     posicionado pinta na frente de irmão estático. */
+  position: relative;
+  z-index: 1;
+
   padding-block: var(--e-4);
   background: #fff;
   color: var(--cor-tinta);
@@ -1385,18 +1510,11 @@ body::before {
     --vao: 8px;
   }
 
+  /* A logo sai: no mobile ela custava ~88px de altura no topo e empurrava a
+     grade de imagens para fora da primeira tela. A marca já está no título e
+     no rodapé. */
   .site-header {
-    position: static;
-    padding-top: 32px;
-  }
-
-  .site-header .container {
-    display: flex;
-    justify-content: center;
-  }
-
-  .site-header__logo {
-    width: 56px;
+    display: none;
   }
 
   .hero {
@@ -1404,7 +1522,7 @@ body::before {
     flex-direction: column;
     align-items: center;
     height: auto;
-    padding-top: 36px;
+    padding-top: 20px;
     padding-bottom: 52px; /* espaço para o retrato, que fica absoluto */
     overflow: hidden;
     text-align: center;
@@ -1430,7 +1548,7 @@ body::before {
 
   .hero__conteudo {
     display: block;
-    margin-top: 18px;
+    margin-top: 12px;
   }
 
   /* Dimensionado para a maior linha ("& Construção") medir 330px a 390px de
@@ -1450,18 +1568,18 @@ body::before {
 
   .hero__descricao {
     width: min(100%, 275px);
-    margin: 22px auto 0;
+    margin: 18px auto 0;
     font-size: 16px;
   }
 
   /* Centralizado pelo text-align da dobra, por ser inline-flex. */
   .hero__acao .botao {
-    margin-top: 26px;
+    margin-top: 22px;
   }
 
   .hero__numeros {
     justify-content: center;
-    margin-top: 36px;
+    margin-top: 26px;
     gap: 12px;
   }
 
@@ -1480,7 +1598,7 @@ body::before {
   .card-numero[aria-hidden="true"] { display: none; }
 
   .hero__grade {
-    margin-top: 40px;
+    margin-top: 26px;
     /* A grade é mais larga que a tela. Margem automática resolveria para 0
        e anularia o align-items: center, jogando tudo para a esquerda. */
     margin-inline: 0;
@@ -1494,6 +1612,8 @@ body::before {
     width: 420px;
     max-width: none; /* o retrato transborda a tela de propósito */
     translate: -50% 0; /* sem o deslocamento de 55px: aqui a figura é centrada */
+    /* Mesma entrada, sem o deslocamento de 55px do desktop. */
+    animation-name: heroRetratoMovel;
   }
 
   /* Centralizada e deslocada para a esquerda, igual ao retrato: assim ela
