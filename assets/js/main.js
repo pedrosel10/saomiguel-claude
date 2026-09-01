@@ -159,29 +159,6 @@
     });
   }
 
-  /* Marco: a moldura abre conforme a seção atravessa a tela, e a foto deriva
-     dentro dela. `avanco` vai de 0 (a seção encosta na base da tela) a 1 (ela
-     acabou de sair por cima), e as duas animações são fatias desse mesmo
-     percurso — uma conta só, um valor só lido do layout por quadro. */
-  function acompanharMarco() {
-    var marco = document.querySelector('.marco');
-    if (!marco) return;
-
-    aoRolar(function () {
-      var caixa = marco.getBoundingClientRect();
-      var altura = window.innerHeight;
-      var percurso = altura + caixa.height;
-      if (percurso <= 0) return;
-
-      var avanco = limitar((altura - caixa.top) / percurso, 0, 1);
-
-      /* A abertura se completa no primeiro terço da entrada e fica aberta:
-         fechar de novo na saída daria a impressão de erro, não de efeito. */
-      marco.style.setProperty('--abertura', limitar(avanco / 0.34, 0, 1).toFixed(3));
-      marco.style.setProperty('--passo', (avanco * 2 - 1).toFixed(3));
-    });
-  }
-
   /* Rolagem suave da página. O navegador anda de degrau em degrau a cada
      entalhe da rodinha; aqui o entalhe vira um alvo e a página caminha até
      ele. Como quem se move é a rolagem de verdade — e não um invólucro
@@ -303,7 +280,6 @@
     ligarRolagemSuave();
 
     acompanharParalaxe();
-    acompanharMarco();
     ligarLacoDeRolagem();
 
     /* Só agora os elementos podem começar invisíveis: se o script falhar

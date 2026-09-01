@@ -32,7 +32,6 @@
   --cor-tinta-suave: #5b544c;
 
   --fonte-base: "Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --fonte-cursiva: "Great Vibes", "Apple Chancery", "Segoe Script", cursive;
   --largura-max: 1200px;
   --espaco: 1rem;
 
@@ -533,7 +532,6 @@ body::before {
 .secao,
 .citacao,
 .faixa,
-.marco,
 .rodape {
   background: transparent;
   color: var(--tema-tinta);
@@ -618,7 +616,6 @@ body::before {
 }
 
 /* Dentro da coluna de texto o botão não precisa de tanto respiro. */
-.sobre__lateral .botao,
 .faq__apoio .botao {
   margin-top: var(--e-4);
 }
@@ -678,18 +675,37 @@ body::before {
   margin-top: var(--e-3);
 }
 
+/* Faixa de imagens de largura total: o par ocupa as 12 colunas, e a divisão
+   desigual respeita as duas fotos — o retrato é vertical, a da igreja é
+   panorâmica, e cortar as duas no mesmo formato estragaria uma delas. */
 .sobre__figura {
-  /* Sem grid-row explícito: a régua ocupa a primeira linha e o
-     posicionamento automático acomoda o resto. */
-  grid-column: 1 / span 7;
+  grid-column: 1 / -1;
 }
 
+.sobre__par {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: var(--e-3);
+}
+
+/* Altura comum em vez de proporção por imagem: é o que mantém as bases
+   alinhadas mesmo com larguras diferentes. Vai na imagem, e não no contêiner,
+   porque height: 100% num item de grade com linha automática não tem contra o
+   que resolver e o navegador devolve a altura natural da foto. */
 .sobre__figura img {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  height: clamp(380px, 38vw, 560px);
   object-fit: cover;
-  /* O retrato é vertical: o recorte sobe para enquadrar rosto e ombros. */
-  object-position: center 26%;
+}
+
+.sobre__retrato {
+  /* Sobe o recorte para enquadrar rosto e ombros. */
+  object-position: center 22%;
+}
+
+.sobre__lugar {
+  /* A torre é o que precisa sobreviver ao corte. */
+  object-position: 46% center;
 }
 
 .sobre__legenda {
@@ -701,22 +717,30 @@ body::before {
   color: var(--tema-tinta-suave);
 }
 
-/* A lista e o botão dividem a mesma coluna, com o meio do bloco na mesma
-   altura do meio da figura. */
-.sobre__lateral {
-  grid-column: 9 / span 4;
-  align-self: center;
+/* Os marcos deitam numa faixa de três colunas, como a legenda de uma prancha.
+   Em pé, na coluna lateral, eles deixavam um vão no meio da dobra e não
+   alinhavam com a prosa, que começa numa coluna diferente. */
+.sobre__marcos {
+  grid-column: 1 / span 9;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--e-3);
+  align-self: start;
 }
 
 .sobre__marcos li {
   display: grid;
-  gap: 4px;
-  padding-block: var(--e-3);
+  gap: 6px;
+  align-content: start;
+  padding-top: var(--e-2);
   border-top: 1px solid var(--tema-linha);
 }
 
-.sobre__marcos li:last-child {
-  border-bottom: 1px solid var(--tema-linha);
+.sobre__acao {
+  grid-column: 10 / -1;
+  align-self: start;
+  justify-self: end;
+  padding-top: var(--e-2);
 }
 
 .sobre__marco-rotulo {
@@ -951,104 +975,7 @@ body::before {
   }
 }
 
-/* 6.6 Marco — interlúdio de tela cheia com o marco da cidade.
-   A moldura abre conforme a seção entra na tela. A altura da seção é fixa:
-   se ela crescesse junto, a página mudaria de tamanho durante a rolagem e
-   tudo que vem abaixo saltaria. Quem cresce é só a moldura, dentro dela. */
-.marco {
-  /* Abertura da moldura: 0 = faixa dentro da coluna, 1 = sangrando a tela.
-     O padrão é 1, e não 0, para o JS falhar aberto: sem script a foto aparece
-     inteira em vez de ficar presa no meio da animação. O valor real é escrito
-     já na carga, antes desta seção chegar perto da tela. */
-  --abertura: 1;
-  --passo: 0;      /* -1 a 1, deriva interna da foto (JS) */
-
-  position: relative;
-  display: grid;
-  place-items: center;
-  height: min(92vh, 940px);
-  overflow: hidden;
-}
-
-.marco__moldura {
-  /* Largura da coluna de conteúdo até a tela inteira. */
-  --fechada: min(var(--largura-max), 100% - 2 * var(--espaco));
-
-  position: relative;
-  width: calc(var(--fechada) + (100% - var(--fechada)) * var(--abertura));
-  height: calc(56% + 44% * var(--abertura));
-  overflow: hidden;
-}
-
-/* A foto é maior que a moldura para o paralaxe interno ter curso. A sobra é
-   de 10% da moldura de cada lado e a deriva chega a 7% da foto — ou seja, a
-   8,4% da moldura: sempre menos que a sobra, então a borda nunca descobre. */
-.marco__foto {
-  position: absolute;
-  inset: -10% 0;
-  width: 100%;
-  height: 120%;
-  object-fit: cover;
-  object-position: center 46%;
-  scale: calc(1.14 - 0.14 * var(--abertura));
-  translate: 0 calc(var(--passo) * 7%);
-  will-change: scale, translate;
-}
-
-/* Véu. O escurecimento uniforme é fraco de propósito: serve à cursiva no
-   meio da foto, onde os galhos deixam o fundo picotado, sem lavar a imagem.
-   O vinhete fecha as bordas para a foto assentar no preto da dobra. */
-.marco__veu {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(rgb(0 0 0 / 0.2), rgb(0 0 0 / 0.2)),
-    radial-gradient(120% 90% at 50% 45%, rgb(0 0 0 / 0) 52%, rgb(0 0 0 / 0.42) 100%);
-}
-
-/* Único texto da dobra: o nome das duas cidades, no centro. */
-.marco__assinatura {
-  position: absolute;
-  z-index: 2;
-  left: 50%;
-  top: 50%;
-  translate: -50% -50%;
-  /* Sem isto o elemento absoluto herda como espaço só a metade da dobra que
-     sobra à direita do left: 50%, e o nome quebra sozinho. */
-  width: max-content;
-  max-width: calc(100% - 2 * var(--espaco));
-  font-family: var(--fonte-cursiva);
-  font-size: clamp(46px, 8.4vw, 128px);
-  font-weight: 400;
-  /* A cursiva tem hastes altas e caudas longas: entrelinha apertada as
-     empilharia se quebrasse. */
-  line-height: 1.24;
-  text-align: center;
-  color: #fff;
-  /* Os galhos passam por trás do texto; a sombra sustenta o traço fino. */
-  text-shadow: 0 2px 30px rgb(0 0 0 / 0.55);
-}
-
-@media (max-width: 720px) {
-  .marco {
-    height: min(78vh, 620px);
-  }
-
-  .marco__moldura {
-    height: calc(62% + 38% * var(--abertura));
-  }
-}
-
-/* Sem movimento: a moldura fica aberta (o padrão) e a foto não deriva.
-   O JS nem chega a registrar o efeito, então nada sobrescreve isto. */
-@media (prefers-reduced-motion: reduce) {
-  .marco__foto {
-    scale: 1;
-    translate: none;
-  }
-}
-
-/* 6.7 Cases — grade assimétrica, com o nome revelado sobre a foto */
+/* 6.6 Cases — grade assimétrica, com o nome revelado sobre a foto */
 /* A altura da linha é fixa e a figura preenche a célula inteira: com
    aspect-ratio, os cards estreitos sobravam espaço embaixo e as bases da
    linha ficavam desalinhadas. */
@@ -1163,7 +1090,7 @@ body::before {
   }
 }
 
-/* 6.8 Citação — preta e mínima; as palavras acendem conforme entram na tela */
+/* 6.7 Citação — preta e mínima; as palavras acendem conforme entram na tela */
 .citacao {
   position: relative;
   padding-block: clamp(80px, 10vw, 140px);
@@ -1240,7 +1167,7 @@ body::before {
   color: var(--tema-realce);
 }
 
-/* 6.9 FAQ — lista de largura total; a resposta abre ao lado da pergunta,
+/* 6.8 FAQ — lista de largura total; a resposta abre ao lado da pergunta,
    e não embaixo, o que aproveita a coluna inteira */
 .faq__topo {
   display: grid;
@@ -1326,7 +1253,7 @@ body::before {
   text-decoration-color: var(--tema-realce);
 }
 
-/* 6.10 Contato */
+/* 6.9 Contato */
 .contato {
   display: grid;
   gap: var(--e-5) var(--e-7);
@@ -1381,7 +1308,7 @@ body::before {
   }
 }
 
-/* 6.11 Rodapé */
+/* 6.10 Rodapé */
 /* Cortina preta que sobe ao chegar no fim da página e desce ao subir de
    volta, para o rodapé ganhar peso quando é ele o assunto. */
 .rodape {
@@ -1623,9 +1550,40 @@ body::before {
   .sobre__cabecalho,
   .prosa,
   .sobre__figura,
-  .sobre__lateral {
+  .sobre__marcos,
+  .sobre__acao {
     grid-column: 1 / -1;
     grid-row: auto;
+  }
+
+  /* Sem largura para três colunas de marcos, eles voltam a empilhar. */
+  .sobre__marcos {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .sobre__marcos li {
+    padding-block: var(--e-3);
+  }
+
+  .sobre__marcos li:last-child {
+    border-bottom: 1px solid var(--tema-linha);
+  }
+
+  .sobre__acao {
+    justify-self: start;
+    padding-top: 0;
+  }
+
+  /* A assimetria 5/7 não se lê como intenção nesta largura: o retrato fica
+     com 136px e o rosto some. Meio a meio. */
+  .sobre__par {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--e-2);
+  }
+
+  .sobre__figura img {
+    height: clamp(240px, 62vw, 340px);
   }
 
   .servicos {

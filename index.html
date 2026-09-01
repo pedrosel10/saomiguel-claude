@@ -16,9 +16,9 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Instrument+Sans:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;700&display=swap">
 
-  <link rel="stylesheet" href="assets/css/style.css?v=37">
+  <link rel="stylesheet" href="assets/css/style.css?v=41">
 </head>
 <body>
 
@@ -148,15 +148,18 @@
           </div>
 
           <figure class="sobre__figura" data-revelar>
-            <img src="assets/img/foto.webp" loading="lazy" width="825" height="1102"
-                 alt="Rodrigo Selestrim, responsável técnico da São Miguel Engenharia &amp; Arquitetura, em obra em Canela">
+            <div class="sobre__par">
+              <img class="sobre__retrato" src="assets/img/foto.webp" loading="lazy" width="825" height="1102"
+                   alt="Rodrigo Selestrim, responsável técnico da São Miguel Engenharia &amp; Arquitetura, em obra em Canela">
+              <img class="sobre__lugar" src="assets/img/igreja.webp" loading="lazy" width="2657" height="1297"
+                   alt="Catedral de Pedra de Canela, marco da cidade onde fica a sede da São Miguel Engenharia &amp; Arquitetura">
+            </div>
             <figcaption class="sobre__legenda">
               Projeto, engenharia e obra sob uma só responsabilidade técnica
             </figcaption>
           </figure>
 
-          <div class="sobre__lateral" data-revelar>
-            <ul class="sobre__marcos">
+          <ul class="sobre__marcos" data-revelar>
             <li>
               <span class="sobre__marco-rotulo">Atuação</span>
               <span class="sobre__marco-valor">Canela, Gramado e todo o Rio Grande do Sul</span>
@@ -168,30 +171,31 @@
             <li>
               <span class="sobre__marco-rotulo">Escopo hoje</span>
               <span class="sobre__marco-valor">Arquitetura, estrutura, obra e regularização</span>
-              </li>
-            </ul>
+            </li>
+          </ul>
 
+          <div class="sobre__acao" data-revelar>
             <a class="botao" href="#contato">
-            <span class="botao__mascara">
-              <span class="botao__trilho">
-                <span class="botao__texto">Entrar em contato</span>
-                <span class="botao__texto" aria-hidden="true">Entrar em contato</span>
-              </span>
-            </span>
-            <span class="botao__icone" aria-hidden="true">
-              <span class="botao__icone-caixa"></span>
-              <span class="botao__icone-mascara">
-                <span class="botao__icone-trilho">
-                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square">
-                    <path d="M2.5 8h10.5"></path><path d="M7.8 3.3L13 8l-5.2 4.7"></path>
-                  </svg>
-                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square">
-                    <path d="M2.5 8h10.5"></path><path d="M7.8 3.3L13 8l-5.2 4.7"></path>
-                  </svg>
+              <span class="botao__mascara">
+                <span class="botao__trilho">
+                  <span class="botao__texto">Entrar em contato</span>
+                  <span class="botao__texto" aria-hidden="true">Entrar em contato</span>
                 </span>
               </span>
-            </span>
-          </a>
+              <span class="botao__icone" aria-hidden="true">
+                <span class="botao__icone-caixa"></span>
+                <span class="botao__icone-mascara">
+                  <span class="botao__icone-trilho">
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square">
+                      <path d="M2.5 8h10.5"></path><path d="M7.8 3.3L13 8l-5.2 4.7"></path>
+                    </svg>
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square">
+                      <path d="M2.5 8h10.5"></path><path d="M7.8 3.3L13 8l-5.2 4.7"></path>
+                    </svg>
+                  </span>
+                </span>
+              </span>
+            </a>
           </div>
         </div>
       </div>
@@ -361,17 +365,6 @@
             </span>
           </a>
         </div>
-      </div>
-    </section>
-
-    <!-- INTERLÚDIO — respiro de tela cheia, sem texto: a foto é do marco da
-         cidade e já situa quem é da região ---------------------------- -->
-    <section class="marco" data-tema="preto" aria-label="Canela, Rio Grande do Sul">
-      <div class="marco__moldura">
-        <img class="marco__foto" src="assets/img/igreja.webp" width="2657" height="1297" loading="lazy"
-             alt="Catedral de Pedra de Canela, marco da cidade onde fica a sede da São Miguel Engenharia &amp; Arquitetura">
-        <span class="marco__veu" aria-hidden="true"></span>
-        <p class="marco__assinatura" data-revelar>Canela &amp; Gramado</p>
       </div>
     </section>
 
@@ -817,6 +810,6 @@
   }
   </script>
 
-  <script src="assets/js/main.js?v=37" defer></script>
+  <script src="assets/js/main.js?v=41" defer></script>
 </body>
 </html>
