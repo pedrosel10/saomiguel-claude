@@ -1037,6 +1037,9 @@ body::before {
   max-width: 44ch;
   font-size: 17px;
   line-height: 1.6;
+  /* Evita a última palavra caindo sozinha na última linha, que acontecia
+     na largura do mobile. */
+  text-wrap: pretty;
   /* Cor fixa, não do tema: o texto está sobre a foto, e durante a troca de
      cor do fundo um token do tema passaria por um valor ilegível aqui. */
   color: rgb(255 255 255 / 0.76);
