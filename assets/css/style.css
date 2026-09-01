@@ -994,83 +994,42 @@ body::before {
   will-change: scale, translate;
 }
 
+/* Véu leve. Sem texto para proteger, ele existe só para a foto assentar no
+   preto da dobra em vez de recortar contra ele. */
 .marco__veu {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to top, rgb(0 0 0 / 0.8) 0%, rgb(0 0 0 / 0.34) 38%, rgb(0 0 0 / 0) 66%),
-    linear-gradient(to right, rgb(0 0 0 / 0.42), rgb(0 0 0 / 0) 58%);
+    linear-gradient(to top, rgb(0 0 0 / 0.5) 0%, rgb(0 0 0 / 0) 42%),
+    radial-gradient(120% 90% at 50% 45%, rgb(0 0 0 / 0) 55%, rgb(0 0 0 / 0.34) 100%);
 }
 
-/* O texto fica preso ao rodapé da seção, não da moldura: começa no preto,
-   abaixo da faixa, e a moldura cresce até engoli-lo. */
-.marco__conteudo {
+/* Legenda de foto, não copy: situa o lugar e sai do caminho. */
+.marco__legenda {
   position: absolute;
+  z-index: 2;
   left: 50%;
-  bottom: clamp(28px, 5vh, 60px);
+  bottom: clamp(20px, 3.5vh, 34px);
   translate: -50% 0;
-  color: #fff;
-}
-
-.marco__titulo {
-  max-width: 15ch;
-  font-size: clamp(38px, 6vw, 84px);
-  line-height: 1.02;
-  font-weight: 400;
-  letter-spacing: -0.045em;
-  /* Sem isto a última palavra cai sozinha na segunda linha. */
-  text-wrap: balance;
-}
-
-.marco__titulo em {
-  font-style: italic;
-  margin-right: 0.06em;
-}
-
-.marco__base {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: var(--e-3) var(--e-6);
-  margin-top: var(--e-4);
-}
-
-.marco__texto {
-  max-width: 44ch;
-  font-size: 17px;
-  line-height: 1.6;
-  /* Evita a última palavra caindo sozinha na última linha, que acontecia
-     na largura do mobile. */
-  text-wrap: pretty;
-  /* Cor fixa, não do tema: o texto está sobre a foto, e durante a troca de
-     cor do fundo um token do tema passaria por um valor ilegível aqui. */
-  color: rgb(255 255 255 / 0.76);
-}
-
-.marco__acao {
-  flex-shrink: 0;
+  width: min(var(--largura-max), 100% - 2 * var(--espaco));
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.62);
 }
 
 @media (max-width: 720px) {
   .marco {
-    height: min(88vh, 720px);
+    height: min(78vh, 620px);
   }
 
   .marco__moldura {
     height: calc(62% + 38% * var(--abertura));
   }
 
-  .marco__base {
-    display: block;
-  }
-
-  .marco__texto {
-    font-size: 15px;
-  }
-
-  .marco__acao {
-    margin-top: var(--e-3);
+  .marco__legenda {
+    font-size: 10px;
   }
 }
 
