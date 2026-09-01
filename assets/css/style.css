@@ -1015,6 +1015,8 @@ body::before {
   line-height: 1.02;
   font-weight: 400;
   letter-spacing: -0.045em;
+  /* Sem isto a última palavra cai sozinha na segunda linha. */
+  text-wrap: balance;
 }
 
 .marco__titulo em {
