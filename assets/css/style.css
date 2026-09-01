@@ -1156,12 +1156,23 @@ body::before {
   letter-spacing: -0.01em;
 }
 
-.case__seta {
+/* Selo de obra entregue. A seta que estava aqui prometia um link que o card
+   não tem; a medalha marca o que a dobra afirma — cliente atendido. */
+.case__selo {
   margin-left: auto;
-  font-size: 17px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
   opacity: 0;
-  translate: -6px 6px;
-  transition: opacity var(--duracao) var(--curva), translate var(--duracao) var(--curva);
+  /* Assenta como um carimbo, em vez de deslizar como a seta fazia. */
+  scale: 0.72;
+  transition: opacity var(--duracao) var(--curva), scale var(--duracao) var(--curva);
+}
+
+.case__selo svg {
+  width: 22px;
+  height: 22px;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -1173,10 +1184,14 @@ body::before {
     opacity: 1;
   }
 
-  .case:hover .case__logo,
-  .case:hover .case__seta {
+  .case:hover .case__logo {
     opacity: 1;
     translate: 0 0;
+  }
+
+  .case:hover .case__selo {
+    opacity: 1;
+    scale: 1;
   }
 }
 
