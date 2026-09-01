@@ -32,6 +32,7 @@
   --cor-tinta-suave: #5b544c;
 
   --fonte-base: "Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --fonte-serifada: "Inria Serif", Georgia, "Times New Roman", serif;
   --largura-max: 1200px;
   --espaco: 1rem;
 
@@ -540,6 +541,7 @@ body::before {
 /* 6.1 Tipografia de seção */
 .tag {
   margin-bottom: var(--e-3);
+  font-family: var(--fonte-serifada);
   font-size: 12px;
   font-weight: 700;
   line-height: 1;
