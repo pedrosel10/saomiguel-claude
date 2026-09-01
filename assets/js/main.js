@@ -96,94 +96,45 @@
 
   /* Um único laço de rolagem para todos os efeitos contínuos: cada um se
      inscreve aqui em vez de pendurar o próprio listener, e o quadro é
-     agendado uma vez só.
-
-     Os efeitos não leem a rolagem do navegador: leem `rolagemSuave`, que
-     persegue a rolagem real quadro a quadro. Sem isso, quem rola com a
-     rodinha do mouse (e no Safari é sempre assim, que não interpola o giro
-     como o trackpad) vê a imagem saltar de 100 em 100 pixels, um degrau por
-     entalhe. Perseguindo, cada salto vira um deslize curto — e, de quebra,
-     a rolagem contínua ganha uma inércia leve. */
+     agendado uma vez só. Os efeitos leem a posição real da página — quem
+     suaviza é a rolagem em si (ligarRolagemSuave), então imagem e conteúdo
+     andam sempre juntos. */
   var efeitosDeRolagem = [];
-  var rolagemSuave = 0;
-  var rodando = false;
-  var instanteAnterior = 0;
-
-  /* Fração do caminho percorrida a cada quadro de 60 Hz: dá uma constante de
-     tempo de ~130 ms, curta o bastante para não parecer que a página arrasta. */
-  var PERSEGUICAO = 0.12;
+  var quadroAgendado = false;
 
   function aoRolar(efeito) {
     efeitosDeRolagem.push(efeito);
   }
 
   function rodarEfeitos() {
-    /* A diferença entre a rolagem real e a suave é o quanto o efeito está
-       atrasado; quem mede posições na tela corrige por ela. */
-    var atraso = window.scrollY - rolagemSuave;
-    for (var i = 0; i < efeitosDeRolagem.length; i++) efeitosDeRolagem[i](rolagemSuave, atraso);
-  }
-
-  function quadro(agora) {
-    var dt = instanteAnterior ? Math.min(agora - instanteAnterior, 64) : 16.7;
-    instanteAnterior = agora;
-
-    var alvo = window.scrollY;
-    var resto = alvo - rolagemSuave;
-
-    /* Salto grande não é rolagem: é âncora, recarga ou volta no histórico.
-       Perseguir isso faria a página inteira deslizar sozinha. */
-    if (Math.abs(resto) > window.innerHeight * 1.5 || Math.abs(resto) < 0.3) {
-      rolagemSuave = alvo;
-    } else {
-      /* Elevado a dt: a mesma constante de tempo em 60, 120 ou 144 Hz. */
-      rolagemSuave += resto * (1 - Math.pow(1 - PERSEGUICAO, dt / 16.7));
-    }
-
-    rodarEfeitos();
-
-    if (rolagemSuave !== window.scrollY) {
-      requestAnimationFrame(quadro);
-    } else {
-      rodando = false;
-    }
-  }
-
-  function agendarQuadro() {
-    if (rodando) return;
-    rodando = true;
-    instanteAnterior = 0;
-    requestAnimationFrame(quadro);
-  }
-
-  /* Põe os efeitos na posição atual sem animar. */
-  function sincronizar() {
-    rolagemSuave = window.scrollY;
-    rodarEfeitos();
+    quadroAgendado = false;
+    for (var i = 0; i < efeitosDeRolagem.length; i++) efeitosDeRolagem[i]();
   }
 
   function ligarLacoDeRolagem() {
     if (!efeitosDeRolagem.length) return;
 
-    window.addEventListener('scroll', agendarQuadro, { passive: true });
-    window.addEventListener('resize', sincronizar);
+    function agendar() {
+      if (quadroAgendado) return;
+      quadroAgendado = true;
+      requestAnimationFrame(rodarEfeitos);
+    }
+
+    window.addEventListener('scroll', agendar, { passive: true });
+    window.addEventListener('resize', rodarEfeitos);
 
     /* Aba oculta não roda requestAnimationFrame: a rolagem que acontece
        enquanto ela está escondida deixa os efeitos parados num estado antigo,
-       e o quadro pedido lá atrás nunca chega para destravar o laço. Ao voltar
-       à tela, reposiciona de uma vez — animar o acúmulo seria um salto. */
+       e o quadro pedido lá atrás nunca chega para destravar o agendamento. */
     document.addEventListener('visibilitychange', function () {
-      if (document.visibilityState === 'visible') {
-        rodando = false;
-        sincronizar();
-      }
+      if (document.visibilityState === 'visible') rodarEfeitos();
     });
 
     /* Volta pelo histórico: a página é restaurada com a rolagem de antes,
        sem disparar scroll. */
-    window.addEventListener('pageshow', sincronizar);
+    window.addEventListener('pageshow', rodarEfeitos);
 
-    sincronizar();
+    rodarEfeitos();
   }
 
   function limitar(n, minimo, maximo) {
@@ -197,11 +148,11 @@
   function acompanharParalaxe() {
     var raiz = document.documentElement;
 
-    aoRolar(function (rolagem) {
+    aoRolar(function () {
       var percurso = raiz.scrollHeight - window.innerHeight;
       if (percurso <= 0) return;
 
-      var avanco = limitar(rolagem / percurso, 0, 1);
+      var avanco = limitar(window.scrollY / percurso, 0, 1);
       var curso = window.innerHeight * 0.22;
 
       raiz.style.setProperty('--deslize-fundo', (avanco * curso).toFixed(1) + 'px');
@@ -216,23 +167,106 @@
     var marco = document.querySelector('.marco');
     if (!marco) return;
 
-    aoRolar(function (rolagem, atraso) {
+    aoRolar(function () {
       var caixa = marco.getBoundingClientRect();
       var altura = window.innerHeight;
       var percurso = altura + caixa.height;
       if (percurso <= 0) return;
 
-      /* O rect vem da rolagem real; somar o atraso devolve onde a seção
-         estaria na rolagem suave, sem precisar cachear a posição no documento
-         (que muda quando as imagens carregam). */
-      var topo = caixa.top + atraso;
-      var avanco = limitar((altura - topo) / percurso, 0, 1);
+      var avanco = limitar((altura - caixa.top) / percurso, 0, 1);
 
       /* A abertura se completa no primeiro terço da entrada e fica aberta:
          fechar de novo na saída daria a impressão de erro, não de efeito. */
       marco.style.setProperty('--abertura', limitar(avanco / 0.34, 0, 1).toFixed(3));
       marco.style.setProperty('--passo', (avanco * 2 - 1).toFixed(3));
     });
+  }
+
+  /* Rolagem suave da página. O navegador anda de degrau em degrau a cada
+     entalhe da rodinha; aqui o entalhe vira um alvo e a página caminha até
+     ele. Como quem se move é a rolagem de verdade — e não um invólucro
+     transformado —, âncoras, busca na página, foco por teclado e os
+     observadores continuam funcionando como sempre.
+
+     Só com mouse: no toque o próprio sistema já tem inércia, e interceptar
+     isso deixa a página pior do que estava. */
+  function ligarRolagemSuave() {
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+    /* Fração do caminho a cada quadro de 60 Hz. Mais alto gruda na rodinha,
+       mais baixo dá a impressão de que a página arrasta. */
+    var APROXIMACAO = 0.12;
+
+    var alvo = window.scrollY;
+    var animando = false;
+    var anterior = 0;
+
+    function teto() {
+      return Math.max(document.documentElement.scrollHeight - window.innerHeight, 0);
+    }
+
+    /* Elemento com rolagem própria fica com o gesto: interceptar aqui roubaria
+       a rolagem dele e ele nunca andaria. */
+    function rolaSozinho(no) {
+      while (no && no.nodeType === 1 && no !== document.body && no !== document.documentElement) {
+        if (no.scrollHeight > no.clientHeight) {
+          var transbordo = getComputedStyle(no).overflowY;
+          if (transbordo === 'auto' || transbordo === 'scroll') return true;
+        }
+        no = no.parentElement;
+      }
+      return false;
+    }
+
+    function passo(agora) {
+      var dt = anterior ? Math.min(agora - anterior, 64) : 16.7;
+      anterior = agora;
+
+      var atual = window.scrollY;
+      var resto = alvo - atual;
+
+      if (Math.abs(resto) < 0.5) {
+        animando = false;
+        anterior = 0;
+        return;
+      }
+
+      /* Elevado a dt: a mesma constante de tempo em 60, 120 ou 144 Hz.
+         'instant' porque o CSS pede scroll-behavior: smooth para as âncoras,
+         e sem isto o navegador animaria cada passo desta animação. */
+      var proximo = atual + resto * (1 - Math.pow(1 - APROXIMACAO, dt / 16.7));
+      window.scrollTo({ top: proximo, behavior: 'instant' });
+
+      requestAnimationFrame(passo);
+    }
+
+    window.addEventListener('wheel', function (evento) {
+      if (evento.ctrlKey || evento.metaKey) return;   /* zoom do navegador */
+      if (rolaSozinho(evento.target)) return;
+
+      evento.preventDefault();
+
+      var d = evento.deltaY;
+      if (evento.deltaMode === 1) d *= 16;                   /* linhas */
+      else if (evento.deltaMode === 2) d *= window.innerHeight; /* páginas */
+
+      alvo = Math.min(Math.max(alvo + d, 0), teto());
+
+      if (!animando) {
+        animando = true;
+        anterior = 0;
+        requestAnimationFrame(passo);
+      }
+    }, { passive: false });
+
+    /* Teclado, barra de rolagem, âncora, busca na página: quem move a página
+       por fora manda, e o alvo passa a ser onde ela parou. */
+    function realinhar() {
+      if (!animando) alvo = window.scrollY;
+    }
+
+    window.addEventListener('scroll', realinhar, { passive: true });
+    window.addEventListener('resize', realinhar);
   }
 
   function observar(alvos, aoEntrar, margem) {
@@ -265,6 +299,8 @@
     if (semMovimento) return;
 
     document.querySelectorAll('.faq__item').forEach(prepararGaveta);
+
+    ligarRolagemSuave();
 
     acompanharParalaxe();
     acompanharMarco();

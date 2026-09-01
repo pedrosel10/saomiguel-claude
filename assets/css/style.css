@@ -123,6 +123,9 @@ a { color: inherit; }
 :root {
   background-color: var(--tema-fundo);
   transition: background-color 0.8s var(--curva-cor);
+  /* Vale para âncora, foco por teclado e busca na página. A rodinha do mouse
+     não passa por aqui: essa é suavizada no script. */
+  scroll-behavior: smooth;
 }
 
 body {
@@ -1781,6 +1784,10 @@ body::before {
     opacity: 1;
     translate: none;
     transition: none;
+  }
+
+  :root {
+    scroll-behavior: auto;
   }
 
   .faixa__trilho,
