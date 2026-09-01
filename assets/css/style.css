@@ -645,10 +645,14 @@ body::before {
 }
 
 /* 6.3 Sobre — grade de 12 colunas, com a figura invadindo a coluna do texto */
+/* 6.3 Sobre — duas colunas que se encaixam: a pilha de imagens à esquerda e
+   uma coluna de texto contínua à direita. Em faixas empilhadas de largura
+   total a dobra ficava com cara de template, e a coluna de texto quebrada em
+   dois pedaços deixava um vão no meio. */
 .sobre {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  gap: var(--e-6) var(--e-3);
+  gap: var(--e-6) var(--e-4);
 }
 
 .sobre > .regua {
@@ -656,13 +660,46 @@ body::before {
   margin-bottom: 0;
 }
 
-.sobre__cabecalho {
-  grid-column: 1 / span 6;
+.sobre__imagens {
+  grid-column: 1 / span 5;
+  display: grid;
+  gap: var(--e-2);
+  align-content: start;
 }
 
-.prosa {
-  grid-column: 8 / span 5;
-  align-self: end;
+/* Pesos diferentes de propósito: o retrato manda, a cidade acompanha. Cada
+   formato também respeita a foto — o retrato é vertical e a da igreja é
+   panorâmica, e um recorte comum estragaria uma das duas. */
+.sobre__imagens img {
+  width: 100%;
+  object-fit: cover;
+}
+
+.sobre__retrato {
+  height: clamp(420px, 44vw, 620px);
+  /* Sobe o recorte para enquadrar rosto e ombros. */
+  object-position: center 22%;
+}
+
+.sobre__lugar {
+  height: clamp(170px, 18vw, 250px);
+  object-position: center 62%;
+}
+
+.sobre__legenda {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: var(--e-1);
+  font-size: 13px;
+  color: var(--tema-tinta-suave);
+}
+
+.sobre__texto {
+  grid-column: 7 / -1;
+  display: grid;
+  align-content: start;
+  gap: var(--e-5);
 }
 
 .prosa p {
@@ -675,72 +712,19 @@ body::before {
   margin-top: var(--e-3);
 }
 
-/* Faixa de imagens de largura total: o par ocupa as 12 colunas, e a divisão
-   desigual respeita as duas fotos — o retrato é vertical, a da igreja é
-   panorâmica, e cortar as duas no mesmo formato estragaria uma delas. */
-.sobre__figura {
-  grid-column: 1 / -1;
-}
-
-.sobre__par {
-  display: grid;
-  grid-template-columns: 5fr 7fr;
-  gap: var(--e-3);
-}
-
-/* Altura comum em vez de proporção por imagem: é o que mantém as bases
-   alinhadas mesmo com larguras diferentes. Vai na imagem, e não no contêiner,
-   porque height: 100% num item de grade com linha automática não tem contra o
-   que resolver e o navegador devolve a altura natural da foto. */
-.sobre__figura img {
-  width: 100%;
-  height: clamp(380px, 38vw, 560px);
-  object-fit: cover;
-}
-
-.sobre__retrato {
-  /* Sobe o recorte para enquadrar rosto e ombros. */
-  object-position: center 22%;
-}
-
-.sobre__lugar {
-  /* A torre é o que precisa sobreviver ao corte. */
-  object-position: 46% center;
-}
-
-.sobre__legenda {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: var(--e-2);
-  font-size: 13px;
-  color: var(--tema-tinta-suave);
-}
-
-/* Os marcos deitam numa faixa de três colunas, como a legenda de uma prancha.
-   Em pé, na coluna lateral, eles deixavam um vão no meio da dobra e não
-   alinhavam com a prosa, que começa numa coluna diferente. */
-.sobre__marcos {
-  grid-column: 1 / span 9;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--e-3);
-  align-self: start;
-}
-
 .sobre__marcos li {
   display: grid;
-  gap: 6px;
-  align-content: start;
-  padding-top: var(--e-2);
+  gap: 4px;
+  padding-block: var(--e-3);
   border-top: 1px solid var(--tema-linha);
 }
 
+.sobre__marcos li:last-child {
+  border-bottom: 1px solid var(--tema-linha);
+}
+
 .sobre__acao {
-  grid-column: 10 / -1;
-  align-self: start;
-  justify-self: end;
-  padding-top: var(--e-2);
+  justify-self: start;
 }
 
 .sobre__marco-rotulo {
@@ -1541,49 +1525,30 @@ body::before {
     max-width: 60ch;
   }
 
-  /* A grade de 12 colunas do Sobre vira duas, depois uma. */
+  /* As duas colunas viram uma só: o texto embaixo das imagens. */
   .sobre {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
     gap: var(--e-5);
   }
 
-  .sobre__cabecalho,
-  .prosa,
-  .sobre__figura,
-  .sobre__marcos,
-  .sobre__acao {
+  .sobre__imagens,
+  .sobre__texto {
     grid-column: 1 / -1;
-    grid-row: auto;
   }
 
-  /* Sem largura para três colunas de marcos, eles voltam a empilhar. */
-  .sobre__marcos {
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
-
-  .sobre__marcos li {
-    padding-block: var(--e-3);
-  }
-
-  .sobre__marcos li:last-child {
-    border-bottom: 1px solid var(--tema-linha);
-  }
-
-  .sobre__acao {
-    justify-self: start;
-    padding-top: 0;
-  }
-
-  /* A assimetria 5/7 não se lê como intenção nesta largura: o retrato fica
-     com 136px e o rosto some. Meio a meio. */
-  .sobre__par {
-    grid-template-columns: 1fr 1fr;
+  /* Lado a lado numa faixa só, para as duas não comerem meia tela cada. */
+  .sobre__imagens {
+    grid-template-columns: 5fr 4fr;
     gap: var(--e-2);
   }
 
-  .sobre__figura img {
-    height: clamp(240px, 62vw, 340px);
+  .sobre__retrato,
+  .sobre__lugar {
+    height: clamp(260px, 58vw, 340px);
+  }
+
+  .sobre__legenda {
+    grid-column: 1 / -1;
   }
 
   .servicos {
