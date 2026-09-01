@@ -1598,9 +1598,30 @@ body::before {
     padding: var(--e-4) var(--e-3);
   }
 
-  /* A imagem intercalada não se sustenta numa coluna só. */
-  .servico-imagem {
-    display: none;
+  /* Numa coluna só não há célula órfã a evitar, então as duas imagens voltam
+     — inclusive a --b, escondida na faixa de duas colunas logo acima. Viram
+     faixas largas, um respiro entre os cartões empilhados. */
+  .servico-imagem,
+  .servico-imagem--b {
+    display: block;
+  }
+
+  /* A proporção vai na imagem, e não no <li>: altura percentual dentro de uma
+     linha de grade automática não tem contra o que resolver. */
+  .servico-imagem img {
+    height: auto;
+    aspect-ratio: 3 / 2;
+  }
+
+  /* A ordem do HTML foi pensada para três colunas: empilhada, ela junta as
+     duas imagens no começo e deixa quatro cartões seguidos no fim. A segunda
+     desce para o meio dessa fila. */
+  .servico-imagem--b {
+    order: 1;
+  }
+
+  .servicos > li:nth-last-child(-n+2) {
+    order: 2;
   }
 
   .cases {
