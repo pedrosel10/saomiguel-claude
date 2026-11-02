@@ -18,3 +18,6 @@ node_modules/
 assets/img/*.png
 # ...menos o favicon, que precisa ser PNG e precisa ir para o servidor.
 !assets/img/favicon.png
+
+# Config local do Claude Code (não vai para o ar)
+.claude/
