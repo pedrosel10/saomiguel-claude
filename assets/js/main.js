@@ -462,6 +462,61 @@
     });
   }
 
+  /* Quadro de clientes: no mouse, a foto da linha flutua grande junto do
+     cursor, perseguindo o ponteiro com um atraso curto. À direita do
+     cursor ela cobriria a miniatura; por isso vai para a esquerda quando
+     não cabe. */
+  function ligarPrevia() {
+    var quadro = document.querySelector('.obras');
+    if (!quadro || !temMouse) return;
+
+    var previa = quadro.querySelector('.obras__previa');
+    if (!previa) return;
+    var imagem = previa.querySelector('img');
+    var alvoX = 0, alvoY = 0, x = 0, y = 0;
+    var andando = false;
+    var aberta = false;
+    var fator = semMovimento ? 1 : 0.2;
+
+    function aplicar() {
+      previa.style.setProperty('--px', x.toFixed(1) + 'px');
+      previa.style.setProperty('--py', y.toFixed(1) + 'px');
+    }
+
+    function passo() {
+      x += (alvoX - x) * fator;
+      y += (alvoY - y) * fator;
+      aplicar();
+      if (Math.abs(alvoX - x) > 0.4 || Math.abs(alvoY - y) > 0.4) requestAnimationFrame(passo);
+      else andando = false;
+    }
+
+    quadro.addEventListener('pointermove', function (evento) {
+      var r = quadro.getBoundingClientRect();
+      var largura = previa.offsetWidth;
+      var cx = evento.clientX - r.left;
+      alvoX = cx + 28 + largura > r.width - 140 ? cx - 28 - largura : cx + 28;
+      alvoY = evento.clientY - r.top - previa.offsetHeight / 2;
+      if (!aberta) { x = alvoX; y = alvoY; aplicar(); }
+      if (!andando) { andando = true; requestAnimationFrame(passo); }
+    });
+
+    todos('.obra', quadro).forEach(function (linha) {
+      linha.addEventListener('pointerenter', function () {
+        var foto = linha.querySelector('.obra__foto');
+        if (!foto) return;
+        imagem.src = foto.currentSrc || foto.src;
+        previa.classList.add('esta-visivel');
+        aberta = true;
+      });
+    });
+
+    quadro.addEventListener('pointerleave', function () {
+      previa.classList.remove('esta-visivel');
+      aberta = false;
+    });
+  }
+
   /* Mira de CAD na citação: duas linhas que seguem o mouse e a leitura das
      coordenadas medidas a partir do centro da engrenagem, na unidade da
      própria logo (78 de lado). */
@@ -523,6 +578,7 @@
     ligarBarra();
     ligarCronograma();
     ligarVitrine();
+    ligarPrevia();
     ligarMira();
 
     if (!semMovimento) {
