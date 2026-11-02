@@ -2035,7 +2035,7 @@ body {
 .obras__cabeca,
 .obra {
   display: grid;
-  grid-template-columns: 64px 150px minmax(0, 1.5fr) minmax(0, 0.8fr) minmax(0, 1.2fr) 112px;
+  grid-template-columns: 64px 150px minmax(0, 1.8fr) minmax(0, 1fr) 112px;
   gap: 0 var(--e-3);
   align-items: center;
 }
@@ -2074,8 +2074,7 @@ body {
   transition: translate 0.45s var(--curva-entrada), color 0.3s;
 }
 
-.obra__cidade,
-.obra__escopo {
+.obra__cidade {
   font-size: 14px;
   line-height: 1.4;
   color: var(--tema-tinta-suave);
@@ -2871,7 +2870,7 @@ body {
 
   .obras__cabeca,
   .obra {
-    grid-template-columns: 48px minmax(0, 1.4fr) minmax(0, 0.8fr) minmax(0, 1.2fr) 96px;
+    grid-template-columns: 48px minmax(0, 1.6fr) minmax(0, 1fr) 96px;
   }
 
   .obra__foto {
@@ -3027,8 +3026,7 @@ body {
     grid-template-columns: 32px minmax(0, 1fr) 72px;
     grid-template-areas:
       "indice nome foto"
-      "indice cidade foto"
-      "indice escopo foto";
+      "indice cidade foto";
     gap: 2px 14px;
     padding-block: 16px;
     align-items: start;
@@ -3037,7 +3035,6 @@ body {
   .obra__indice { grid-area: indice; padding-top: 4px; }
   .obra__nome   { grid-area: nome; }
   .obra__cidade { grid-area: cidade; }
-  .obra__escopo { grid-area: escopo; }
 
   .obra__foto {
     grid-area: foto;
