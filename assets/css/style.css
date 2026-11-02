@@ -926,7 +926,6 @@ body {
 .contato__dados dt,
 .contato__mapa figcaption,
 .barra__secoes,
-.barra__acao,
 .rodape__rotulo,
 .rodape__base {
   font-family: var(--fonte-mono);
@@ -1180,16 +1179,13 @@ body {
   background: var(--cor-azul-claro);
 }
 
-.barra__acao {
-  padding: 12px 14px;
-  color: #fff;
-  background: var(--cor-fundo);
-  text-decoration: none;
-  transition: background-color 0.25s;
-}
-
-.barra__acao:hover {
-  background: var(--cor-fundo-escuro);
+/* O botão da barra é o mesmo componente do resto da página, só mais
+   compacto para caber nos 56px; azul, porque a barra é preta. */
+.barra .botao--barra {
+  --tema-botao: var(--cor-fundo);
+  margin-left: auto;
+  padding: 7px 7px 7px 16px;
+  font-size: 14px;
 }
 
 /* 6.3 Faixa de clientes -------------------------------------------- */
@@ -1840,8 +1836,8 @@ body {
 /* O desenho da obra à esquerda, o cronograma à direita. */
 .cronograma {
   display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  gap: var(--e-6);
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: var(--e-5);
   align-items: center;
 }
 
@@ -1888,7 +1884,7 @@ body {
   position: relative;
   /* Largura da coluna de texto: o trilho das barras começa aqui, e a
      régua de avanço é medida a partir dela. */
-  --recuo: 250px;
+  --recuo: 330px;
 }
 
 .cronograma__cabeca {
@@ -1942,7 +1938,7 @@ body {
   max-width: 34ch;
   margin-top: 6px;
   padding-right: var(--e-3);
-  font-size: 14px;
+  font-size: 13.5px;
   line-height: 1.45;
   color: var(--tema-tinta-fraca);
   transition: color 0.35s;
@@ -2016,9 +2012,9 @@ body {
 
 .cronograma__leitura {
   position: absolute;
-  top: -10px;
+  bottom: -10px;
   left: 0;
-  translate: -50% -100%;
+  translate: -50% 100%;
   padding: 3px 8px;
   white-space: nowrap;
   color: var(--botao-preto);
@@ -2924,9 +2920,6 @@ body {
     display: none;
   }
 
-  .barra__acao {
-    margin-left: auto;
-  }
 }
 
 @media (max-width: 720px) {
@@ -3089,9 +3082,6 @@ body {
     border-top: 1px solid var(--tema-linha);
   }
 
-  .barra__acao {
-    padding: 12px 12px;
-  }
 
   /* O título ocupa a largura toda; o avanço desce para baixo dele. */
   .vitrine__texto {
